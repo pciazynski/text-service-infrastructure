@@ -4,10 +4,9 @@ require('../functions.php');
 require('../config.php');
 require('../db_getPassage.php');
 
-
 $urn = trim(htmlspecialchars($_GET["urn"]));
-$wordbag = array();
-$psg="";
+$ngramgoalsize = trim(htmlspecialchars($_GET["n"]));
+$rs = array();
 
 $urnarr = checkurn($urn);
 if ($urnarr !== false){
@@ -20,21 +19,31 @@ $psg = strtolower($psg);
 $replacearr = array("―","¼","%","⅕","⅙","•","⅓","☚","☛","+","|","*","¾","#","'","}","=","/","!","”","½","1","2","3","4","5","6","7","8","9","0","…",'"',"–",",",".","?","(",")","[","]",";",":","—","“","-","„");
 $psg = str_replace($replacearr, " ", $psg);
 
+$ngram = "";
+
 $psgarr = explode(" ",$psg);
 foreach ($psgarr as $token){
-	if(strlen(trim($token)) >0) 
+	$token = trim($token);
+	if(strlen($token) >0)
 	{
-		if (array_key_exists($token, $wordbag)){
-			$wordbag[$token] = $wordbag[$token]+1;
-		}else{
-			$wordbag[$token] = 1;
+		$ngram.=" ".$token;
+		$ngram = trim($ngram);
+		if(count(explode(" ",$ngram)) == $ngramgoalsize){
+			if (array_key_exists($ngram, $rs)){
+				$rs[$ngram] = $rs[$ngram]+1;
+			}else{
+				$rs[$ngram] = 1;
+			}
+			$ngram = explode(" ",$ngram,2)[1];
 		}
 	}
 }
 
-arsort($wordbag);
-foreach(array_keys($wordbag) as $key){
-	echo $key."\t".$wordbag[$key]."\n";
+if(isset($_GET["sort"])){
+	arsort($rs);
+}
+foreach(array_keys($rs) as $key){
+	echo $key."\t".$rs[$key]."\n";
 }
 
 ?>
