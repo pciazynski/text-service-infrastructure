@@ -15,6 +15,8 @@ if ($urnarr !== false){
 	elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
 	else {$psg = passage($urn, false, $deleteXML=true);};
 }
+
+
 $psg = strtolower($psg);
 
 $replacearr = array("―","¼","%","⅕","⅙","•","⅓","☚","☛","+","|","*","¾","#","'","}","=","/","!","”","½","1","2","3","4","5","6","7","8","9","0","…",'"',"–",",",".","?","(",")","[","]",";",":","—","“","-","„");
