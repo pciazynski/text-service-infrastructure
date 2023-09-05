@@ -52,7 +52,7 @@ function spanningPassage($urn,$deleteXML = false){
 function passage($urn,$isWorkurn,$deleteXML = false){
 	global $sql;
 	if($isWorkurn){$query = "SELECT text FROM urndata WHERE urn LIKE '".$urn."%' ORDER BY urnid";}
-	else {$query = "SELECT text FROM urndata WHERE urn LIKE '".$urn.".%' ORDER BY urnid";}
+	else {$query = "SELECT text FROM urndata WHERE urn LIKE '".$urn.".%' OR urn LIKE '".$urn."' ORDER BY urnid";}
 	$res = "";
 	foreach ($sql->query($query) as $row) {
 		$res = $res.$row['text'];

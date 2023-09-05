@@ -6,4 +6,7 @@ require('doccount.php');
 
 echo "\nStatic Text URNs: ";
 require('urncount.php');
+
+echo "\nDaterange: ";
+require('daterange.php');
 ?>

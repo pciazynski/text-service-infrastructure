@@ -6,11 +6,11 @@ require('../db_getPassage.php');
 
 
 $urn = trim(htmlspecialchars($_GET["urn"]));
-
+$deletexml = isset($_GET["deletexml"]);
 $urnarr = checkurn($urn);
 if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){echo passage($urn,true);}
-	elseif (strpos ($urnarr[4],"-")){echo spanningPassage($urn);}
-	else {echo passage($urn,false);};
+	if (strlen($urnarr[4]) == 0){echo passage($urn,true,$deletexml);}
+	elseif (strpos ($urnarr[4],"-")){echo spanningPassage($urn,$deletexml);}
+	else {echo passage($urn,false,$deletexml);};
 }
 ?>

@@ -7,9 +7,9 @@ require('../config.php');
 function editions(){
 	global $sql;
 	$query = "SELECT urn,title,year,author FROM workdata";
-	$res = "<table>";
+	$res = "<table><tr><th>URN</th><th>Passage</th><th>Structure</th><th>Label</th><th>Date</th>";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.'<tr><td>'.$row['urn'].'</td><td>'.'<a href="../plain/passage.php?urn='.$row['urn'].'">Passage</a>'.'</td><td>'.'<a href="../plain/structure.php?urn='.$row['urn'].'">Structure</a>'.'</td><td>'.$row['title'].'</td><td>'.$row['year'].'</td><td>'.$row['author']."</td></tr>";
+		$res = $res.'<tr><td>'.$row['urn'].'</td><td>'.'<a href="../plain/passage.php?urn='.$row['urn'].'&deletexml">Passage</a>'.'</td><td>'.'<a href="../html/structure.php?urn='.$row['urn'].'">Structure</a>'.'</td><td>'.$row['title'].'</td><td>'.$row['year'].'</td><td>'.$row['author']."</td></tr>";
 	}
 	$res = $res."</table>";
 
