@@ -2,7 +2,7 @@
 header('Content-Type: text/plain');
 require('../config.php');
 
-function urncount(){
+function dates(){
 	global $sql;
 	$query = "SELECT year, count(year) as cd FROM workdata GROUP BY year ORDER BY year";
 	$res = "";
@@ -11,5 +11,5 @@ function urncount(){
 	}
 	return $res;
 }
-echo urncount();
+echo dates();
 ?>
