@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: text/plain');
 require('../functions.php');
+require('../constants.php');
 require('../config.php');
 require('../db_getPassage.php');
 
