@@ -17,9 +17,7 @@ if ($urnarr !== false){
 
 $psg = strtolower($psg);
 
-$punctarr = array(",",".","!","?","―");
 $psg = str_replace($punctarr, " SENTENCESTOP ", $psg);
-$replacearr = array("―","¼","%","⅕","⅙","•","⅓","☚","☛","+","|","*","¾","#","'","}","=","/","!","”","½","1","2","3","4","5","6","7","8","9","0","…",'"',"–",",",".","?","(",")","[","]",";",":","—","“","-","„");
 $psg = str_replace($replacearr, " ", $psg);
 
 
