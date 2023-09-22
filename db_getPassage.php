@@ -3,13 +3,13 @@
 function getLeftOrRightUrnID($urn,$left=true){
 	global $sql;
 	if($left){$ordering = "ASC";}else{$ordering = "DESC";}
-	$query = "SELECT urnid FROM urndata WHERE urn LIKE '".$urn."' AND text IS NOT NULL";
+	$query = "SELECT urnid FROM urndata WHERE urn LIKE BINARY '".$urn."' AND text IS NOT NULL";
 	$res = "";
 	foreach ($sql->query($query) as $row) {
 		$res = $res.$row['urnid'];
 	}
 	if (strlen($res)==0){
-		$query = "SELECT urnid FROM urndata WHERE urn LIKE '".$urn.".%'  AND text IS NOT NULL ORDER BY urnid ".$ordering." LIMIT 1";
+		$query = "SELECT urnid FROM urndata WHERE urn LIKE BINARY '".$urn.".%'  AND text IS NOT NULL ORDER BY urnid ".$ordering." LIMIT 1";
 		$res = "";
 		foreach ($sql->query($query) as $row) {
 			$res = $res.$row['urnid'];
@@ -51,8 +51,8 @@ function spanningPassage($urn,$deleteXML = false){
 
 function passage($urn,$isWorkurn,$deleteXML = false){
 	global $sql;
-	if($isWorkurn){$query = "SELECT text FROM urndata WHERE urn LIKE '".$urn."%' ORDER BY urnid";}
-	else {$query = "SELECT text FROM urndata WHERE urn LIKE '".$urn.".%' OR urn LIKE '".$urn."' ORDER BY urnid";}
+	if($isWorkurn){$query = "SELECT text FROM urndata WHERE urn LIKE BINARY '".$urn."%' ORDER BY urnid";}
+	else {$query = "SELECT text FROM urndata WHERE urn LIKE BINARY '".$urn.".%' OR urn LIKE BINARY '".$urn."' ORDER BY urnid";}
 	$res = "";
 	foreach ($sql->query($query) as $row) {
 		$res = $res.$row['text'];

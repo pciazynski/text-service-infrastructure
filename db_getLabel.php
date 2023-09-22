@@ -2,7 +2,7 @@
 
 function worklabel($urn){
 	global $sql;
-	$query = "SELECT urn, title, year, lang FROM workdata WHERE urn LIKE '".$urn."'";
+	$query = "SELECT urn, title, year, lang FROM workdata WHERE urn LIKE BINARY '".$urn."'";
 	foreach ($sql->query($query) as $row) {
 		$res = $row['title']." (".$row['year'].", ".$row['lang'].")";
 	}
@@ -15,13 +15,13 @@ function passagelabel($urn){
 	$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
 	$psgurn = $urnarr[4];
 	$psgurnarr = explode(".",$psgurn);
-	$requesturns = 'urn LIKE "XX'.$workurn.'"';
+	$requesturns = 'urn LIKE BINARY "XX'.$workurn.'"';
 	foreach ($psgurnarr as $psgpart){
 		if (!str_ends_with($workurn,":")){
 			$workurn .= ".";
 		}
 		$workurn .= $psgpart;
-		$requesturns .= ' OR urn LIKE "'.$workurn.'"';
+		$requesturns .= ' OR urn LIKE BINARY "'.$workurn.'"';
 	}
 	$res = "";
 	$query = "SELECT urn, type FROM urndata WHERE ".$requesturns." ORDER BY urnid";
