@@ -39,13 +39,20 @@ function GetPassage($urn){
 	require('../db_getPassage.php');
 	$urnarr = checkurn($urn);
 	if ($urnarr !== false){
-		if (strlen($urnarr[4]) == 0){$psg = passage($urn,true);}
-		elseif (strpos ($urnarr[4],"-")){$psg = spanningPassage($urn);}
-		else {$psg = passage($urn,false);};
+		if (strlen($urnarr[4]) == 0){$psg = passage($urn,true,isset($_GET["deletexml"]));}
+		elseif (strpos ($urnarr[4],"-")){$psg = spanningPassage($urn,isset($_GET["deletexml"]));}
+		else {$psg = passage($urn,false,isset($_GET["deletexml"]));};
+	}
+
+	$psg = htmlspecialchars($psg);
+	if (isset($_GET["highlight"])){
+		$psg = str_replace($_GET["highlight"],'<cts_highlight>'.$_GET["highlight"].'</cts_highlight>',$psg);
 	}
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPassage xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPassage</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
-	$res = $res.htmlspecialchars($psg);
+	$res = $res.$psg;
 	$res = $res."</reply></GetPassage>";
+
+
 	return $res;
 }
 
@@ -116,7 +123,6 @@ function GetFirstUrn($urn){
 Header('Content-type: text/xml');
 if (! isset($_GET["request"])){echo "";exit();}
 $request = htmlspecialchars($_GET["request"]);
-
 if ($request == "GetCapabilities"){print(getCapabilities());exit();}
 if (! isset($_GET["urn"])){echo "";exit();}
 $urn = htmlspecialchars($_GET["urn"]);
