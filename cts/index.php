@@ -126,6 +126,7 @@ $request = htmlspecialchars($_GET["request"]);
 if ($request == "GetCapabilities"){print(getCapabilities());exit();}
 if (! isset($_GET["urn"])){echo "";exit();}
 $urn = htmlspecialchars($_GET["urn"]);
+$urn = autocomplete($urn);
 if ($request == "GetPassage"){print(GetPassage($urn));exit();}
 if ($request == "GetPassagePlus"){print(GetPassagePlus($urn));exit();}
 if ($request == "GetLabel"){print(GetLabel($urn));exit();}
