@@ -10,8 +10,6 @@ function autocomplete($urn){
 	foreach ($sql->query($query) as $row) {
 		$res = $res.$row['urn'];
 	}
-	
-
 	return trim($res.$urnarr[4]);
 }
 
