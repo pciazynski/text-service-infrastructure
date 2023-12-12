@@ -37,8 +37,11 @@ function getCapabilities(){
 
 function GetPassage($urn){
 	require('../db_getPassage.php');
+	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPassage xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPassage</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	$urnarr = checkurn($urn);
 	if ($urnarr !== false){
+		$urn = autocomplete($urn);
+		$res = $res."<urn>".$urn."</urn><passage>";
 		if (strlen($urnarr[4]) == 0){$psg = passage($urn,true,isset($_GET["deletexml"]));}
 		elseif (strpos ($urnarr[4],"-")){$psg = spanningPassage($urn,isset($_GET["deletexml"]));}
 		else {$psg = passage($urn,false,isset($_GET["deletexml"]));};
@@ -48,9 +51,8 @@ function GetPassage($urn){
 	if (isset($_GET["highlight"])){
 		$psg = str_replace($_GET["highlight"],'<cts_highlight>'.$_GET["highlight"].'</cts_highlight>',$psg);
 	}
-	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPassage xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPassage</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	$res = $res.$psg;
-	$res = $res."</reply></GetPassage>";
+	$res = $res."</passage></reply></GetPassage>";
 
 
 	return $res;
@@ -66,6 +68,7 @@ function GetPassagePlus($urn){
 function GetLabel($urn){
 	require('../db_getLabel.php');
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetLabel xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetLabel</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
+	$urn = autocomplete($urn);
 	$res .= label($urn);
 	$res = $res."</reply></GetLabel>";
 	return $res;
@@ -77,6 +80,7 @@ function GetValidReff($urn,$level){
 	$urn = htmlspecialchars($_GET["urn"]);
 	$urnarr = checkurn($urn);
 	if ($urnarr !== false){
+		$urn = autocomplete($urn);
 		if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",validreff($urn,true,$level));}
 		else {$sqlreply = explode("\n",validreff($urn,false,$level));};
 	}
@@ -92,11 +96,12 @@ function GetPrevNextUrn($urn){
 	require('../db_getPrevNextUrn.php');
 	$urn = htmlspecialchars($_GET["urn"]);
 	$urnarr = checkurn($urn);
+	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPrevNextUrn xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPrevNextUrn</requestName><requestUrn>'.$urn.'</requestUrn></request><reply><prevnext>';
 	if ($urnarr !== false){
+		$urn = autocomplete($urn);
 		if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",prevnexturn($urn,true));}
 		else {$sqlreply = explode("\n",prevnexturn($urn,false));};
 	}
-	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPrevNextUrn xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPrevNextUrn</requestName><requestUrn>'.$urn.'</requestUrn></request><reply><prevnext>';
 	if($sqlreply[0] == "NULL"){$res .= "<prev><urn></urn></prev>";}
 	else{$res .= "<prev><urn>".$sqlreply[0]."</urn></prev>";}
 	if($sqlreply[1] == "NULL"){$res .= "<next><urn></urn></next>";}
@@ -110,11 +115,12 @@ function GetFirstUrn($urn){
 	require('../db_getFirstUrn.php');
 	$urn = htmlspecialchars($_GET["urn"]);
 	$urnarr = checkurn($urn);
+	$res = '<?xml version="1.0" encoding="UTF-8"?><GetFirstUrn xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetFirstUrn</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	if ($urnarr !== false){
+		$urn = autocomplete($urn);
 	if (strlen($urnarr[4]) == 0){$sqlreply = firsturn($urn,true);}
 	else {$sqlreply = firsturn($urn,false);};
 	}
-	$res = '<?xml version="1.0" encoding="UTF-8"?><GetFirstUrn xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetFirstUrn</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	$res .= "<urn>".$sqlreply."</urn>";
 	$res .= "</reply></GetFirstUrn>";
 	return $res;
@@ -126,7 +132,7 @@ $request = htmlspecialchars($_GET["request"]);
 if ($request == "GetCapabilities"){print(getCapabilities());exit();}
 if (! isset($_GET["urn"])){echo "";exit();}
 $urn = htmlspecialchars($_GET["urn"]);
-$urn = autocomplete($urn);
+
 if ($request == "GetPassage"){print(GetPassage($urn));exit();}
 if ($request == "GetPassagePlus"){print(GetPassagePlus($urn));exit();}
 if ($request == "GetLabel"){print(GetLabel($urn));exit();}
