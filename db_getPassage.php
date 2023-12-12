@@ -31,7 +31,7 @@ function spanningSubPassage($urn){
 }
 
 
-function spanningPassage($urn,$deleteXML = false){
+function spanningPassage($urn,$deleteXML = false,$newlines = false){
 	global $sql;
 	$urnarr = explode(":",$urn);
 	$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3];
@@ -40,23 +40,38 @@ function spanningPassage($urn,$deleteXML = false){
 	$tournid = getLeftOrRightUrnID($workurn.":".$psgurn[1],false);
 	$query = "SELECT text FROM urndata WHERE urnid BETWEEN ".$fromurnid." AND ".$tournid." ORDER BY urnid";
 	$res = "";
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['text'];
+	if($newlines){
+		$nl = "\n";
+		foreach ($sql->query($query) as $row) {
+			$res = $res.$row['text'].$nl;
+		}
 	}
+	else{
+		foreach ($sql->query($query) as $row) {
+			$res = $res.$row['text'];
+		}
+	}
+	
 	if($deleteXML){
 		$res = preg_replace('/<[^>]+>/', "", $res);
 	}
 	return $res;
 }
 
-function passage($urn,$isWorkurn,$deleteXML = false){
+function passage($urn,$isWorkurn,$deleteXML = false,$newlines=false){
 	global $sql;
 	if($isWorkurn){$query = "SELECT text FROM urndata WHERE urn LIKE BINARY '".$urn."%' ORDER BY urnid";}
 	else {$query = "SELECT text FROM urndata WHERE urn LIKE BINARY '".$urn.".%' OR urn LIKE BINARY '".$urn."' ORDER BY urnid";}
 	$res = "";
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['text']."\n";
+	if($newlines){
+		$nl = "\n";
+		foreach ($sql->query($query) as $row) {
+			$res = $res.$row['text'].$nl;
+		}
 	}
+	else{foreach ($sql->query($query) as $row) {
+		$res = $res.$row['text'];
+	}}
 	
 	if($deleteXML){
 		$res = preg_replace('/<[^>]+>/', "", $res);
