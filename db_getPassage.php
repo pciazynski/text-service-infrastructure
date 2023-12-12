@@ -55,7 +55,7 @@ function passage($urn,$isWorkurn,$deleteXML = false){
 	else {$query = "SELECT text FROM urndata WHERE urn LIKE BINARY '".$urn.".%' OR urn LIKE BINARY '".$urn."' ORDER BY urnid";}
 	$res = "";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['text'];
+		$res = $res.$row['text']."\n";
 	}
 	
 	if($deleteXML){
