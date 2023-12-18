@@ -30,15 +30,3 @@ if ($urnarr !== false){
 }
 
 ?>
-	return trim($res);
-}
-$urn = trim(htmlspecialchars($_GET["urn"]));
-
-$urnarr = checkurn($urn);
-if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){echo getDocStrct($urn,true);}
-	elseif (strpos ($urnarr[4],"-")){echo getSpanningPassage($urn);}
-	else {echo getDocStrct($urn,false);};
-}
-
-?>
