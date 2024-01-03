@@ -11,7 +11,7 @@ function getDocStrct($urn,$isWorkurn){
 
 	$res = "<table><tr><th>URN</th><th>Type</th><th>Text length incl. XML</th>";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.'<tr><td><a href="../plain/passage.php?urn='.$row['urn'].'&deletexml">'.$row['urn'].'</a>'."</td><td>".$row['type']."</td><td>".$row['len']."</td></tr>";
+		$res = $res.'<tr><td><a href="../plain/passage.php?urn='.$row['urn'].'&deletexml&nl">'.$row['urn'].'</a>'."</td><td>".$row['type']."</td><td>".$row['len']."</td></tr>";
 	}
 	$res = $res."</table>";
 
