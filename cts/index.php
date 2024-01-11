@@ -3,6 +3,23 @@
 require('../config.php');
 require('../functions.php');
 
+function getShortCapabilities(){
+	global $sql;
+	$query = "SELECT * FROM workdata";
+	$res = '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request>GetCapabilities</request><reply><TextInventory tiversion="5.0.rc.1">';
+	$isEmpty=true;
+	foreach ($sql->query($query) as $row) {
+		$isEmpty=false;
+		$urn = $row['urn'];
+		
+		$res = $res.'<edition urn="'.$row['urn'].'">';
+		$res = $res.'</edition>';
+	}
+	$res = $res."</TextInventory></reply></GetCapabilities>";
+	return $res;
+}
+
+
 function getCapabilities(){
 	global $sql;
 	$query = "SELECT * FROM workdata";
@@ -129,6 +146,7 @@ function GetFirstUrn($urn){
 Header('Content-type: text/xml');
 if (! isset($_GET["request"])){echo "";exit();}
 $request = htmlspecialchars($_GET["request"]);
+if ($request == "GetCapabilities" && isset($_GET["smallinventory"])){print(getShortCapabilities());exit();}
 if ($request == "GetCapabilities"){print(getCapabilities());exit();}
 if (! isset($_GET["urn"])){echo "";exit();}
 $urn = htmlspecialchars($_GET["urn"]);
