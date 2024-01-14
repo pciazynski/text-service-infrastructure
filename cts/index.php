@@ -26,7 +26,11 @@ function getShortCapabilities(){
 
 function getCapabilities(){
 	global $sql;
-	$query = "SELECT * FROM workdata ORDER BY urn";
+	$offset = 0;
+		if (isset($_GET['offset'])){
+		$offset = $_GET['offset'];
+	}
+	$query = "SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET ".$offset;
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request>GetCapabilities</request><reply><TextInventory tiversion="5.0.rc.1">';
 	$oldgroup = "";
 	$isEmpty=true;
