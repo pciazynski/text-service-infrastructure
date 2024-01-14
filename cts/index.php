@@ -41,9 +41,6 @@ function getCapabilities(){
 		$res = $res.'<license>'.$row['license'].'</license>';
 		$res = $res.'<source>'.$row['source'].'</source>';
 		$res = $res.'<publicationDate>'.$row['year'].'</publicationDate>';
-		$res = $res.'<language>'.$row['lang'].'</language>';
-		$res = $res.'<contentType>'.$row['contentType'].'</contentType>';
-		
 		$res = $res.'</edition>';
 		$oldgroup=$textgroup;
 	}
