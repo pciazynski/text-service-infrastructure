@@ -9,7 +9,7 @@ function getShortCapabilities(){
 		if (isset($_GET['offset'])){
 		$offset = $_GET['offset'];
 	}
-	$query = "SELECT * FROM workdata ORDER BY urn LIMIT 25000 OFFSET ".$offset;
+	$query = "SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET ".$offset;
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request>GetCapabilities</request><reply><TextInventory tiversion="5.0.rc.1">';
 	$isEmpty=true;
 	foreach ($sql->query($query) as $row) {
