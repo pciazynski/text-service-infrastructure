@@ -45,7 +45,7 @@ function getCapabilities(){
 		}
 		
 		$res = $res.'<edition urn="'.$row['urn'].'">';
-		$res = $res.'<title>'.$row['title'].'</title>';
+		$res = $res.'<title>'.htmlspecialchars($row['title'], ENT_XML1, 'UTF-8').'</title>';
 		$res = $res.'<license>'.$row['license'].'</license>';
 		$res = $res.'<source>'.$row['source'].'</source>';
 		$res = $res.'<publicationDate>'.$row['year'].'</publicationDate>';
