@@ -9,10 +9,11 @@ function getDocStrct($urn,$isWorkurn){
 	if($isWorkurn){$query = "SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE '".$urn."%' ORDER BY urnid";}
 	else {$query = "SELECT urn,type,CHAR_LENGTH(text)  AS len FROM urndata WHERE urn LIKE '".$urn.".%' ORDER BY urnid";}
 
-	$res = "";
+	$res = "<table><tr><th>URN</th><th>Type</th><th>Text length incl. XML</th>";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.'<a href="../plain/passage.php?urn='.$row['urn'].'&deletexml&nl">'.$row['urn'].'</a>'." ".$row['type']." ".$row['len']."<br/>";
+		$res = $res.'<tr><td><a href="../plain/passage.php?urn='.$row['urn'].'&deletexml&nl">'.$row['urn'].'</a>'."</td><td>".$row['type']."</td><td>".$row['len']."</td></tr>";
 	}
+	$res = $res."</table>";
 
 	return trim($res);
 }
