@@ -8,8 +8,10 @@ require('../config.php');
 
 function getDocStruct($urn,$isWorkurn){
 	global $sql;
-	if($isWorkurn){$query = "SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE BINARY '".$urn."%' ORDER BY urnid";}
-	else {$query = "SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE BINARY '".$urn.".%' ORDER BY urnid";}
+	global $binary;
+	
+	if($isWorkurn){$query = "SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
+	else {$query = "SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' ORDER BY urnid";}
 	$res = "";
 	foreach ($sql->query($query) as $row) {
 		$res = $res.$row['urn']."\t".$row['type']."\t".$row['len']."\n";
