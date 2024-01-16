@@ -2,6 +2,8 @@
 header('Content-Type: text/plain');
 require('../config.php');
 
+# Returns number of distinct work URNs.
+# Params: none
 
 function doccount(){
 	global $sql;

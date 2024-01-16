@@ -2,6 +2,8 @@
 header('Content-Type: text/plain');
 require('../config.php');
 
+# Returns edition level URN list.
+# Params: none
 
 function editions(){
 	global $sql;

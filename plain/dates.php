@@ -2,6 +2,8 @@
 header('Content-Type: text/plain');
 require('../config.php');
 
+# Returns distinct publication dates and their number. 
+# Params: none
 function dates(){
 	global $sql;
 	$query = "SELECT year, count(year) as cd FROM workdata GROUP BY year ORDER BY year";
