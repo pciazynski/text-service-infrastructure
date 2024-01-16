@@ -2,7 +2,6 @@
 header('Content-Type: text/plain');
 require('../functions.php');
 require('../config.php');
-require('../constants.php');
 require('../db_getPassage.php');
 
 $urn = trim(htmlspecialchars($_GET["urn"]));
