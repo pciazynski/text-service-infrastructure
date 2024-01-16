@@ -1,8 +1,6 @@
 <?php
-
-
 function autocomplete($urn){
-global $sql;
+	global $sql;
 	$urnarr = explode(":",$urn);
 	$testurn = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urnarr[3];
 	$query = "SELECT urn FROM workdata WHERE urn LIKE BINARY '".$testurn."%' LIMIT 1";
