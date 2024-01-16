@@ -3,7 +3,6 @@ header('Content-Type: text/html');
 require('../functions.php');
 require('../config.php');
 
-
 function editions(){
 	global $sql;
 	$offset = 0;

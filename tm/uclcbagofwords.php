@@ -5,7 +5,6 @@ require('../config.php');
 require('../constants.php');
 require('../db_getPassage.php');
 
-
 $urn = trim(htmlspecialchars($_GET["urn"]));
 $wordbag = array();
 $psg="";
@@ -36,7 +35,5 @@ foreach ($psgarr as $token){
 arsort($wordbag);
 foreach(array_keys($wordbag) as $key){
 	echo $key."\t".$wordbag[$key]."\n";
-
 }
-
 ?>
