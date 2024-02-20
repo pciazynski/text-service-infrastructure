@@ -20,10 +20,34 @@ function getLeftOrRightUrnID($urn,$left=true){
 	return trim($res);
 }
 
-function subPassage($urn){
+function subPassage($urn,$isWorkurn,$deleteXML = false){
 	global $sql;
-	$res = "Work in Progress";
-	return $res;
+	global $binary;
+	
+	$subpassarr = explode("@",$urn);
+	$urn = $subpassarr[0];
+	$subpass = $subpassarr[1];
+	$subpassarr = explode("[",$subpass);
+	$subpass = $subpassarr[0];
+	if(count($subpassarr)==2){
+		$subpassc = rtrim($subpassarr[1],"]");
+	}else{$subpassc = 1;}
+	if($isWorkurn){$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
+	else {$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
+	
+	$res = "";
+	
+	foreach ($sql->query($query) as $row) {
+		$res = $res.$row['text'];
+	}
+	
+	if($deleteXML){
+		$res = preg_replace('/<[^>]+>/', "", $res);
+	}
+	if(substr_count($res, $subpass)>=$subpassc){$res = $subpass;}else{$res="";}
+	
+	
+	return trim($res);
 }
 
 function spanningSubPassage($urn){
@@ -57,15 +81,19 @@ function spanningPassage($urn,$deleteXML = false,$newlines = false){
 	if($deleteXML){
 		$res = preg_replace('/<[^>]+>/', "", $res);
 	}
-	return $res;
+	return trim($res);
 }
 
 function passage($urn,$isWorkurn,$deleteXML = false,$newlines=false){
+	if (str_contains($urn,"@")){return subPassage($urn,$isWorkurn,$deleteXML);}
 	global $sql;
 	global $binary;
+	
+	#LIKE urn.% OR (exactly) LIKE urn
 	if($isWorkurn){$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
-	else {$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE BINARY '".$urn."' ORDER BY urnid";}
+	else {$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
 	$res = "";
+	$res=$query;
 	if($newlines){
 		$nl = "\n";
 		foreach ($sql->query($query) as $row) {
