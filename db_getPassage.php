@@ -47,7 +47,7 @@ function subPassage($urn,$isWorkurn,$deleteXML = false){
 	if(substr_count($res, $subpass)>=$subpassc){$res = $subpass;}else{$res="";}
 	
 	
-	return trim($res);
+	return $res;
 }
 
 function spanningSubPassage($urn){
@@ -81,7 +81,7 @@ function spanningPassage($urn,$deleteXML = false,$newlines = false){
 	if($deleteXML){
 		$res = preg_replace('/<[^>]+>/', "", $res);
 	}
-	return trim($res);
+	return $res;
 }
 
 function passage($urn,$isWorkurn,$deleteXML = false,$newlines=false){
@@ -107,6 +107,6 @@ function passage($urn,$isWorkurn,$deleteXML = false,$newlines=false){
 	if($deleteXML){
 		$res = preg_replace('/<[^>]+>/', "", $res);
 	}
-	return trim($res);
+	return $res;
 }
 ?>
