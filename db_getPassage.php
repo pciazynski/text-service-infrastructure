@@ -20,7 +20,7 @@ function getLeftOrRightUrnID($urn,$left=true){
 	return trim($res);
 }
 
-function subPassage($urn,$isWorkurn,$deleteXML = false){
+function subPassage($urn,$deleteXML = false){
 	global $sql;
 	global $binary;
 	
@@ -32,7 +32,7 @@ function subPassage($urn,$isWorkurn,$deleteXML = false){
 	if(count($subpassarr)==2){
 		$subpassc = rtrim($subpassarr[1],"]");
 	}else{$subpassc = 1;}
-	if($isWorkurn){$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
+	if(str_ends_with($urn,":")){$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
 	else {$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
 	
 	$res = "";
@@ -44,7 +44,7 @@ function subPassage($urn,$isWorkurn,$deleteXML = false){
 	if($deleteXML){
 		$res = preg_replace('/<[^>]+>/', "", $res);
 	}
-	if(substr_count($res, $subpass)>=$subpassc){$res = $subpass;}else{$res="";}
+	if(substr_count($res, $subpass)>=$subpassc){$res = $subpass;}else{$res=$query;}
 	
 	
 	return $res;
@@ -84,13 +84,13 @@ function spanningPassage($urn,$deleteXML = false,$newlines = false){
 	return $res;
 }
 
-function passage($urn,$isWorkurn,$deleteXML = false,$newlines=false){
-	if (str_contains($urn,"@")){return subPassage($urn,$isWorkurn,$deleteXML);}
+function passage($urn,$deleteXML = false,$newlines=false){
+	if (str_contains($urn,"@")){return subPassage($urn,$deleteXML);}
 	global $sql;
 	global $binary;
 	
 	#LIKE urn.% OR (exactly) LIKE urn
-	if($isWorkurn){$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
+	if(str_ends_with($urn,":")){$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
 	else {$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
 	$res = "";
 	if($newlines){

@@ -64,9 +64,8 @@ function GetPassage($urn){
 	if ($urnarr !== false){
 		$urn = autocomplete($urn);
 		$res = $res."<urn>".$urn."</urn><passage>";
-		if (strlen($urnarr[4]) == 0){$psg = passage($urn,true,isset($_GET["deletexml"]));}
-		elseif (strpos ($urnarr[4],"-")){$psg = spanningPassage($urn,isset($_GET["deletexml"]));}
-		else {$psg = passage($urn,false,isset($_GET["deletexml"]));};
+		if (strpos ($urnarr[4],"-")){$psg = spanningPassage($urn,isset($_GET["deletexml"]));}
+		else {$psg = passage($urn,isset($_GET["deletexml"]));};
 	}
 
 	$psg = htmlspecialchars($psg);
