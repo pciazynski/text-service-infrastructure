@@ -93,7 +93,6 @@ function passage($urn,$isWorkurn,$deleteXML = false,$newlines=false){
 	if($isWorkurn){$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
 	else {$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
 	$res = "";
-	$res=$query;
 	if($newlines){
 		$nl = "\n";
 		foreach ($sql->query($query) as $row) {
