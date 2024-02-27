@@ -50,14 +50,66 @@ function subPassage($urn,$deleteXML = false){
 	return $res;
 }
 
-function spanningSubPassage($urn){
+function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	global $sql;
-	$res = "Work in Progress";
+	global $binary;
+	
+	$urnarr = explode(":",$urn);
+	$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
+	$passurnarr = explode("-",$urnarr[4]);
+	$urnleftarr = explode("@",$workurn.$passurnarr[0]);
+	$urnrightarr = explode("@",$workurn.$passurnarr[1]);
+	$passleft = "";
+	$passmiddle = "";
+	$passright = "";
+	$queryleft = "SELECT text,urnid FROM urndata WHERE urn LIKE ".$binary." '".$urnleftarr[0].".%' OR urn LIKE ".$binary." '".$urnleftarr[0]."' ORDER BY urnid";
+	$queryright = "SELECT text,urnid FROM urndata WHERE urn LIKE ".$binary." '".$urnrightarr[0].".%' OR urn LIKE ".$binary." '".$urnrightarr[0]."' ORDER BY urnid";
+	$urnidmiddleleft = 0;
+	$urnidright = 0;
+	$res = "";
+	
+	if($newlines){
+		$nl = "\n";
+		foreach ($sql->query($queryleft) as $row) {
+			$passleft = $passleft.$row['text'].$nl;
+			$urnidleft = $row['urnid'];
+		}
+		$urnidleft++;
+		foreach ($sql->query($queryright) as $row) {
+			$passright = $passright.$row['text'].$nl;
+			if($urnidright == 0){$urnidright = $row['urnid'];}
+		}
+		$querymiddle = "SELECT text FROM urndata WHERE urnid BETWEEN ". $urnidleft . " AND ".$urnidright." ORDER BY urnid";
+		foreach ($sql->query($querymiddle) as $row) {
+			$passmiddle = $passmiddle.$row['text'].$nl;
+		}
+	}
+	else{
+		foreach ($sql->query($queryleft) as $row) {
+			$passleft = $passleft.$row['text'];
+			$urnidleft = $row['urnid'];
+		}
+		$urnidleft++;
+		foreach ($sql->query($queryright) as $row) {
+			$passright = $passright.$row['text'];
+			if($urnidright == 0){$urnidright = $row['urnid']-1;}
+		}
+		$querymiddle = "SELECT text FROM urndata WHERE urnid BETWEEN ". $urnidleft . " AND ".$urnidright." ORDER BY urnid";
+		foreach ($sql->query($querymiddle) as $row) {
+			$passmiddle = $passmiddle.$row['text'];
+		}
+	}
+	$res = $passleft." ........... ". $passmiddle." ........... ". $passright;
+	
+	if($deleteXML){
+		$res = preg_replace('/<[^>]+>/', "", $res);
+	}
 	return $res;
 }
 
 
 function spanningPassage($urn,$deleteXML = false,$newlines = false){
+	if (str_contains($urn,"@")){return spanningSubPassage($urn,$deleteXML,$newlines);}
 	global $sql;
 	$urnarr = explode(":",$urn);
 	$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3];

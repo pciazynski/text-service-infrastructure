@@ -1,14 +1,18 @@
 <?php
 header('Content-Type: text/plain');
 
-require('config.php');
-require('functions.php');
+require('../config.php');
+require('../functions.php');
 
 $snippet = trim(urldecode($_GET["snippet"]));
 
 function textsearch($snippet){
 	global $sql;
-	$query = "SELECT urn, text FROM urndata WHERE text LIKE '%".$snippet."%' ORDER BY urnid LIMIT 1000";
+	$limit = "10000";
+	if (isset($_GET["limit"])){
+		$limit = $_GET["limit"];
+	}
+	$query = "SELECT urn FROM urndata WHERE text LIKE '%".$snippet."%' ORDER BY urnid LIMIT ".$limit;
 	$res = "";
 	foreach ($sql->query($query) as $row) {
 		$res = $res.$row['urn']."\n";
@@ -18,6 +22,4 @@ function textsearch($snippet){
 }
 
 echo(textsearch($snippet));
-
-
 ?>
