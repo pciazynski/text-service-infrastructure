@@ -21,7 +21,8 @@ $psg = str_replace($replacearr, " ", $psg);
 
 $psgarr = explode(" ",$psg);
 foreach ($psgarr as $token){
-	if(strlen(trim($token)) >0 && $lc== preg_match('~^\p{Ll}~u', $token)) 
+	$token = trim($token);
+	if(strlen($token) >0 && $lc== preg_match('~^\p{Ll}~u', $token)) 
 	{
 		if (array_key_exists($token, $wordbag)){
 			$wordbag[$token] = $wordbag[$token]+1;

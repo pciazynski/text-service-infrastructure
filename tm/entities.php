@@ -25,7 +25,8 @@ $psgarr = explode(" ",$psg);
 
 
 foreach ($psgarr as $token){
-	if(strlen(trim($token)) >2 && preg_match('~^\p{Ll}~u', $token)) 
+	$token = trim($token);
+	if(strlen($token) >2 && preg_match('~^\p{Ll}~u', $token)) 
 	{
 		if (! in_array(strtolower($token), $stopwords)){
 			$wordbag[$token] = 1;
@@ -34,7 +35,8 @@ foreach ($psgarr as $token){
 }
 
 foreach ($psgarr as $token){
-	if(strlen(trim($token)) >3 && !preg_match('~^\p{Ll}~u', $token)) 
+	$token = trim($token);
+	if(strlen($token) >3 && !preg_match('~^\p{Ll}~u', $token)) 
 	{
 		if (! in_array(strtolower($token), $stopwords) && ! array_key_exists(strtolower($token), $wordbag)){
 		if (array_key_exists($token, $entitybag)){

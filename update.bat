@@ -1,0 +1,5 @@
+set /p "msg=Kommentar: "
+git pull
+git add *
+git commit -a -m "%msg%"
+git push

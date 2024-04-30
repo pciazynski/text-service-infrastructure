@@ -25,7 +25,8 @@ $psg = str_replace($replacearr, " ", $psg);
 
 $psgarr = explode(" ",$psg);
 foreach ($psgarr as $token){
-	if(strlen(trim($token)) >0) 
+	$token = trim($token);
+	if(strlen($token) >0) 
 	{
 		if (array_key_exists($token, $wordbag)){
 			$wordbag[$token] = $wordbag[$token]+1;

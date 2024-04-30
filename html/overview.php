@@ -3,6 +3,9 @@ header('Content-Type: text/html');
 require('../functions.php');
 require('../config.php');
 
+# Returns all meta information on document level.
+# Params: none
+
 function editions(){
 	global $sql;
 	$offset = 0;
