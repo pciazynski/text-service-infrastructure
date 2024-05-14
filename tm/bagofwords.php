@@ -36,7 +36,7 @@ foreach ($psgarr as $token){
 	}
 }
 
-arsort($wordbag);t
+arsort($wordbag);
 $tab = "\t";
 $nl = "\n";
 foreach(array_keys($wordbag) as $key){
