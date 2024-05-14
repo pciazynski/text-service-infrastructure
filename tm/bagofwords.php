@@ -36,9 +36,11 @@ foreach ($psgarr as $token){
 	}
 }
 
-arsort($wordbag);
+arsort($wordbag);t
+$tab = "\t";
+$nl = "\n";
 foreach(array_keys($wordbag) as $key){
-	echo $key."\t".$wordbag[$key]."\n";
+	echo $key.$tab.$wordbag[$key].$nl;
 
 }
 

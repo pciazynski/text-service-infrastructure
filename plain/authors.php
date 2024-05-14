@@ -9,8 +9,10 @@ function authors(){
 	global $sql;
 	$query = "SELECT author, count(author) as cd FROM workdata GROUP BY author ORDER BY author";
 	$res = "";
+	$nl = "\n";
+	$tab = "\t";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['author']."\t".$row['cd']."\n";
+		$res = $res.$row['author'].$tab.$row['cd'].$nl;
 	}
 	return $res;
 }

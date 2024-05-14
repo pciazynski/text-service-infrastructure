@@ -14,8 +14,9 @@ if (isset($_GET["urn"])){
 
 $query = "SELECT urn FROM urndata WHERE lang = '".$lang."' AND urn LIKE ".$binary." '".$urn."%' ORDER BY urnid LIMIT 10000";
 $res = "";
+$nl = "\n";
 foreach ($sql->query($query) as $row) {
-	$res = $res.$row['urn']."\n";
+	$res = $res.$row['urn'].$nl;
 }
 
 echo $res;

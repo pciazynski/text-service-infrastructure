@@ -47,10 +47,11 @@ foreach ($psgarr as $token){
 		}
 	}
 }
-
+$tab = "\t";
+$nl = "\n";
 arsort($entitybag);
 foreach(array_keys($entitybag) as $key){
-	echo $key."\t".$entitybag[$key]."\n";
+	echo $key.$tab.$entitybag[$key].$nl;
 
 }
 

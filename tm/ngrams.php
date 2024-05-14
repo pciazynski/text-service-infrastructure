@@ -46,8 +46,11 @@ foreach ($sentences as $sentence){
 if(isset($_GET["sort"])){
 	arsort($rs);
 }
+
+$tab = "\t";
+$nl = "\n";
 foreach(array_keys($rs) as $key){
-	echo $key."\t".$rs[$key]."\n";
+	echo $key.$tab.$rs[$key].$nl;
 }
 
 ?>

@@ -13,8 +13,10 @@ function getDocStruct($urn,$isWorkurn){
 	if($isWorkurn){$query = "SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
 	else {$query = "SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' ORDER BY urnid";}
 	$res = "";
+	$tab = "\t";
+	$nl = "\n";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['urn']."\t".$row['type']."\t".$row['len']."\n";
+		$res = $res.$row['urn'].$tab.$row['type'].$tab.$row['len'].$nl;
 	}
 	return trim($res);
 }

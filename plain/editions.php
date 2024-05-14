@@ -13,8 +13,10 @@ function editions(){
 	}
 	$query = "SELECT urn,title,year,author FROM workdata ORDER BY urn LIMIT 10000 OFFSET ".$offset;
 	$res = "";
+	$tab = "\t";
+	$nl = "\n";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['urn']."\t".$row['title']."\t".$row['year']."\t".$row['author']."\n";
+		$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$nl;
 	}
 	return $res;
 }

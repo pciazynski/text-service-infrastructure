@@ -44,9 +44,7 @@ function subPassage($urn,$deleteXML = false){
 	if($deleteXML){
 		$res = preg_replace('/<[^>]+>/', "", $res);
 	}
-	if(substr_count($res, $subpass)>=$subpassc){$res = $subpass;}else{$res=$query;}
-	
-	
+	if(substr_count($res, $subpass)>=$subpassc){$res = $subpass;}else{$res="";}
 	return $res;
 }
 
