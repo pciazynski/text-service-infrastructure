@@ -1,0 +1,26 @@
+p{
+  margin: 1px 30px 1px 30px;
+  font-size: 0.875em; 
+}
+
+h1{
+  text-align: center;
+}
+
+h2{
+  margin: 10px 10px 10px 10px;
+}
+
+h3{
+  margin: 20px 20px 20px 20px;
+}
+advertisement>h1,advertisement>h2,advertisement>h3{
+  text-align: justify;
+  color:gray;
+}
+advertisement>p{
+  margin: 1px 50px 1px 50px;
+  font-size: 0.75em; 
+  text-align: justify;
+  color:gray;
+}
