@@ -1,5 +1,5 @@
 p{
-  margin: 20px 30px 1px 20px;
+  margin: 20px 30px 1px 30px;
   font-size: 1em; 
 }
 
@@ -14,18 +14,22 @@ h2{
 h3{
   margin: 20px 20px 20px 20px;
 }
+advertisement>h1,advertisement>h2,advertisement>h3{
+  text-align: right;
+}
+
+byline{
+	margin-left: 80%;
+	color:gray;
+}
+
+advertisement>p{
+  margin: 1px 50px 1px 50px;
+  font-size: 0.8em; 
+  text-align: right;
+}
+
 
 poem>stanza>l,poem>l{
 	margin-left: 30%;
-}
-
-advertisement>h1,advertisement>h2,advertisement>h3{
-  text-align: justify;
-  color:gray;
-  font-size: 0.75em; 
-}
-advertisement>p{
-  margin: 1px 50px 1px 50px;
-  font-size: 0.75em; 
-  text-align: justify;
 }
