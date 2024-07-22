@@ -3,3 +3,4 @@ git pull
 git add *
 git commit -a -m "%msg%"
 git push
+timeout 5
