@@ -7,18 +7,27 @@ require('../config.php');
 
 function editions(){
 	global $sql;
-	$offset = 0;
-	if (isset($_GET['offset'])){
-		$offset = $_GET['offset'];
+	if (file_exists("editions.cache")){
+		return file_get_contents("editions.cache");
 	}
-	$query = "SELECT urn,title,year,author FROM workdata ORDER BY urn LIMIT 10000 OFFSET ".$offset;
-	$res = "";
-	$tab = "\t";
-	$nl = "\n";
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$nl;
+	else
+	{
+		$offset = 0;
+		if (isset($_GET['offset'])){
+			$offset = $_GET['offset'];
+		}
+		$query = "SELECT urn,title,year,author FROM workdata ORDER BY urn";
+		$res = "";
+		$tab = "\t";
+		$nl = "\n";
+		foreach ($sql->query($query) as $row) {
+			$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$nl;
+		}
+		$cache = fopen("editions.cache", "w") or die("Unable to open file!");
+		fwrite($cache, $res);
+		fclose($cache);
+		return $res;
 	}
-	return $res;
 }
 echo editions();
 ?>

@@ -12,6 +12,8 @@ config.php
 # Compiled Java class files
 *.class
 
+*.cache
+
 # Compiled Python bytecode
 *.py[cod]
 
