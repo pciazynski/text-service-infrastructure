@@ -16,7 +16,9 @@ function ebookeditions(){
 	$nl = "\n";
 	foreach ($sql->query($query) as $row) {
 		$res .= '<li><a href="?urn='.$row['urn'].'">';
-		$res .= $row['title'];
+		$title = $row['title'];
+		if(trim(strlen($title))==0){$title=explode(":",$row['urn'])[3];}
+		$res .= $title;
 		$res .= '</a></li>';
 	}
 	$res = $res."</ul>";

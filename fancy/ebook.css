@@ -20,15 +20,16 @@ advertisement>h1,advertisement>h2,advertisement>h3{
 
 byline{
 	margin-left: 80%;
+	font-size: 0.8em; 
 	color:gray;
 }
 
 advertisement>p{
-  margin: 1px 50px 1px 50px;
-  font-size: 0.8em; 
-  text-align: right;
+	background-color:#e6e6e636;
+	margin: 1px 50px 1px 50px;
+	font-size: 0.8em; 
+	text-align: right;
 }
-
 
 poem>stanza>l,poem>l{
 	margin-left: 30%;
