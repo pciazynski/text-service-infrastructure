@@ -20,7 +20,7 @@ function passage($urn){
 		while ($newurnpartcount<=count($stack)){
 			$res = $res.'</'.array_pop($stack).'>';
 		}
-		$type = str_replace(["head","list","item"],["h".$newurnpartcount,"ul","li"],$row['type']);
+		$type = str_replace(["head","list","item","lg","l"],["h".$newurnpartcount,"ul","li","ul","li"],$row['type']);
 		$res = $res.'<'.$type.'>';
 		array_push($stack,$type);
 		$res = $res.preg_replace('/<[^>]+>/', "", $row['text']);
