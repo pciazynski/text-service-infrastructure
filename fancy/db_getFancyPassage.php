@@ -23,7 +23,7 @@ function passage($urn){
 		$type = str_replace(["head","list","item","lg","l"],["h".$newurnpartcount,"ul","li","ul","li"],$row['type']);
 		$res = $res.'<'.$type.'>';
 		array_push($stack,$type);
-		$res = $res.preg_replace('/<[^>]+>/', "", $row['text']);
+		$res = $res.preg_replace('/<[^>]+>/', "", $row['text'])."<br>";
 	}
 	return $res;
 }
