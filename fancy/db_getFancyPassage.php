@@ -10,7 +10,7 @@ function passage($urn){
 	$res = "";
 	$stack = [];
 	$oldurnpartcount = 0;
-	$nl = "<br>";
+	$nl = "\n";
 	foreach ($sql->query($query) as $row) {
 		$newurnpartcount = count(explode(".",explode(":",$row['urn'])[4]));
 		if ($newurnpartcount==1){
@@ -21,12 +21,13 @@ function passage($urn){
 			$res = $res.'</'.array_pop($stack).'>';
 		}
 		$type = str_replace(["head","list","item","lg","l"],["h".$newurnpartcount,"ul","li","ul","li"],$row['type']);
-		$res = preg_replace('/<lb[^>]+>/', $nl, $res);
 		$res = $res.'<'.$type.'>';
 		array_push($stack,$type);
-		$res = $res.preg_replace('/<[^>]+>/', "", $row['text']).$nl;
-		
+		$psgpart = $row['text'];
+		$psgpart = preg_replace('/<lb[^>]+>/', $nl, $psgpart);
+		$res = $res.preg_replace('/<[^>]+>/', "", $psgpart).$nl;
 	}
+	$res = str_replace($nl,"<br>",$res);
 	return $res;
 }
 ?>
