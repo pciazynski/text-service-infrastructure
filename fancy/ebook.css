@@ -1,18 +1,24 @@
-p{
-  margin: 20px 30px 1px 30px;
-  font-size: 1em; 
+p,sp{
+	margin: 20px 30px 1px 30px;
+	font-size: 1em; 
+	box-decoration-break: clone;
+}
+
+ab{
+	margin: 40px 30px 1px 30px;
+	box-decoration-break: clone;
 }
 
 h1{
-  text-align: center;
+	text-align: center;
 }
 
 h2{
-  margin: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
 }
 
 h3{
-  margin: 20px 20px 20px 20px;
+	margin: 15px 20px 20px 20px;
 }
 
 byline{
@@ -21,8 +27,20 @@ byline{
 	color:gray;
 }
 
+exit{
+	margin: 15px 30px 1px 30px;
+	box-decoration-break: clone;
+	font-style: italic;
+}
+
+entrance{
+	margin: 15px 30px 1px 30px;
+	box-decoration-break: clone;
+	font-style: italic;
+}
+
 advertisement>h1,advertisement>h2,advertisement>h3{
-  text-align: right;
+	text-align: right;
 }
 
 advertisement>p{

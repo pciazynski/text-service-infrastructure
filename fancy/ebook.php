@@ -6,6 +6,7 @@ require('db_getFancyPassage.php');
 
 function ebookeditions(){
 	global $sql;
+	
 	$offset = 0;
 	if (isset($_GET['offset'])){
 		$offset = $_GET['offset'];
@@ -14,10 +15,14 @@ function ebookeditions(){
 	$res = "<ul>";
 	$tab = "\t";
 	$nl = "\n";
+	$space=" ";
 	foreach ($sql->query($query) as $row) {
 		$res .= '<li><a href="?urn='.$row['urn'].'">';
 		$title = $row['title'];
-		if(trim(strlen($title))==0){$title=explode(":",$row['urn'])[3];}
+		if(trim(strlen($title))==0){
+			$title = str_replace("_"," ",explode(":",$row['urn'])[3]);
+			$title = ucwords($title);
+		}
 		$res .= $title;
 		$res .= '</a></li>';
 	}
