@@ -20,6 +20,12 @@ function getLeftOrRightUrnID($urn,$left=true){
 	return trim($res);
 }
 
+function deletexml($res){
+	$res = preg_replace('/<lb[^>]+>/', "\n", $res);
+	$res = preg_replace('/<[^>]+>/', '', $res);
+	return $res;
+}
+
 function subPassage($urn,$deleteXML = false){
 	global $sql;
 	global $binary;
@@ -41,9 +47,8 @@ function subPassage($urn,$deleteXML = false){
 		$res = $res.$row['text'];
 	}
 	
-	if($deleteXML){
-		$res = preg_replace('/<[^>]+>/', "", $res);
-	}
+	$res = deletexml($res);
+	
 	if(substr_count($res, $subpass)>=$subpassc){$res = $subpass;}else{$res="";}
 	return $res;
 }
@@ -99,9 +104,8 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	}
 	$res = $passleft." ........... ". $passmiddle." ........... ". $passright;
 	
-	if($deleteXML){
-		$res = preg_replace('/<[^>]+>/', "", $res);
-	}
+	$res = deletexml($res);
+
 	return $res;
 }
 
@@ -128,9 +132,8 @@ function spanningPassage($urn,$deleteXML = false,$newlines = false){
 		}
 	}
 	
-	if($deleteXML){
-		$res = preg_replace('/<[^>]+>/', "", $res);
-	}
+	$res = deletexml($res);
+
 	return $res;
 }
 
@@ -153,8 +156,8 @@ function passage($urn,$deleteXML = false,$newlines=false){
 		$res = $res.$row['text'];
 	}}
 	
-	if($deleteXML){
-		$res = preg_replace('/<[^>]+>/', "", $res);
+	if ($deleteXML){
+		$res = deletexml($res);
 	}
 	return $res;
 }
