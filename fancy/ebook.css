@@ -1,11 +1,11 @@
 p,sp{
-	margin: 20px 30px 1px 30px;
+	margin: 10px 0px 1px 10px;
 	font-size: 1em; 
 	box-decoration-break: clone;
 }
 
 ab{
-	margin: 40px 30px 1px 30px;
+	margin: 10px 0px 1px 10px;
 	box-decoration-break: clone;
 }
 
@@ -27,14 +27,9 @@ byline{
 	color:gray;
 }
 
-exit{
-	margin: 15px 30px 1px 30px;
-	box-decoration-break: clone;
-	font-style: italic;
-}
 
-entrance{
-	margin: 15px 30px 1px 30px;
+entrance,business,deliivery,exit{
+	margin: 20px 0px 20px 20px;
 	box-decoration-break: clone;
 	font-style: italic;
 }
