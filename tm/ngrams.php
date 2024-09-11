@@ -14,14 +14,14 @@ if ($urnarr !== false){
 	elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
 	else {$psg = passage($urn, false, $deleteXML=true);};
 }
-
-if ($multibyte){
-	$psg = mb_strtolower($psg,'UTF-8');
+if (isset($_GET["lowercase"])){
+	if ($multibyte){
+		$psg = mb_strtolower($psg,'UTF-8');
+	}
+	else{
+		$psg = strtolower($psg);
+	}
 }
-else{
-	$psg = strtolower($psg);
-}
-	
 
 $psg = str_replace($punctarr, " SENTENCESTOP ", $psg);
 $psg = str_replace($replacearr, " ", $psg);
