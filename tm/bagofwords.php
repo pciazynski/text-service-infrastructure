@@ -18,7 +18,12 @@ if ($urnarr !== false){
 
 
 if (isset($_GET["lowercase"])){
-	$psg = strtolower($psg);
+	if ($multibyte){
+		$psg = mb_strtolower($psg,'UTF-8');
+	}
+	else{
+		$psg = strtolower($psg);
+	}
 }
 
 $psg = str_replace($replacearr, " ", $psg);

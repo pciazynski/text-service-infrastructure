@@ -15,7 +15,13 @@ if ($urnarr !== false){
 	else {$psg = passage($urn, false, $deleteXML=true);};
 }
 
-$psg = strtolower($psg);
+if ($multibyte){
+	$psg = mb_strtolower($psg,'UTF-8');
+}
+else{
+	$psg = strtolower($psg);
+}
+	
 
 $psg = str_replace($punctarr, " SENTENCESTOP ", $psg);
 $psg = str_replace($replacearr, " ", $psg);
