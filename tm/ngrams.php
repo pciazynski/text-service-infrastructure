@@ -35,15 +35,15 @@ foreach ($sentences as $sentence){
 		$token = trim($token);
 		if(strlen($token) >0)
 		{
-			$ngram.=" ".$token;
-			$ngram = trim($ngram);
-			if(count(explode(" ",$ngram)) == $ngramgoalsize){
+			$ngram.="_".$token;
+			$ngram = trim($ngram,"_");
+			if(count(explode("_",$ngram)) == $ngramgoalsize){
 				if (array_key_exists($ngram, $rs)){
 					$rs[$ngram] = $rs[$ngram]+1;
 				}else{
 					$rs[$ngram] = 1;
 				}
-				$ngram = explode(" ",$ngram,2)[1];
+				$ngram = explode("_",$ngram,2)[1];
 			}
 		}
 	}
