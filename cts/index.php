@@ -70,7 +70,10 @@ function GetPassage($urn){
 
 	$psg = htmlspecialchars($psg);
 	if (isset($_GET["highlight"])){
-		$psg = str_replace($_GET["highlight"],'<cts_highlight>'.$_GET["highlight"].'</cts_highlight>',$psg);
+		$hl = $_GET["highlight"];
+		$psg = str_replace($hl,'<cts_highlight>'.$hl.'</cts_highlight>',$psg);
+		$hl = ucwords($_GET["highlight"]);
+		$psg = str_replace($hl,'<cts_highlight>'.$hl.'</cts_highlight>',$psg);
 	}
 	$res = $res.$psg;
 	$res = $res."</passage></reply></GetPassage>";
