@@ -73,7 +73,9 @@ function GetPassage($urn){
 		$hl = $_GET["highlight"];
 		$psg = str_replace($hl,'<cts_highlight>'.$hl.'</cts_highlight>',$psg);
 		$hl = ucwords($_GET["highlight"]);
-		$psg = str_replace($hl,'<cts_highlight>'.$hl.'</cts_highlight>',$psg);
+		if($hl != $_GET["highlight"]){
+			$psg = str_replace($hl,'<cts_highlight>'.$hl.'</cts_highlight>',$psg);
+		}
 	}
 	$res = $res.$psg;
 	$res = $res."</passage></reply></GetPassage>";
