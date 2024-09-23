@@ -20,11 +20,6 @@ function getLeftOrRightUrnID($urn,$left=true){
 	return trim($res);
 }
 
-function deletexml($res){
-	$res = preg_replace('/<[^>]+>/', '', $res);
-	return $res;
-}
-
 function subPassage($urn,$deleteXML = false){
 	global $sql;
 	global $binary;
