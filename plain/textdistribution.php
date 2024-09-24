@@ -8,7 +8,7 @@ if (isset($_GET["urn"]) && isset($_GET["snippet"])){
 	$urnarr = checkurn($urn);
 	if ($urnarr !== false){
 		$snippet = htmlspecialchars($_GET['snippet']);
-		$query = "SELECT urn, text, text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' AND text IS NOT NULL";
+		$query = "SELECT urn, text, text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' AND text IS NOT NULL ORDER BY urnid";
 		$res = "";
 		$tab = "\t";
 		$nl = "\n";
