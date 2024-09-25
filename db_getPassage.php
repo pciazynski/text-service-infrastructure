@@ -140,15 +140,13 @@ function passage($urn,$deleteXML = false,$newlines=false){
 	if(str_ends_with($urn,":")){$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
 	else {$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
 	$res = "";
+	$sep = " ";
 	if($newlines){
-		$nl = "\n";
-		foreach ($sql->query($query) as $row) {
-			$res = $res.$row['text'].$nl;
-		}
+		$sep = "\n";
 	}
-	else{foreach ($sql->query($query) as $row) {
-		$res = $res.$row['text'];
-	}}
+	foreach ($sql->query($query) as $row) {
+		$res = trim($res.$row['text']).$sep;
+	}
 	
 	if ($deleteXML){
 		$res = deletexml($res);
