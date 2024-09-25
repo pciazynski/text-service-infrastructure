@@ -13,9 +13,9 @@ $psg="";
 
 $urnarr = checkurn($urn);
 if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){$psg = passage($urn,true, $deleteXML=true);}
+	if (strlen($urnarr[4]) == 0){$psg = passage($urn, $deleteXML=true);}
 	elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
-	else {$psg = passage($urn, false, $deleteXML=true);};
+	else {$psg = passage($urn, $deleteXML=true);};
 }
 
 
