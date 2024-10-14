@@ -14,10 +14,7 @@ function autocomplete($urn){
 
 
 function deletexml($res){
-	$res = preg_replace('/<[^>]+>/', ' ', $res);
-	while(strpos($res,'  ')!==false){
-		$res = str_replace('  ',' ',$res);
-	}
+	$res = preg_replace('/<[^>]+>/', '', $res);
 	return $res;
 }
 
