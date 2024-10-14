@@ -14,6 +14,7 @@ function autocomplete($urn){
 
 
 function deletexml($res){
+	$res = preg_replace('/<lb[^>]+>/', " \n", $res);
 	$res = preg_replace('/<[^>]+>/', '', $res);
 	return $res;
 }
