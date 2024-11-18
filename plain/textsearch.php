@@ -15,7 +15,7 @@ if (isset($_GET["urn"]) && isset($_GET["snippet"])){
 		foreach ($sql->query($query) as $row){
 			$res = $res.$row['urn'].$tab.$row['text'].$nl;
 		}
-		if (isset($_GET['urn'])){
+		if (isset($_GET['deletexml'])){
 			$res = deletexml($res);
 		}
 		echo ($res);

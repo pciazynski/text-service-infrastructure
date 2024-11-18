@@ -16,12 +16,12 @@ function editions(){
 		if (isset($_GET['offset'])){
 			$offset = $_GET['offset'];
 		}
-		$query = "SELECT urn,title,year,author FROM workdata ORDER BY urn";
+		$query = "SELECT urn,title,year,author,restricted FROM workdata ORDER BY urn";
 		$res = "";
 		$tab = "\t";
 		$nl = "\n";
 		foreach ($sql->query($query) as $row) {
-			$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$nl;
+			$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$nl;
 		}
 		$cache = fopen("editions.cache", "w") or die("Unable to open file!");
 		fwrite($cache, $res);
