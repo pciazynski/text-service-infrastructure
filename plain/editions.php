@@ -12,7 +12,7 @@ function editions(){
 			return file_get_contents("editions.cache");
 		}
 		else{
-			$query = "SELECT urn,title,year,author FROM workdata ORDER BY urn";
+		$query = "SELECT urn,title,year,author FROM workdata ORDER BY author,title,urn";
 			$res = "";
 			$tab = "\t";
 			$nl = "\n";
