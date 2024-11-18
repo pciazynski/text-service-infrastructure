@@ -7,37 +7,55 @@ require('../config.php');
 
 function editions(){
 	global $sql;
-	$offset = 0;
-	$sortBy = "urn";
-	
-	if (isset($_GET['sortBy']) and strlen(trim($_GET['sortBy']))>0){
-		$sortBy = $_GET['sortBy'];
+	if(empty($_GET)){
+		if (file_exists("editions.cache")){
+			return file_get_contents("editions.cache");
+		}
+		else{
+			$query = "SELECT urn,title,year,author FROM workdata ORDER BY urn";
+			$res = "";
+			$tab = "\t";
+			$nl = "\n";
+			foreach ($sql->query($query) as $row) {
+				$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$nl;
+			}		$cache = fopen("editions.cache", "w") or die("Unable to open file!");
+			fwrite($cache, $res);
+			fclose($cache);
+			return $res;
+		}
 	}
-	if (isset($_GET['offset'])){
-		$offset = $_GET['offset'];
-	}
-	$condi = " WHERE TRUE";
-	if (isset($_GET['urnfilter']) and strlen(trim($_GET['urnfilter']))>0){
-		$condi .= ' AND urn LIKE "%'.$_GET['urnfilter'].'%"';
-	}
-	if (isset($_GET['author']) and strlen(trim($_GET['author']))>0){
-		$condi .= ' AND author LIKE "%'.$_GET['author'].'%"';
-	}
-	if (isset($_GET['title']) and strlen(trim($_GET['title']))>0){
-		$condi .= ' AND title LIKE "%'.$_GET['title'].'%"';
-	}
-	if (isset($_GET['year']) and strlen(trim($_GET['year']))>0){
-		$condi .= ' AND year '.$_GET['year'];
-	}
+	else{
+		$offset = 0;
+		$sortBy = "urn";
+		if (isset($_GET['sortBy']) and strlen(trim($_GET['sortBy']))>0){
+			$sortBy = $_GET['sortBy'];
+		}
+		if (isset($_GET['offset'])){
+			$offset = $_GET['offset'];
+		}
+		$condi = " WHERE TRUE";
+		if (isset($_GET['urnfilter']) and strlen(trim($_GET['urnfilter']))>0){
+			$condi .= ' AND urn LIKE "%'.$_GET['urnfilter'].'%"';
+		}
+		if (isset($_GET['author']) and strlen(trim($_GET['author']))>0){
+			$condi .= ' AND author LIKE "%'.$_GET['author'].'%"';
+		}
+		if (isset($_GET['title']) and strlen(trim($_GET['title']))>0){
+			$condi .= ' AND title LIKE "%'.$_GET['title'].'%"';
+		}
+		if (isset($_GET['year']) and strlen(trim($_GET['year']))>0){
+			$condi .= ' AND year '.$_GET['year'];
+		}
 
-	$query = "SELECT urn,title,year,author,restricted FROM workdata".$condi." ORDER BY ".$sortBy." LIMIT 10000 OFFSET ".$offset;
-	$res = "";
-	$tab = "\t";
-	$nl = "\n";
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$nl;
+		$query = "SELECT urn,title,year,author,restricted FROM workdata".$condi." ORDER BY ".$sortBy." LIMIT 10000 OFFSET ".$offset;
+		$res = "";
+		$tab = "\t";
+		$nl = "\n";
+		foreach ($sql->query($query) as $row) {
+			$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$nl;
+		}
+		return $res;
 	}
-	return $res;
 }
 echo editions();
 ?>
