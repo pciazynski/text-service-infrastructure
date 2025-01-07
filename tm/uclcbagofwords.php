@@ -2,14 +2,7 @@
 header('Content-Type: text/plain');
 require('../functions.php');
 require('../config.php');
-if($restricteddocuments){
-	require('../db_getPassage_restr.php');
-}else{
-	require('../db_getPassage.php');
-}
-
-$dbtablename = "urndata";
-
+require('../db_getPassage_restr.php');
 
 $urn = trim(htmlspecialchars($_GET["urn"]));
 $wordbag = array();

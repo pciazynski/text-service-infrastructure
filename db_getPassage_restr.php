@@ -25,7 +25,7 @@ function subPassage($urn,$deleteXML = false){
 	global $sql;
 	global $binary;
 	global $dbtablename;
-	
+
 	$subpassarr = explode("@",$urn);
 	$urn = $subpassarr[0];
 	$subpass = $subpassarr[1];
@@ -55,7 +55,7 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	global $sql;
 	global $binary;
 	global $dbtablename;
-	
+
 	$urnarr = explode(":",$urn);
 	$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
 	$passurnarr = explode("-",$urnarr[4]);
@@ -82,7 +82,7 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 		$passright = $passright.$row['text'].$sep;
 		if($urnidright == 0){$urnidright = $row['urnid'];}
 	}
-	$querymiddle = "SELECT text FROM ".$dbtablename." WHERE urnid BETWEEN ". $urnidleft . " AND ".$urnidright." ORDER BY urnid";
+	$querymiddle = "SELECT text FROM urndata WHERE urnid BETWEEN ". $urnidleft . " AND ".$urnidright." ORDER BY urnid";
 	foreach ($sql->query($querymiddle) as $row) {
 		$passmiddle = $passmiddle.$row['text'].$sep;
 	}
@@ -123,10 +123,10 @@ function spanningPassage($urn,$deleteXML = false,$newlines = false){
 }
 
 function passage($urn,$deleteXML = false,$newlines=false){
-	if (str_contains($urn,"@")){return subPassage($urn,$deleteXML);}
 	global $sql;
 	global $binary;
 	global $dbtablename;
+	
 	#LIKE urn.% OR (exactly) LIKE urn
 	if(str_ends_with($urn,":")){$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
 	else {$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
@@ -135,7 +135,6 @@ function passage($urn,$deleteXML = false,$newlines=false){
 	if($newlines){
 		$sep = "\n";
 	}
-	
 	foreach ($sql->query($query) as $row) {
 		$res = trim($res.$row['text']).$sep;
 	}
@@ -145,4 +144,5 @@ function passage($urn,$deleteXML = false,$newlines=false){
 	}
 	return $res;
 }
+
 ?>

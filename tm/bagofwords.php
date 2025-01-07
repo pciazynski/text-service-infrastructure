@@ -2,26 +2,21 @@
 header('Content-Type: text/plain');
 require('../functions.php');
 require('../config.php');
-if($restricteddocuments){
-	require('../db_getPassage_restr.php');
-}else{
-	require('../db_getPassage.php');
-}
+require('../db_getPassage_restr.php');
 
-$dbtablename = "urndata";
 
 $urn = trim(htmlspecialchars($_GET["urn"]));
 $wordbag = array();
 $psg = "";
 
-
 $urnarr = checkurn($urn);
 if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){$psg = passage($urn,$deleteXML=true);}
+	if (strlen($urnarr[4]) == 0){
+		$psg = passage($urn,$deleteXML = true, $newlines=false);
+	}
 	elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
-	else {$psg = passage($urn, false, $deleteXML=true);};
+	else {$psg = passage($urn, $deleteXML = true, $newlines=false);};
 }
-
 
 if (isset($_GET["lowercase"])){
 	if ($multibyte){

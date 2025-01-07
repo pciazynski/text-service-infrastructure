@@ -12,11 +12,21 @@ function autocomplete($urn){
 		$res = $res.$row['urn'];
 		if ($row['restricted'] == 1){
 			$dbtablename = "urndatarestr";
-		};
+		}
+		else{
+			$dbtablename = "urndata";
+		}
 }
 	return trim($res.$urnarr[4]);
 }
 
+function restrictedAccess(){
+	global $copyrighttoken;
+	if(isset($_GET['copyrighttoken']) && strlen($copyrighttoken)>0 && $_GET['copyrighttoken'] == $copyrighttoken){
+		return true;
+	}
+	return false;
+}
 
 function deletexml($res){
 	$res = preg_replace('/<lb[^>]+>/', " \n", $res);
