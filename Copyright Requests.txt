@@ -1,0 +1,9 @@
+With Copyright-Token
+	plain/passage (Any URN)
+
+Without Copyright-Token
+	tm/bagofwords (Any URN)
+	tm/entities (Any URN)
+	tm/ngrams (Any URN, Any n)
+	tm/uclcbagofwords (Any URN)
+	
