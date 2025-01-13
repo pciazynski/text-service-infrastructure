@@ -19,9 +19,9 @@ function editions(){
 			foreach ($sql->query($query) as $row) {
 				$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$nl;
 			}
-			$cache = fopen("editions.cache", "w") or die("Unable to open file!");
-			fwrite($cache, $res);
-			fclose($cache);
+#			$cache = fopen("editions.cache", "w") or die("Unable to open file!");
+#			fwrite($cache, $res);
+#			fclose($cache);
 			return $res;
 		}
 	}
