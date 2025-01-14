@@ -7,7 +7,12 @@ require('../config.php');
 
 function authors(){
 	global $sql;
-	$query = "SELECT author, count(author) as cd FROM workdata WHERE author IS NOT NULL GROUP BY author ORDER BY author";
+	$query = "SELECT author, count(author) as cd FROM workdata WHERE author IS NOT NULL GROUP BY author";
+
+	if (isset($_GET['sort'])){
+		$query .= ' ORDER BY cd DESC,author';
+	}
+
 	$res = "";
 	$nl = "\n";
 	$tab = "\t";

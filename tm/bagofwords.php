@@ -41,7 +41,10 @@ foreach ($psgarr as $token){
 	}
 }
 
-arsort($wordbag);
+
+if(isset($_GET["sort"])){
+	arsort($wordbag);
+}
 $tab = "\t";
 $nl = "\n";
 foreach(array_keys($wordbag) as $key){
