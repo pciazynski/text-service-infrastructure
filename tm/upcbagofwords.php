@@ -15,15 +15,12 @@ if ($urnarr !== false){
 	else {$psg = passage($urn, $deleteXML=true);};
 }
 
-if(isset($_GET["upc"])){$lc = false;}else{$lc=true;}
-
 $psg = str_replace($replacearr, " ", $psg);
 
 $psgarr = explode(" ",$psg);
 foreach ($psgarr as $token){
 	$token = trim($token);
-	if(strlen($token) >0 && $lc== preg_match('~^\p{Ll}~u', $token)) 
-	{
+	if(strlen($token) >0 && preg_match('~^\p{Ll}~u', $token)) {
 		if (array_key_exists($token, $wordbag)){
 			$wordbag[$token] = $wordbag[$token]+1;
 		}else{

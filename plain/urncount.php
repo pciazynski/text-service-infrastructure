@@ -6,7 +6,7 @@ require('../config.php');
 
 function urncount(){
 	global $sql;
-	$query = "SELECT max(urnid) as c FROM urndata";
+	$query = "SELECT MAX(maxi) as c FROM (SELECT MAX(urnid) AS maxi FROM urndata UNION SELECT MAX(urnid) AS maxi FROM urndatarestr) a";
 	$res = "";
 	foreach ($sql->query($query) as $row) {
 		$res = $res.$row['c'];

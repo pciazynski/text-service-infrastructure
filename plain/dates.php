@@ -6,7 +6,7 @@ require('../config.php');
 # Params: none
 function dates(){
 	global $sql;
-	$query = "SELECT year, count(year) as cd FROM workdata GROUP BY year ORDER BY year";
+	$query = "SELECT year, count(year) as cd FROM workdata WHERE year IS NOT NULL GROUP BY year ORDER BY year";
 	$res = "";
 	$tab = "\t";
 	$nl = "\n";

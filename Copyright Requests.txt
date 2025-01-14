@@ -2,6 +2,15 @@ With Copyright-Token
 	plain/passage (Any URN)
 
 Without Copyright-Token
+	plain/editions
+	plain/editionsslim
+	plain/authors
+	plain/dates
+	plain/daterange
+	plain/urncount
+	plain/doccount
+	plain/anyurn
+	plain/anydocurn
 	tm/bagofwords (Any URN)
 	tm/entities (Any URN)
 	tm/ngrams (Any URN, Any n)

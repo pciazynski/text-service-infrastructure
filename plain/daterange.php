@@ -7,7 +7,7 @@ require('../config.php');
 
 function daterange(){
 	global $sql;
-	$query = "SELECT MIN(year) as min,MAX(year) as max, count(DISTINCT year) as c FROM workdata;";
+	$query = "SELECT MIN(year) as min, MAX(year) as max, count(DISTINCT year) as c FROM workdata;";
 	$res = "";
 	$nl = "\n";
 	$tab = "\t";
