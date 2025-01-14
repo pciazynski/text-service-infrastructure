@@ -17,7 +17,7 @@ function passagelabel($urn){
 	$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
 	$psgurn = $urnarr[4];
 	$psgurnarr = explode(".",$psgurn);
-	$requesturns = 'urn LIKE BINARY "XX'.$workurn.'"';
+	$requesturns = "urn LIKE ".$binary."'".$workurn."'";
 	foreach ($psgurnarr as $psgpart){
 		if (!str_ends_with($workurn,":")){
 			$workurn .= ".";
@@ -28,8 +28,10 @@ function passagelabel($urn){
 	$res = "";
 	$query = "SELECT urn, type FROM urndata WHERE ".$requesturns." ORDER BY urnid";
 	foreach ($sql->query($query) as $row) {
-		$urnarr = explode(".",explode(":",$row['urn'])[4]);
-		$res .= $row['type'] ." " . $urnarr[count($urnarr)-1]." ";
+		if(!str_ends_with($row['urn'],":")){
+			$urnarr = explode(".",explode(":",$row['urn'])[4]);
+			$res .= $row['type'] ." " . $urnarr[count($urnarr)-1]." ";
+		}
 	}
 	return $res;
 }
@@ -45,6 +47,7 @@ function label($urn){
 				return trim(worklabel($workurn).": ".passagelabel($workurn.$psgurnarr[0])." to ".passagelabel($workurn.$psgurnarr[1]));
 			}
 			else{
+				$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
 				return trim(worklabel($workurn).":".passagelabel($urn));
 			}
 		};
