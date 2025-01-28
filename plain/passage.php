@@ -20,5 +20,4 @@ if ($urnarr !== false){
 			else {echo passage($urn,$deletexml,$nl);};
 		}
 	}
-
 }?>
