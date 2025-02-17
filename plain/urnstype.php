@@ -7,7 +7,7 @@ require('../config.php');
 # Params: urn
 
 if (isset($_GET['urn'])){
-	$urn = htmlspecialchars($_GET['urn']);
+	$urn = trim(htmlspecialchars($_GET["urn"]));
 	$query = "SELECT urn, type FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
 	$res = '';
 	$tab = "\t";

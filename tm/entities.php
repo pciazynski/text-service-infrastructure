@@ -17,38 +17,28 @@ if ($urnarr !== false){
 	else {$psg = passage($urn, $deleteXML=true);};
 }
 
-
 $psg = str_replace($replacearr, " ", $psg);
-
 $psgarr = explode(" ",$psg);
-
 
 foreach ($psgarr as $token){
 	$token = trim($token);
-	if(strlen($token) >2 && preg_match('~^\p{Ll}~u', $token)) 
-	{
-		if (! in_array(strtolower($token), $stopwords)){
-			$wordbag[$token] = 1;
-		}
+	if(strlen($token) >2 && preg_match('~^\p{Ll}~u', $token)) {
+		(! in_array(strtolower($token), $stopwords)) ? $wordbag[$token] = 1 : NULL;
 	}
 }
 
 foreach ($psgarr as $token){
 	$token = trim($token);
-	if(strlen($token) >3 && !preg_match('~^\p{Ll}~u', $token)) 
-	{
+	if(strlen($token) >3 && !preg_match('~^\p{Ll}~u', $token)) {
 		if (! in_array(strtolower($token), $stopwords) && ! array_key_exists(strtolower($token), $wordbag)){
-		if (array_key_exists($token, $entitybag)){
-				$entitybag[$token] = $entitybag[$token]+1;
-			}else{
-				$entitybag[$token] = 1;
-			}
+			(array_key_exists($token, $entitybag)) ? $entitybag[$token] = $entitybag[$token]+1 : $entitybag[$token] = 1;
 		}
 	}
 }
 $tab = "\t";
 $nl = "\n";
-arsort($entitybag);
+(isset($_GET["sort"])) ? arsort($entitybag) : NULL;
+
 foreach(array_keys($entitybag) as $key){
 	echo $key.$tab.$entitybag[$key].$nl;
 

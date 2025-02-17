@@ -9,9 +9,7 @@ function authors(){
 	global $sql;
 	$query = "SELECT author, count(author) as cd FROM workdata WHERE author IS NOT NULL GROUP BY author";
 
-	if (isset($_GET['sort'])){
-		$query .= ' ORDER BY cd DESC,author';
-	}
+	(isset($_GET['sort'])) ? $query .= ' ORDER BY cd DESC,author' : NULL;
 
 	$res = "";
 	$nl = "\n";
@@ -21,5 +19,6 @@ function authors(){
 	}
 	return $res;
 }
+
 echo authors();
 ?>

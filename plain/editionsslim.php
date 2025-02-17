@@ -7,10 +7,9 @@ require('../config.php');
 
 function editions(){
 	global $sql;
-	$offset = 0;
-	if (isset($_GET['offset'])){
-		$offset = $_GET['offset'];
-	}
+	
+	(isset($_GET['offset'])) ? $offset = $_GET['offset'] : $offset = 0;
+
 	$query = "SELECT urn FROM workdata ORDER BY urn";
 	$res = "";
 	$nl = "\n";

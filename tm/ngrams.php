@@ -29,17 +29,11 @@ if ($ngramgoalsize>=2 and (!$restricteddocuments or $ngramgoalsize<10)){
 	}
 	
 	if (isset($_GET["lowercase"])){
-		if ($multibyte){
-			$psg = mb_strtolower($psg,'UTF-8');
-		}
-		else{
-			$psg = strtolower($psg);
-		}
+		($multibyte) ? $psg = mb_strtolower($psg,'UTF-8') : $psg = strtolower($psg);
 	}
 
 	$psg = str_replace($punctarr, " SENTENCESTOP ", $psg);
 	$psg = str_replace($replacearr, " ", $psg);
-
 
 	$sentences = explode(" SENTENCESTOP ",$psg);
 	foreach ($sentences as $sentence){
@@ -47,25 +41,17 @@ if ($ngramgoalsize>=2 and (!$restricteddocuments or $ngramgoalsize<10)){
 		$psgarr = explode(" ",$sentence);
 		foreach ($psgarr as $token){
 			$token = trim($token);
-			if(strlen($token) >0)
-			{
+			if(strlen($token) >0){
 				$ngram.="_".$token;
 				$ngram = trim($ngram,"_");
 				if(count(explode("_",$ngram)) == $ngramgoalsize){
-					if (array_key_exists($ngram, $rs)){
-						$rs[$ngram] = $rs[$ngram]+1;
-					}else{
-						$rs[$ngram] = 1;
-					}
+					(array_key_exists($ngram, $rs)) ? $rs[$ngram] = $rs[$ngram]+1 : $rs[$ngram] = 1;
 					$ngram = explode("_",$ngram,2)[1];
 				}
 			}
 		}
 	}
-
-	if(isset($_GET["sort"])){
-		arsort($rs);
-	}
+	(isset($_GET["sort"])) ? arsort($rs) : NULL;
 
 	$tab = "\t";
 	$nl = "\n";

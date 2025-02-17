@@ -7,7 +7,7 @@ require('../db_getFirstUrn.php');
 # Return first child URN of a speciified URN.
 # Params: urn
 
-$urn = htmlspecialchars($_GET["urn"]);
+$urn = trim(htmlspecialchars($_GET["urn"]));
 
 $urnarr = checkurn($urn);
 if ($urnarr !== false){

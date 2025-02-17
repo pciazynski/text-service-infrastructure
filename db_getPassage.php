@@ -29,9 +29,9 @@ function subPassage($urn,$deleteXML = false){
 	$subpass = $subpassarr[1];
 	$subpassarr = explode("[",$subpass);
 	$subpass = $subpassarr[0];
-	if(count($subpassarr)==2){
-		$subpassc = rtrim($subpassarr[1],"]");
-	}else{$subpassc = 1;}
+
+	(count($subpassarr)==2) ? $subpassc = rtrim($subpassarr[1],"]") : $subpassc = 1;
+
 	if(str_ends_with($urn,":")){$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
 	else {$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
 	
@@ -41,9 +41,8 @@ function subPassage($urn,$deleteXML = false){
 		$res = $res.$row['text'];
 	}
 	
-	if ($deleteXML){
-		$res = deletexml($res);
-	}
+	($deleteXML) ? $res = deletexml($res) : NULL;
+	
 	
 	if(substr_count($res, $subpass)>=$subpassc){$res = $subpass;}else{$res="";}
 	return $res;
@@ -58,6 +57,7 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	$passurnarr = explode("-",$urnarr[4]);
 	$urnleftarr = explode("@",$workurn.$passurnarr[0]);
 	$urnrightarr = explode("@",$workurn.$passurnarr[1]);
+	
 	$passleft = "";
 	$passmiddle = "";
 	$passright = "";
@@ -66,10 +66,9 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	$urnidleft = 0;
 	$urnidright = 0;
 	$res = "";
-	$sep = " ";
-	if($newlines){
-		$sep = "\n";
-	}
+	($newlines) ? $sep = "\n" : $sep = " ";
+
+	
 	foreach ($sql->query($queryleft) as $row) {
 		$passleft = $passleft.$row['text'].$sep;
 		$urnidleft = $row['urnid'];
@@ -83,12 +82,42 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	foreach ($sql->query($querymiddle) as $row) {
 		$passmiddle = $passmiddle.$row['text'].$sep;
 	}
-
-	$res = $passleft." ........... ". $passmiddle." ........... ". $passright;
 	
-	if ($deleteXML){
-		$res = deletexml($res);
+	if(count($urnleftarr)==2){
+		$subpassl = $urnleftarr[1];
+		$subpassarr = explode("[",$subpassl);
+		$subpassl = $subpassarr[0];
+		(count($subpassarr)==2) ? $subpasscl = rtrim($subpassarr[1],"]") : $subpasscl = 1;
+
+		$passarr = explode($subpassl,$passleft);
+		if($subpasscl<count($passarr)){
+			array_splice($passarr,0,$subpasscl);
+			$passleft = $subpassl.join($subpassl,$passarr);
+		}else{
+			return "";
+		}
 	}
+
+	if(count($urnrightarr)==2){
+		$subpassr = $urnrightarr[1];
+		$subpassarr = explode("[",$subpassr);
+		$subpassr = $subpassarr[0];
+		(count($subpassarr)==2) ? $subpasscr = rtrim($subpassarr[1],"]") : $subpasscr = 1;
+		$passarr = explode($subpassr,$passright);
+		if($subpasscr<count($passarr)){
+			$passright = "";
+			for($i=0;$i<=$subpasscr-1;$i++){
+				$passright.=$passarr[$i].$subpassr;
+			}
+		}else{
+			return "";
+		}
+	}
+
+	$res = $passleft.$passmiddle.$passright;
+	
+	($deleteXML) ? $res = deletexml($res) : NULL;
+
 	return $res;
 }
 
@@ -103,17 +132,14 @@ function spanningPassage($urn,$deleteXML = false,$newlines = false){
 	$tournid = getLeftOrRightUrnID($workurn.":".$psgurn[1],false);
 	$query = "SELECT text FROM urndata WHERE urnid BETWEEN ".$fromurnid." AND ".$tournid." ORDER BY urnid";
 	$res = "";
-	$sep = " ";
-	if($newlines){
-		$sep = "\n";
-	}
+
+	($newlines) ? $sep = "\n" : $sep = " ";
+
 	foreach ($sql->query($query) as $row) {
 		$res = trim($res.$row['text']).$sep;
 	}
 	
-	if ($deleteXML){
-		$res = deletexml($res);
-	}
+	($deleteXML) ? $res = deletexml($res) : NULL;
 
 	return $res;
 }
@@ -127,17 +153,15 @@ function passage($urn,$deleteXML = false,$newlines=false){
 	if(str_ends_with($urn,":")){$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
 	else {$query = "SELECT text FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
 	$res = "";
-	$sep = " ";
-	if($newlines){
-		$sep = "\n";
-	}
+
+	($newlines) ? $sep = "\n" : $sep = " ";
+
 	foreach ($sql->query($query) as $row) {
 		$res = trim($res.$row['text']).$sep;
 	}
 	
-	if ($deleteXML){
-		$res = deletexml($res);
-	}
+	($deleteXML) ? $res = deletexml($res) : NULL;
+
 	return $res;
 }
 ?>

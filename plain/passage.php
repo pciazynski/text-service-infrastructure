@@ -19,5 +19,8 @@ if ($urnarr !== false){
 			if (strpos ($urnarr[4],"-")){echo spanningPassage($urn,$deletexml,$nl);}
 			else {echo passage($urn,$deletexml,$nl);};
 		}
+		else{
+			require('../errormsg/access.php');
+		}
 	}
 }?>

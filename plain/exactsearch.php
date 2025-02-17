@@ -9,9 +9,8 @@ $snippet = trim(urldecode($_GET["snippet"]));
 function textsearch($snippet){
 	global $sql;
 	$nl = "\n";
-	$limit = "10000";
-	if (isset($_GET["limit"])){
-		$limit = $_GET["limit"];
+	
+	(isset($_GET["limit"])) ? $limit = $_GET["limit"] : $limit = "10000";
 	}
 	$query = "SELECT urn FROM urndata WHERE text LIKE '%".$snippet."%' ORDER BY urnid LIMIT ".$limit;
 	$res = "";

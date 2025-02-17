@@ -19,12 +19,7 @@ if ($urnarr !== false){
 }
 
 if (isset($_GET["lowercase"])){
-	if ($multibyte){
-		$psg = mb_strtolower($psg,'UTF-8');
-	}
-	else{
-		$psg = strtolower($psg);
-	}
+	($multibyte) ? $psg = mb_strtolower($psg,'UTF-8') : $psg = strtolower($psg);
 }
 
 $psg = str_replace($replacearr, " ", $psg);
@@ -33,18 +28,13 @@ $psgarr = explode(" ",$psg);
 foreach ($psgarr as $token){
 	$token = trim($token);
 	if(strlen($token) >0) {
-		if (array_key_exists($token, $wordbag)){
-			$wordbag[$token] = $wordbag[$token]+1;
-		}else{
-			$wordbag[$token] = 1;
-		}
+		(array_key_exists($token, $wordbag)) ? $wordbag[$token] = $wordbag[$token]+1 : $wordbag[$token] = 1;
 	}
 }
 
 
-if(isset($_GET["sort"])){
-	arsort($wordbag);
-}
+(isset($_GET["sort"])) ? arsort($wordbag) : NULL;
+
 $tab = "\t";
 $nl = "\n";
 foreach(array_keys($wordbag) as $key){

@@ -5,12 +5,9 @@ require('../config.php');
 
 # Returns URNs with the requested lang value.
 # Params: lang, (urn)
-$lang = htmlspecialchars($_GET["lang"]);
-if (isset($_GET["urn"])){
-	$urn = htmlspecialchars($_GET["urn"]);
-}else{
-	$urn = "urn:cts:";
-}
+$lang = trim(htmlspecialchars($_GET["lang"]));
+(isset($_GET["urn"])) ? $urn = htmlspecialchars($_GET["urn"]) : $urn = "urn:cts:";
+
 
 $query = "SELECT urn FROM urndata WHERE lang = '".$lang."' AND urn LIKE ".$binary." '".$urn."%' ORDER BY urnid LIMIT 10000";
 $res = "";
