@@ -37,10 +37,11 @@
 
 	var snippet = getQueryVariable("snippet")
 	var urn = getQueryVariable("urn")
-	
+	var lc = getQueryVariable("lowercase")
+	if(lc.length>0){lc ="&lowercase"}else{lc=""}
 	textstr=""
 	rawFile = new XMLHttpRequest();
-	rawFile.open("GET", "../plain/textdistribution.php?urn="+urn+"&snippet="+snippet, false);
+	rawFile.open("GET", "../plain/textdistribution.php?urn="+urn+"&snippet="+snippet+lc, false);
 	rawFile.onreadystatechange = function (){
 		if(rawFile.readyState === 4){
 			if(rawFile.status === 200 || rawFile.status == 0)
