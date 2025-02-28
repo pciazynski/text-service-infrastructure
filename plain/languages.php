@@ -17,4 +17,3 @@ function lang(){
 }
 echo lang();
 ?>
-?>
