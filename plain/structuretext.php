@@ -6,14 +6,16 @@ require('../config.php');
 # Returns every child URN of a given static URN plus the corresponding text snippet. Dynamic URNs are not (yet) supported. 
 # Params: urn, (deletexml)
 
-function getDocStrct($urn,$isWorkurn){
+function getDocStrct($urn){
 	global $sql;
 	global $binary;
-	if($isWorkurn){$query = "SELECT urn,type,text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
-	else {$query = "SELECT urn,type,CHAR_LENGTH(text)  AS len FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' ORDER BY urnid";}
+	global $dbtablename;
+	$query = "SELECT urn,type,text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
 	$res = "";
+	$tab = "\t";
+	$nl = "\n";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['urn']."\t".$row['type']."\t".$row['text']."\n";
+		$res = $res.$row['urn'].$tab.$row['type'].$tab.$row['text'].$nl;
 	}
 	if(isset($_GET["deletexml"])){
 		$res = preg_replace('/<[^>]+>/', "", $res);
@@ -22,10 +24,19 @@ function getDocStrct($urn,$isWorkurn){
 }
 $urn = trim(htmlspecialchars($_GET["urn"]));
 $urnarr = checkurn($urn);
+
 if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){echo getDocStrct($urn,true);}
-	elseif (strpos ($urnarr[4],"-")){echo "";}
-	else {echo getDocStrct($urn,false);};
+	if($dbtablename == "urndata"){
+		echo getDocStrct($urn);
+	}
+	else{
+		if(restrictedAccess()){
+			echo getDocStrct($urn);
+		}
+		else{
+			require('../errormsg/access.php');
+		}
+	}
 }
 
 ?>
