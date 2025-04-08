@@ -37,21 +37,18 @@ function getDocStrct($urn){
 	$nl = "\n";
 	
 	if (isset($_GET["lowercase"])){
-		$text=bagofwords($row['text']);
-		($multibyte) ? $text = mb_strtolower($text,'UTF-8') : $text = strtolower($text);
-		$res = $res.$row['urn'].$tab.$row['type'].$text.$nl;
+		foreach ($sql->query($query) as $row) {
+			$text = preg_replace('/<[^>]+>/', "", $row['text']);
+			($multibyte) ? $text = mb_strtolower($text,'UTF-8') : $text = strtolower($text);
+			$res = $res.$row['urn'].$tab.$row['type'].bagofwords($text).$nl;
+		}
 	}
 	else{
 		foreach ($sql->query($query) as $row) {
-			$text=bagofwords($row['text']);
-			$res = $res.$row['urn'].$tab.$row['type'].$text.$nl;
+			$text = preg_replace('/<[^>]+>/', "", $row['text']);
+			$res = $res.$row['urn'].$tab.$row['type'].bagofwords($text).$nl;
 		}
 	}
-	
-	if(isset($_GET["deletexml"])){
-		$res = preg_replace('/<[^>]+>/', "", $res);
-	}
-	
 	return trim($res);
 }
 $urn = trim(htmlspecialchars($_GET["urn"]));
