@@ -17,14 +17,14 @@ function bagofwords($text){
 	}
 	(isset($_GET["sort"])) ? arsort($wordbag) : NULL;
 
-	$tab = ":";
-	$nl = ",";
+	$colon = ":";
+	$comma = ",";
 	$res = "";
 
 	foreach(array_keys($wordbag) as $key){
-		$res.=$key.$tab.$wordbag[$key].$nl;
+		$res.=$key.$colon.$wordbag[$key].$comma;
 	}
-	return($res);
+	return rtrim($res,",");
 }
 
 function getDocStrct($urn){
