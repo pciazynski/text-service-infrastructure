@@ -40,13 +40,13 @@ function getDocStrct($urn){
 		foreach ($sql->query($query) as $row) {
 			$text = preg_replace('/<[^>]+>/', "", $row['text']);
 			($multibyte) ? $text = mb_strtolower($text,'UTF-8') : $text = strtolower($text);
-			$res = $res.$row['urn'].$tab.$row['type'].bagofwords($text).$nl;
+			$res = $res.$row['urn'].$tab.$row['type'].$tab.bagofwords($text).$nl;
 		}
 	}
 	else{
 		foreach ($sql->query($query) as $row) {
 			$text = preg_replace('/<[^>]+>/', "", $row['text']);
-			$res = $res.$row['urn'].$tab.$row['type'].bagofwords($text).$nl;
+			$res = $res.$row['urn'].$tab.$row['type'].$tab.bagofwords($text).$nl;
 		}
 	}
 	return trim($res);
