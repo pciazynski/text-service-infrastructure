@@ -32,6 +32,7 @@ function getDocStrct($urn){
 	global $sql;
 	global $binary;
 	global $dbtablename;
+	global $multibyte;
 	$query = "SELECT urn,type,text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
 	$res = "";
 	$tab = "\t";
@@ -50,6 +51,7 @@ function getDocStrct($urn){
 			$res = $res.$row['urn'].$tab.$row['type'].$tab.bagofwords($text).$nl;
 		}
 	}
+
 	return trim($res);
 }
 $urn = trim(htmlspecialchars($_GET["urn"]));
