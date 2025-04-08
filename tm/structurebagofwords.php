@@ -8,6 +8,7 @@ require('../config.php');
 
 function bagofwords($text){
 	$wordbag = array();
+	$text = str_replace($replacearr, " ", $text);
 	$psgarr = explode(" ",$text);
 	foreach ($psgarr as $token){
 		$token = trim($token);
