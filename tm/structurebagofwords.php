@@ -8,7 +8,6 @@ require('../config.php');
 
 function bagofwords($text){
 	$wordbag = array();
-	$text = str_replace($replacearr, " ", $text);
 	$psgarr = explode(" ",$text);
 	foreach ($psgarr as $token){
 		$token = trim($token);
@@ -33,6 +32,7 @@ function getDocStrct($urn){
 	global $binary;
 	global $dbtablename;
 	global $multibyte;
+	global $replacearr;
 	$query = "SELECT urn,type,text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
 	$res = "";
 	$tab = "\t";
@@ -41,6 +41,7 @@ function getDocStrct($urn){
 	if (isset($_GET["lowercase"])){
 		foreach ($sql->query($query) as $row) {
 			$text = preg_replace('/<[^>]+>/', "", $row['text']);
+			$text = str_replace($replacearr, " ", $text);
 			($multibyte) ? $text = mb_strtolower($text,'UTF-8') : $text = strtolower($text);
 			$res = $res.$row['urn'].$tab.$row['type'].$tab.bagofwords($text).$nl;
 		}
@@ -48,6 +49,7 @@ function getDocStrct($urn){
 	else{
 		foreach ($sql->query($query) as $row) {
 			$text = preg_replace('/<[^>]+>/', "", $row['text']);
+			$text = str_replace($replacearr, " ", $text);
 			$res = $res.$row['urn'].$tab.$row['type'].$tab.bagofwords($text).$nl;
 		}
 	}
