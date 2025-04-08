@@ -16,7 +16,7 @@ function bagofwords($text){
 		}
 	}
 	arsort($wordbag);
-
+	
 	$colon = ":";
 	$comma = ",";
 	$res = "";
