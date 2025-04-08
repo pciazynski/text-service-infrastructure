@@ -37,10 +37,12 @@ foreach ($psgarr as $token){
 
 $tab = "\t";
 $nl = "\n";
-foreach(array_keys($wordbag) as $key){
-	echo $key.$tab.$wordbag[$key].$nl;
+$res = "";
 
+foreach(array_keys($wordbag) as $key){
+	$res.=$key.$tab.$wordbag[$key].$nl;
 }
+echo($res);
 
 
 ?>

@@ -37,11 +37,12 @@ foreach ($psgarr as $token){
 }
 $tab = "\t";
 $nl = "\n";
+$res = "";
+
 (isset($_GET["sort"])) ? arsort($entitybag) : NULL;
 
 foreach(array_keys($entitybag) as $key){
-	echo $key.$tab.$entitybag[$key].$nl;
-
+	$res.= $key.$tab.$entitybag[$key].$nl;
 }
-
+echo($res);
 ?>

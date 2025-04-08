@@ -55,8 +55,10 @@ if ($ngramgoalsize>=2 and (!$restricteddocuments or $ngramgoalsize<10)){
 
 	$tab = "\t";
 	$nl = "\n";
+	$res = "";
 	foreach(array_keys($rs) as $key){
-		echo $key.$tab.$rs[$key].$nl;
+		$res.= $key.$tab.$rs[$key].$nl;
 	}
+	echo($res);
 }
 ?>
