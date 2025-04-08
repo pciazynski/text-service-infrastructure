@@ -15,7 +15,7 @@ function bagofwords($text){
 			(array_key_exists($token, $wordbag)) ? $wordbag[$token] = $wordbag[$token]+1 : $wordbag[$token] = 1;
 		}
 	}
-	(isset($_GET["sort"])) ? arsort($wordbag) : NULL;
+	arsort($wordbag);
 
 	$colon = ":";
 	$comma = ",";
