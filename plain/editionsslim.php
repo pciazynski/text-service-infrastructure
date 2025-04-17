@@ -9,8 +9,8 @@ function editions(){
 	global $sql;
 	$condi = '';
 	
-	(if (isset($_GET['urnfilter']) and strlen(trim($_GET['urnfilter']))>0) ? $condi .= ' AND urn LIKE "%'.$_GET['urnfilter'].'%"';
-	}
+	(isset($_GET['urnfilter']) and strlen(trim($_GET['urnfilter']))>0) ? $condi .= ' AND urn LIKE "%'.$_GET['urnfilter'].'%"': NULL;
+	
 	$query = 'SELECT urn FROM workdata WHERE true '.$condi.' ORDER BY urn';
 	$res = '';
 	$nl = "\n";
