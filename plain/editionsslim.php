@@ -3,15 +3,16 @@ header('Content-Type: text/plain');
 require('../config.php');
 
 # Returns edition level URN list.
-# Params: none
+# Params: urnfilter
 
 function editions(){
 	global $sql;
+	$condi = '';
 	
-	(isset($_GET['offset'])) ? $offset = $_GET['offset'] : $offset = 0;
-
-	$query = "SELECT urn FROM workdata ORDER BY urn";
-	$res = "";
+	(if (isset($_GET['urnfilter']) and strlen(trim($_GET['urnfilter']))>0) ? $condi .= ' AND urn LIKE "%'.$_GET['urnfilter'].'%"';
+	}
+	$query = 'SELECT urn FROM workdata WHERE true '.$condi.' ORDER BY urn';
+	$res = '';
 	$nl = "\n";
 	$key = 'urn';
 	foreach ($sql->query($query) as $row) {
