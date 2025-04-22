@@ -8,8 +8,9 @@ require('../config.php');
 $lang = trim(htmlspecialchars($_GET["lang"]));
 (isset($_GET["urn"])) ? $urn = htmlspecialchars($_GET["urn"]) : $urn = "urn:cts:";
 
+$dbtablename;
 
-$query = "SELECT urn FROM urndata WHERE lang = '".$lang."' AND urn LIKE ".$binary." '".$urn."%' ORDER BY urnid LIMIT 10000";
+$query = "SELECT urn FROM ".$dbtablename." WHERE lang = '".$lang."' AND urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
 $res = "";
 $nl = "\n";
 foreach ($sql->query($query) as $row) {
