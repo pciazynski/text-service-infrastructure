@@ -17,7 +17,9 @@ function lang(){
 	}
 	$query = "SELECT DISTINCT lang FROM urndatarestr";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['lang'].$nl;
+		if(! str_contains($res,$row['lang'])){
+			$res = $res.$row['lang'].$nl;
+		}
 	}
 	return $res;
 }
