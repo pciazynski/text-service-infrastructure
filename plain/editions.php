@@ -58,5 +58,5 @@ function editions(){
 		return $res;
 	}
 }
-echo editions();
+echo trim(editions(),"\n");
 ?>

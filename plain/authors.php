@@ -20,5 +20,5 @@ function authors(){
 	return $res;
 }
 
-echo authors();
+echo trim(authors(),"\n");
 ?>

@@ -15,5 +15,5 @@ function dates(){
 	}
 	return $res;
 }
-echo dates();
+echo trim(dates(),"\n");
 ?>
