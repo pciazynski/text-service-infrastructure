@@ -14,7 +14,7 @@ if (isset($_GET["urn"]) and isset($_GET["lang"])){
 	$urn = trim(htmlspecialchars($_GET["urn"]));
 	$urnarr = checkurn($urn);
 
-	$query = "SELECT urn FROM ".$dbtablename." WHERE lang = '".$lang."' AND urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
+	$query = "SELECT urn FROM ".$dbtablename." WHERE lang LIKE '%".$lang."%' AND urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
 	$res = "";
 	$nl = "\n";
 	foreach ($sql->query($query) as $row) {
