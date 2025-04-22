@@ -29,7 +29,7 @@ function getDocStrct($urn){
 	if(isset($_GET["deletexml"])){
 		$res = preg_replace('/<[^>]+>/', "", $res);
 	}
-	return trim($res);
+	return $res;
 }
 $urn = trim(htmlspecialchars($_GET["urn"]));
 $urnarr = checkurn($urn);
