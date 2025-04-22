@@ -14,11 +14,12 @@ if (isset($_GET["urn"]) and isset($_GET["lang"])){
 	$urn = trim(htmlspecialchars($_GET["urn"]));
 	$urnarr = checkurn($urn);
 
-	$query = "SELECT urn FROM ".$dbtablename." WHERE lang LIKE '%".$lang."%' AND urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
+	$query = "SELECT urn,lang FROM ".$dbtablename." WHERE lang LIKE '%".$lang."%' AND urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
 	$res = "";
 	$nl = "\n";
+	$tab = "\t";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['urn'].$nl;
+		$res = $res.$row['urn'].$tab.$row['lang'].$nl;
 	}
 
 	echo $res;
