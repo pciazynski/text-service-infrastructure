@@ -22,6 +22,6 @@ if (isset($_GET["urn"]) and isset($_GET["lang"])){
 		$res = $res.$row['urn'].$tab.$row['lang'].$nl;
 	}
 
-	echo $res;
+	echo trim($res,"\n");
 }
 ?>
