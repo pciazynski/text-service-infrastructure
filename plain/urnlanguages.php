@@ -1,17 +1,23 @@
 <?php
 header('Content-Type: text/plain');
+require('../functions.php');
 require('../config.php');
 
-# Returns distinct urn languages and their number. 
+# Returns distinct urn languages. 
 # Params: none
 function lang(){
 	global $sql;
-	$query = "SELECT lang, count(lang) as cd FROM ".$dbtablename." WHERE lang IS NOT NULL GROUP BY lang ORDER BY lang";
+	global $dbtablename;
 	$res = "";
 	$tab = "\t";
 	$nl = "\n";
+	$query = "SELECT DISTINCT lang FROM urndata";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['lang'].$tab.$row['cd'].$nl;
+		$res = $res.$row['lang'].$nl;
+	}
+	$query = "SELECT DISTINCT lang FROM urndatarestr";
+	foreach ($sql->query($query) as $row) {
+		$res = $res.$row['lang'].$nl;
 	}
 	return $res;
 }
