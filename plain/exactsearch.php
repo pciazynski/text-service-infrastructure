@@ -30,11 +30,11 @@ if (isset($_GET["urn"]) and isset($_GET["snippet"])){
 
 	if ($urnarr !== false){
 		if($dbtablename == "urndata"){
-			echo textsearch($urn,"&snippet=".$snippet);
+			echo textsearch($urn,$snippet);
 		}
 		else{
 			if(restrictedAccess()){
-				echo textsearch($urn,"&snippet=".$snippet);
+				echo textsearch($urn,$snippet);
 			}
 			else{
 				require('../errormsg/access.php');
