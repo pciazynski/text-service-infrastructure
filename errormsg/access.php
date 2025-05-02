@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: text/plain');
-
-echo "CTS Request Error: Unauthorized Access";
+	header('Content-Type: text/plain');
+	echo "Error code 7: Unauthorized Access";
+	exit();
 ?>

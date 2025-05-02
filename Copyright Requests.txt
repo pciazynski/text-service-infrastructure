@@ -1,4 +1,5 @@
 With Copyright-Token
+	plain/exactsearch (Any URN)
 	plain/passage (Any URN)
 	plain/structuretext (Static URN)
 
@@ -14,6 +15,9 @@ Without Copyright-Token
 	plain/anydocurn
 	plain/doclanguages
 	plain/urnlanguages
+	plain/firsturn(Any URN)
+	plain/validreff(Any URN)
+	plain/prevnextutn(Any URN)
 	plain/urnbylanguage
 	tm/bagofwords (Any URN)
 	tm/entities (Any URN)

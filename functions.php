@@ -16,7 +16,7 @@ function autocomplete($urn){
 		else{
 			$dbtablename = "urndata";
 		}
-}
+	}
 	return trim($res.$urnarr[4]);
 }
 
@@ -35,9 +35,9 @@ function deletexml($res){
 }
 
 function checkurn($urn){
+	if(strpos($urn,"urn:cts") !== 0){return false;}
 	$urn = autocomplete($urn);
 	$urnarr = explode(":",$urn);
-	if(strpos($urn,"urn:cts") !== 0){return false;}
 	return $urnarr;
 }
 ?>

@@ -2,13 +2,19 @@
 
 function prevnexturn($urn,$isWorkurn){
 	global $sql;
-	$query = "SELECT urnid FROM urndata WHERE urn = '".$urn."'";
+	global $dbtablename;
+	global $binary;
+	$query = "SELECT urnid FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."'";
 	$res = "";
 	foreach ($sql->query($query) as $row) {
 		$res = $res.$row['urnid'];
 	}
-	if($isWorkurn){$query = "SELECT urn FROM urndata WHERE urnid = ".($res+1);}
-	else{$query = "SELECT urn FROM urndata WHERE urnid = ".($res-1)." OR urnid = ".($res+1);}
+	if($res==""){
+		return false;
+	}
+	
+	if($isWorkurn){$query = "SELECT urn FROM ".$dbtablename." WHERE urnid = ".($res+1);}
+	else{$query = "SELECT urn FROM ".$dbtablename." WHERE urnid = ".($res-1)." OR urnid = ".($res+1);}
 	if($res==0 | $isWorkurn){$res="NULL\n";}
 	else{$res = "";}
 	$urnarr=explode(":",$urn);
