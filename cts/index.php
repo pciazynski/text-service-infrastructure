@@ -58,7 +58,7 @@ function getCapabilities(){
 }
 
 function GetPassage($urn){
-	require('../db_getPassage.php');
+	require('../db_getPassage_restr.php');
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPassage xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPassage</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	$urnarr = checkurn($urn);
 	if ($urnarr !== false){
@@ -167,7 +167,7 @@ if ($request == "GetPrevNextUrn"){print(GetPrevNextUrn($urn));exit();}
 if ($request == "GetFirstUrn"){print(GetFirstUrn($urn));exit();}
 $level = -1;
 if (isset($_GET["level"])){$level = $_GET["level"];}
-$urn = htmlspecialchars($_GET["urn"]);
 if ($request == "GetValidReff"){print(GetValidReff($urn, $level));exit();}
+require('../errormsg/xml_invalidrequest.php');
 
 ?>

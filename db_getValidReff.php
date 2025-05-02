@@ -2,8 +2,10 @@
 function validreff($urn,$isWorkurn,$level,$validreffcount=0){
 	global $sql;
 	global $binary;
-	if($isWorkurn){$query = "SELECT urn FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' AND NOT urn = '".$urn."' ORDER BY urnid";}
-	else {$query = "SELECT urn FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' ORDER BY urnid";}
+	global $dbtablename;
+	
+	if($isWorkurn){$query = "SELECT urn FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' AND NOT urn = '".$urn."' ORDER BY urnid";}
+	else {$query = "SELECT urn FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' ORDER BY urnid";}
 	if ($validreffcount>0){$query = $query." LIMIT ".$validreffcount;}
 	$res = "";
 	if ($level >- 1){
