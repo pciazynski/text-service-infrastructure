@@ -8,9 +8,8 @@ require('../config.php');
 
 $query = "SELECT urn from workdata LIMIT 1";
 $res = '';
-$nl = "\n";
 foreach ($sql->query($query) as $row) {
-	$res = $res.$row['urn'].$nl;
+	$res = $res.$row['urn'];
 }
 
 echo $res;
