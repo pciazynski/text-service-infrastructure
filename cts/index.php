@@ -59,16 +59,18 @@ function getCapabilities(){
 
 function GetPassage($urn){
 	require('../db_getPassage_restr.php');
+	global $dbtablename;
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPassage xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPassage</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	$urnarr = checkurn($urn);
+	$res = $res."<urn>".$urn."</urn><passage>";
 	if($dbtablename == "urndata"){
-		if (strpos ($urnarr[4],"-")){echo spanningPassage($urn,isset($_GET["deletexml"]),$nl);}
-		else {echo passage($urn,isset($_GET["deletexml"]),$nl);};
+		if (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn,isset($_GET["deletexml"]),$nl);}
+		else {$psg =  passage($urn,isset($_GET["deletexml"]),$nl);};
 	}
 	else{
 		if(restrictedAccess()){
-			if (strpos ($urnarr[4],"-")){echo spanningPassage($urn,isset($_GET["deletexml"]),$nl);}
-			else {echo passage($urn,isset($_GET["deletexml"]),$nl);};
+			if (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn,isset($_GET["deletexml"]),$nl);}
+			else {$psg =  passage($urn,isset($_GET["deletexml"]),$nl);};
 		}
 		else{
 			require('../errormsg/xml_access.php');
