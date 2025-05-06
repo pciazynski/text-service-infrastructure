@@ -22,7 +22,7 @@ function autocomplete($urn){
 
 function restrictedAccess(){
 	global $copyrighttoken;
-	if(isset($_GET['copyrighttoken']) && strlen($copyrighttoken)>0 && $_GET['copyrighttoken'] == $copyrighttoken){
+	if(isset($_GET['copyrighttoken']) and strlen($copyrighttoken)>0 and $_GET['copyrighttoken'] == $copyrighttoken){
 		return true;
 	}
 	return false;

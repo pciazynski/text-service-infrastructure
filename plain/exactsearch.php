@@ -23,7 +23,7 @@ function textsearch($urn, $snippet){
 	return trim($res);
 }
 
-if (isset($_GET["urn"]) and isset($_GET["snippet"])){
+if (isset($_GET["snippet"])){
 	$urn = trim(htmlspecialchars($_GET["urn"]));
 	$snippet = trim(urldecode($_GET["snippet"]));
 	$urnarr = checkurn($urn);
