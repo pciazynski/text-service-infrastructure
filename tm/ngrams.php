@@ -44,7 +44,7 @@ if ($ngramgoalsize>=2 and (!$restricteddocuments or $ngramgoalsize<10)){
 			if(strlen($token) >0){
 				$ngram.=" ".$token;
 				$ngram = trim($ngram," ");
-				if(count(explode("-",$ngram)) == $ngramgoalsize){
+				if(count(explode(" ",$ngram)) == $ngramgoalsize){
 					(array_key_exists($ngram, $rs)) ? $rs[$ngram] = $rs[$ngram]+1 : $rs[$ngram] = 1;
 					$ngram = explode(" ",$ngram,2)[1];
 				}
