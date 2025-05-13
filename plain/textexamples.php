@@ -14,12 +14,16 @@ if ( isset($_GET["snippet"])){
 		$i = $i + 1;
 		$res = $res.$row['text'].$nl;
 	}
-	$limit = 5;
-	if($i<$limit){
-		$limit = $limit - $i;
-		$query = "SELECT text FROM urndatarestr WHERE text LIKE '% ".$_GET["snippet"]." %' ORDER BY text LIMIT ".$limit;
-		foreach ($sql->query($query) as $row){
-			$res = $res.$row['text'].$nl;
+	
+	#Less than 5 found and copyrighted documents exist
+	if($restricteddocuments){
+		$limit = 5;
+		if($i<$limit){
+			$limit = $limit - $i;
+			$query = "SELECT text FROM urndatarestr WHERE text LIKE '% ".$_GET["snippet"]." %' ORDER BY text LIMIT ".$limit;
+			foreach ($sql->query($query) as $row){
+				$res = $res.$row['text'].$nl;
+			}
 		}
 	}
 	(isset($_GET["deletexml"])) ? $res = deletexml($res) : NULL;

@@ -158,7 +158,9 @@ function passage($urn,$deleteXML = false,$newlines=false){
 	global $dbtablename;
 	
 	#LIKE urn.% OR (exactly) LIKE urn
-	if(str_ends_with($urn,":")){$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
+	if(str_ends_with($urn,":")){
+		($newlines or $dbtablename == "urndatarestr") ? $query = "SELECT text FROM urndatarestr WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid": $query = "SELECT text FROM workurntext WHERE urn = '".$urn."'";
+	}
 	else {$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
 	$res = "";
 	$sep = " ";
