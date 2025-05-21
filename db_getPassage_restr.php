@@ -159,9 +159,21 @@ function passage($urn,$deleteXML = false,$newlines=false){
 	
 	#LIKE urn.% OR (exactly) LIKE urn
 	if(str_ends_with($urn,":")){
-		($newlines or $dbtablename == "urndatarestr") ? $query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid": $query = "SELECT text FROM workurntext WHERE urn = '".$urn."'";
+		if($newlines){
+			$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
+		}
+		else{
+			if($dbtablename == "urndatarestr") {
+				$query = "SELECT text FROM workurntextrestr WHERE urn = '".$urn."'";
+			}
+			else{
+				$query = "SELECT text FROM workurntext WHERE urn = '".$urn."'";
+			}
+		}
 	}
-	else {$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
+	else {
+		$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";
+	}
 	$res = "";
 	$sep = " ";
 	if($newlines){
@@ -176,5 +188,6 @@ function passage($urn,$deleteXML = false,$newlines=false){
 	}
 	return $res;
 }
+
 
 ?>
