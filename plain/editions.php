@@ -48,7 +48,7 @@ function editions(){
 			$condi .= ' AND year '.$_GET['year'];
 		}
 
-		$query = "SELECT urn,title,year,author,restricted FROM workdata".$condi." ORDER BY ".$sortBy." LIMIT 10000 OFFSET ".$offset;
+		$query = "SELECT urn,title,year,author,restricted FROM workdata".$condi." ORDER BY ".$sortBy;
 		$res = "";
 		$tab = "\t";
 		$nl = "\n";
