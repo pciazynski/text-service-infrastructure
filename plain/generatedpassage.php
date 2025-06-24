@@ -15,7 +15,8 @@ function passage($urn){
 	}
 	else {$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
 	$res = "";
-	$sep = " ";
+	(isset($_GET['nl'])) ? $sep = "\n" : $sep = " ";
+
 	foreach ($sql->query($query) as $row) {
 		$res = trim($res.$row['text']).$sep;
 	}
