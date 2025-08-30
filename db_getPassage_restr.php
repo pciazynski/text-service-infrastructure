@@ -152,27 +152,27 @@ function spanningPassage($urn,$deleteXML = false,$newlines = false){
 	return $res;
 }
 
-function passage($urn,$deleteXML = false,$newlines=false){
+function passage($urn,$deleteXML = false,$newlines){
 	global $sql;
 	global $binary;
 	global $dbtablename;
 	
 	#LIKE urn.% OR (exactly) LIKE urn
-	if(str_ends_with($urn,":")){
-
-		($newlines) ? $dbconf = "nl" : $dbconf = " ";
+	if(str_ends_with($urn,":") AND $newlines==0){
 		if($dbtablename == "urndatarestr") {
-			$query = "SELECT text FROM workurntextrestr".$dbconf." WHERE urn = '".$urn."'";
+			$query = "SELECT text FROM workurntextrestr WHERE urn = '".$urn."'";
 		}
 		else{
-			$query = "SELECT text FROM workurntext".$dbconf." WHERE urn = '".$urn."'";
+			$query = "SELECT text FROM workurntext WHERE urn = '".$urn."'";
 		}
-
 	}
 	else {
-		$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";
+		if(str_ends_with($urn,":")){
+			$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
+		}else{
+			$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";
+		}
 	}
-	
 	
 	$res = "";
 	$sep = " ";
