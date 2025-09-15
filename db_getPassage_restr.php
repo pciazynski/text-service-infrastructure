@@ -152,7 +152,7 @@ function spanningPassage($urn,$deleteXML = false,$newlines = false){
 	return $res;
 }
 
-function passage($urn,$deleteXML = false,$newlines){
+function passage($urn,$deleteXML = false,$newlines = false){
 	global $sql;
 	global $binary;
 	global $dbtablename;
