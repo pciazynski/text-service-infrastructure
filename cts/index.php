@@ -49,7 +49,7 @@ function getCapabilities(){
 		$res = $res.'<edition urn="'.$row['urn'].'">';
 		$res = $res.'<title>'.htmlspecialchars($row['title'], ENT_XML1, 'UTF-8').'</title>';
 		$res = $res.'<license>'.$row['license'].'</license>';
-		$res = $res.'<source>'.$row['source'].$serverurl.'</source>';
+		$res = $res.'<source>'.htmlspecialchars($row['source'], ENT_XML1, 'UTF-8').$serverurl.'</source>';
 		$res = $res.'<publicationDate>'.$row['year'].'</publicationDate>';
 		$res = $res.'</edition>';
 		$oldgroup=$textgroup;
