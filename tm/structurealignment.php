@@ -10,12 +10,11 @@ $psg="";
 (isset($_GET['alignpart'])) ? $alignpart = min($_GET['alignpart'],3) : $alignpart = 3;
 $urnarr = checkurn($urn);
 if ($urnarr !== false){
-
 	$urndocpartarr = explode(".",$urnarr[3]);
 	$urndocpartarr[$alignpart] = '%';
 	$urnwc = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urndocpartarr[0].'.'.$urndocpartarr[1].'.'.$urndocpartarr[2].'.'.$urndocpartarr[3].':';
 
-	$query = 'SELECT urn from workdata WHERE URN LIKE "'.$urnwc.'"';
+	$query = 'SELECT urn from workdata WHERE restricted = 0 AND URN LIKE "'.$urnwc.'"';
 	$tab = "\t";
 	$nl = "\n";
 	$res = "";
