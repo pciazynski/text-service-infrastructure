@@ -12,12 +12,12 @@ function editions(){
 			return file_get_contents("editions.cache");
 		}
 		else{
-			$query = "SELECT urn,title,year,author,restricted FROM workdata ORDER BY author,title,urn";
+			$query = "SELECT urn,title,year,author,restricted,lang FROM workdata ORDER BY author,title,urn";
 			$res = "";
 			$tab = "\t";
 			$nl = "\n";
 			foreach ($sql->query($query) as $row) {
-				$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$nl;
+				$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$tab.$row['lang'].$nl;
 			}
 #			$cache = fopen("editions.cache", "w") or die("Unable to open file!");
 #			fwrite($cache, $res);
@@ -48,12 +48,12 @@ function editions(){
 			$condi .= ' AND year '.$_GET['year'];
 		}
 
-		$query = "SELECT urn,title,year,author,restricted FROM workdata".$condi." ORDER BY ".$sortBy;
+		$query = "SELECT urn,title,year,author,restricted,lang FROM workdata".$condi." ORDER BY ".$sortBy;
 		$res = "";
 		$tab = "\t";
 		$nl = "\n";
 		foreach ($sql->query($query) as $row) {
-			$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$nl;
+			$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$tab.$row['lang'].$nl;
 		}
 		return $res;
 	}
