@@ -8,7 +8,7 @@ require('../db_getPassage_restr.php');
 $wordbag = array();
 $psg = "";
 
-$urn = checkurn($_GET['urn']),'');
+$urn = checkurn($_GET['urn'],'');
 $urnarr = explode(":",$urn);
 
 if (strlen($urnarr[4]) == 0){

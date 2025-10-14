@@ -5,7 +5,7 @@ require('../config.php');
 require('../db_getPassage_restr.php');
 
 
-$urn = checkurn($_GET['urn']),'');
+$urn = checkurn($_GET['urn'],'');
 $wordbag = array();
 $psg = "";
 

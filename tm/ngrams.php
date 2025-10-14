@@ -8,7 +8,7 @@ $ngramgoalsize = trim(htmlspecialchars($_GET["n"]));
 
 if (isset($_GET['urn']) and $ngramgoalsize>=2 and (!$restricteddocuments or $ngramgoalsize<10)){
 	$rs = array();
-	$urn = checkurn($_GET['urn']),'');
+	$urn = checkurn($_GET['urn'],'');
 	$urnarr = explode(":",$urn);
 	if($dbtablename == "urndata"){
 		if (strlen($urnarr[4]) == 0){$psg = passage($urn, $deleteXML=true);}

@@ -4,7 +4,7 @@ require('../functions.php');
 require('../config.php');
 require('../db_getPassage_restr.php');
 
-$urn = checkurn($_GET['urn']),'');
+$urn = checkurn($_GET['urn'],'');
 $urnarr = explode(":",$urn);
 $psg="";
 
