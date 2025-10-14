@@ -10,12 +10,12 @@ $wordbag = array();
 $entitybag = array();
 $psg="";
 
-$urnarr = checkurn($urn);
-if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){$psg = passage($urn, $deleteXML=true);}
-	elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
-	else {$psg = passage($urn, $deleteXML=true);};
-}
+$urn = checkurn($urn,'');
+$urnarr = explode(":",$urn);
+
+if (strlen($urnarr[4]) == 0){$psg = passage($urn, $deleteXML=true);}
+elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
+else {$psg = passage($urn, $deleteXML=true);};
 
 $psg = str_replace($replacearr, " ", $psg);
 $psgarr = explode(" ",$psg);

@@ -9,14 +9,14 @@ $urn = trim(htmlspecialchars($_GET["urn"]));
 $wordbag = array();
 $psg = "";
 
-$urnarr = checkurn($urn);
-if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){
-		$psg = passage($urn,$deleteXML = true, $newlines=false);
-	}
-	elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
-	else {$psg = passage($urn, $deleteXML = true, $newlines=false);};
+$urn = checkurn($urn,'');
+$urnarr = explode(":",$urn);
+
+if (strlen($urnarr[4]) == 0){
+	$psg = passage($urn,$deleteXML = true, $newlines=false);
 }
+elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
+else {$psg = passage($urn, $deleteXML = true, $newlines=false);};
 
 if (isset($_GET["lowercase"])){
 	($multibyte) ? $psg = mb_strtolower($psg,'UTF-8') : $psg = strtolower($psg);

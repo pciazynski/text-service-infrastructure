@@ -9,13 +9,12 @@ $ngramgoalsize = trim(htmlspecialchars($_GET["n"]));
 $rs = array();
 
 if ($ngramgoalsize>=2 and (!$restricteddocuments or $ngramgoalsize<10)){
-	$urnarr = checkurn($urn);
+	$urn = checkurn($urn,'');
+	$urnarr = explode(":",$urn);
 	if($dbtablename == "urndata"){
-		if ($urnarr !== false){
-			if (strlen($urnarr[4]) == 0){$psg = passage($urn, $deleteXML=true);}
-			elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
-			else {$psg = passage($urn, $deleteXML=true);};
-		}
+		if (strlen($urnarr[4]) == 0){$psg = passage($urn, $deleteXML=true);}
+		elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
+		else {$psg = passage($urn, $deleteXML=true);};
 	}
 	else{
 		if(restrictedAccess()){
