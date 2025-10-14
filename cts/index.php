@@ -63,7 +63,7 @@ function GetPassage($urn){
 	require('../db_getPassage_restr.php');
 	global $dbtablename;
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPassage xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPassage</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
-	$urnarr = checkurn($urn);
+	$urnarr = explode(":",$urn);
 	$res = $res."<urn>".$urn."</urn><passage>";
 	if($dbtablename == "urndata"){
 		if (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn,isset($_GET["deletexml"]),$nl);}
@@ -113,8 +113,7 @@ function GetLabel($urn){
 function GetValidReff($urn,$level){
 	require('../db_getValidReff.php');
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetValidReff xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetValidReff</requestName><requestUrn>'.$urn.'</requestUrn></request><reply><reff>';
-	$urn = htmlspecialchars($_GET["urn"]);
-	$urnarr = checkurn($urn);
+	$urnarr = explode(":",$urn);
 	if ($urnarr !== false){
 		if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",validreff($urn,true,$level));}
 		else {$sqlreply = explode("\n",validreff($urn,false,$level));};
@@ -132,8 +131,7 @@ function GetValidReff($urn,$level){
 function GetPrevNextUrn($urn){
 	global $sql;
 	require('../db_getPrevNextUrn.php');
-	$urn = htmlspecialchars($_GET["urn"]);
-	$urnarr = checkurn($urn);
+	$urnarr = explode(":",$urn);
 	if ($urnarr !== false){
 		if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",prevnexturn($urn,true));}
 		else {$sqlreply = explode("\n",prevnexturn($urn,false));};
@@ -154,8 +152,7 @@ function GetPrevNextUrn($urn){
 function GetFirstUrn($urn){
 	global $sql;
 	require('../db_getFirstUrn.php');
-	$urn = htmlspecialchars($_GET["urn"]);
-	$urnarr = checkurn($urn);
+	$urnarr = explode(":",$urn);
 	if ($urnarr !== false){
 		if (strlen($urnarr[4]) == 0){$sqlreply = firsturn($urn,true);}
 		else {$sqlreply = firsturn($urn,false);};
@@ -171,12 +168,13 @@ function GetFirstUrn($urn){
 }
 
 Header('Content-type: text/xml');
+
 if (! isset($_GET["request"])){echo "";exit();}
 $request = htmlspecialchars($_GET["request"]);
 if ($request == "GetCapabilities" && isset($_GET["smallinventory"])){print(getShortCapabilities());exit();}
 if ($request == "GetCapabilities"){print(getCapabilities());exit();}
 if (! isset($_GET["urn"])){echo "";exit();}
-$urn = checkurn($_GET['urn']),'xml');
+$urn = checkurn($_GET["urn"],'');
 
 if ($request == "GetPassage"){print(GetPassage($urn));exit();}
 if ($request == "GetPassagePlus"){print(GetPassagePlus($urn));exit();}
