@@ -9,17 +9,10 @@ require('../db_getPrevNextUrn.php');
 
 $urn = trim(htmlspecialchars($_GET["urn"]));
 
-$urnarr = checkurn($urn);
-if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){$result = prevnexturn($urn,true);}
-	else {$result = prevnexturn($urn,false);};
-	if($result == false){
-		require('../errormsg/invalidurn.php');
-	}else{
-		echo($result);
-	};
-}
-else{
-	require('../errormsg/invalidurn.php');
-}
+$urn = checkurn($urn,'');
+$urnarr = explode(":",$urn);
+
+if (strlen($urnarr[4]) == 0){echo(prevnexturn($urn,true));}
+else {echo(prevnexturn($urn,false));};
+
 ?>

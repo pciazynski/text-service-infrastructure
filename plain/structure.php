@@ -21,11 +21,11 @@ function getDocStruct($urn,$isWorkurn){
 	return trim($res);
 }
 $urn = trim(htmlspecialchars($_GET["urn"]));
+$urn = checkurn($urn,'');
+$urnarr = explode(":",$urn);
 
-$urnarr = checkurn($urn);
-if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){echo getDocStruct($urn,true);}
-	elseif (strpos ($urnarr[4],"-")){echo "";}
-	else {echo getDocStruct($urn,false);};
-}
+if (strlen($urnarr[4]) == 0){echo getDocStruct($urn,true);}
+elseif (strpos ($urnarr[4],"-")){echo "";}
+else {echo getDocStruct($urn,false);};
+
 ?>

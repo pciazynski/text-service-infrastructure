@@ -6,7 +6,7 @@ Creative Commons CC-BY-SA
 
 ## Citation ##
 
-Jochen Tiepmar. Canonical Text Service Infrastructure. https://urncts.eu
+Jochen Tiepmar. 2025. Canonical Text Service Infrastructure. https://urncts.eu
 
 # References
 

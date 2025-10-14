@@ -10,9 +10,9 @@ $urn = trim(htmlspecialchars($_GET["urn"]));
 
 (isset($_GET["level"])) ? $level = trim(htmlspecialchars($_GET["level"])) : $level = -1;
 
-$urnarr = checkurn($urn);
-if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){echo validreff($urn,true,$level);}
-	else {echo validreff($urn,false,$level);};
-}
+$urn = checkurn($urn,'');
+$urnarr = explode(":",$urn);
+if (strlen($urnarr[4]) == 0){echo validreff($urn,true,$level);}
+else {echo validreff($urn,false,$level);};
+
 ?>

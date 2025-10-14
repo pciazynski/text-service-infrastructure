@@ -17,7 +17,7 @@ function autocomplete($urn){
 			$dbtablename = "urndata";
 		}
 	}
-	return trim($res.$urnarr[4]);
+	if (strlen($res)>0){return trim($res.$urnarr[4]);}else{return "";}
 }
 
 function restrictedAccess(){
@@ -34,10 +34,32 @@ function deletexml($res){
 	return $res;
 }
 
-function checkurn($urn){
-	if(strpos($urn,"urn:cts") !== 0){return false;}
-	$urn = autocomplete($urn);
-	$urnarr = explode(":",$urn);
-	return $urnarr;
+function urnexists($urn){
+	global $sql;
+	global $binary;
+	global $dbtablename;
+	$query = 'SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' "'.$urn.'" LIMIT 1';
+	$res = "";
+	foreach ($sql->query($query) as $row) {
+		$res = $row['urnid'];
+	}
+	return (strlen($res)>0);
 }
+
+function checkurn($urn,$format){
+	if(strpos($urn,"urn:cts") !== 0){require('../errormsg/'.$format.'invalidurnsyntax.php');}
+	$urn = autocomplete($urn);
+	if(strlen($urn) == 0){require('../errormsg/'.$format.'invalidurn.php');}
+	$urnarr = explode(":",$urn);
+	if(strpos ($urnarr[4],"-")){
+		$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
+		$psgarr = explode("-",$urnarr[4]);
+		if(urnexists($workurn.$psgarr[0])==0){require('../errormsg/'.$format.'invalidurn.php');}
+		if(urnexists($workurn.$psgarr[1])==0){require('../errormsg/'.$format.'invalidurn.php');}
+	}else{
+		if(urnexists($urn)==0){require('../errormsg/'.$format.'invalidurn.php');}
+	}
+	return $urn;
+}
+
 ?>

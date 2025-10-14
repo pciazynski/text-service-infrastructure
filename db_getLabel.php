@@ -37,21 +37,19 @@ function passagelabel($urn){
 }
 
 function label($urn){
-	$urnarr = checkurn($urn);
-	if ($urnarr !== false){
-		if (strlen($urnarr[4]) == 0){return trim(worklabel($urn));}
-		else {
-			$psgurnarr = explode("-",$urnarr[4]);
-			if(count($psgurnarr) == 2){
-				$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
-				return trim(worklabel($workurn).": ".passagelabel($workurn.$psgurnarr[0])." to ".passagelabel($workurn.$psgurnarr[1]));
-			}
-			else{
-				$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
-				return trim(worklabel($workurn).":".passagelabel($urn));
-			}
-		};
-	}
+	$urnarr = explode(":",$urn);
+	if (strlen($urnarr[4]) == 0){return trim(worklabel($urn));}
+	else {
+		$psgurnarr = explode("-",$urnarr[4]);
+		if(count($psgurnarr) == 2){
+			$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
+			return trim(worklabel($workurn).": ".passagelabel($workurn.$psgurnarr[0])." to ".passagelabel($workurn.$psgurnarr[1]));
+		}
+		else{
+			$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
+			return trim(worklabel($workurn).":".passagelabel($urn));
+		}
+	};
 
 }
 ?>

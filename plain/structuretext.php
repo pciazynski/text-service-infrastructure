@@ -32,20 +32,19 @@ function getDocStrct($urn){
 	return trim($res,"\n");
 }
 $urn = trim(htmlspecialchars($_GET["urn"]));
-$urnarr = checkurn($urn);
+$urn = checkurn($urn,'');
 
-if ($urnarr !== false){
-	if($dbtablename == "urndata"){
+if($dbtablename == "urndata"){
+	echo getDocStrct($urn);
+}
+else{
+	if(restrictedAccess()){
 		echo getDocStrct($urn);
 	}
 	else{
-		if(restrictedAccess()){
-			echo getDocStrct($urn);
-		}
-		else{
-			require('../errormsg/access.php');
-		}
+		require('../errormsg/access.php');
 	}
+
 }
 
 ?>

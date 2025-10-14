@@ -6,14 +6,10 @@ require('../config.php');
 # Returns URNs with the requested lang value.
 # Params: lang, urn
 if (isset($_GET["urn"]) and isset($_GET["lang"])){
-	$urn = htmlspecialchars($_GET["urn"]);
-	$lang = trim(htmlspecialchars($_GET["lang"]));
-
 	global $dbtablename;
-
+	$lang = trim(htmlspecialchars($_GET["lang"]));
 	$urn = trim(htmlspecialchars($_GET["urn"]));
-	$urnarr = checkurn($urn);
-
+	$urn = checkurn($urn,'');
 	$query = "SELECT urn,lang FROM ".$dbtablename." WHERE lang LIKE '%".$lang."%' AND urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
 	$res = "";
 	$nl = "\n";

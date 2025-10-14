@@ -7,5 +7,9 @@ require('../db_getLabel.php');
 # Returns the label for a specified URN. The result is based on db_GetLabel.php
 # Params: urn
 
-echo label(trim(htmlspecialchars($_GET["urn"])));
+if(isset($_GET["urn"])){
+	$urn = trim(htmlspecialchars($_GET["urn"]));
+	$urn = checkurn($urn,'');
+	echo label($urn);
+}
 ?>
