@@ -5,11 +5,10 @@ require('../config.php');
 require('../db_getPassage_restr.php');
 
 
-$urn = trim(htmlspecialchars($_GET["urn"]));
+$urn = checkurn($_GET['urn']),'');
 $wordbag = array();
 $psg = "";
 
-$urn = checkurn($urn,'');
 $urnarr = explode(":",$urn);
 
 if (strlen($urnarr[4]) == 0){

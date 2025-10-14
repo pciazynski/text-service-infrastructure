@@ -5,7 +5,7 @@ require('../config.php');
 require('../stopwords.php');
 require('../db_getPassage_restr.php');
 
-$urn = trim(htmlspecialchars($_GET["urn"]));
+$urn = checkurn($_GET['urn']),'');
 $wordbag = array();
 $entitybag = array();
 $psg="";

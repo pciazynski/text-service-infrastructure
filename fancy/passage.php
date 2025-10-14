@@ -4,12 +4,8 @@ require('../functions.php');
 require('../config.php');
 require('db_getFancyPassage.php');
 
-
-$urn = trim(htmlspecialchars($_GET["urn"]));
+$urn = checkurn($_GET["urn"]),'');
 $deletexml = isset($_GET["deletexml"]);
 $nl = isset($_GET["nl"]);
-$urnarr = checkurn($urn);
-if ($urnarr !== false){
-	echo passage($urn);
-}
+echo passage($urn);
 ?>

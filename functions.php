@@ -47,6 +47,7 @@ function urnexists($urn){
 }
 
 function checkurn($urn,$format){
+	$urn = trim(htmlspecialchars($urn);
 	if(strpos($urn,"urn:cts") !== 0){require('../errormsg/'.$format.'invalidurnsyntax.php');}
 	$urn = autocomplete($urn);
 	if(strlen($urn) == 0){require('../errormsg/'.$format.'invalidurn.php');}

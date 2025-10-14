@@ -4,12 +4,11 @@ require('../functions.php');
 require('../config.php');
 require('../db_getPassage_restr.php');
 
-$urn = trim(htmlspecialchars($_GET["urn"]));
 $ngramgoalsize = trim(htmlspecialchars($_GET["n"]));
-$rs = array();
 
-if ($ngramgoalsize>=2 and (!$restricteddocuments or $ngramgoalsize<10)){
-	$urn = checkurn($urn,'');
+if (isset($_GET['urn']) and $ngramgoalsize>=2 and (!$restricteddocuments or $ngramgoalsize<10)){
+	$rs = array();
+	$urn = checkurn($_GET['urn']),'');
 	$urnarr = explode(":",$urn);
 	if($dbtablename == "urndata"){
 		if (strlen($urnarr[4]) == 0){$psg = passage($urn, $deleteXML=true);}

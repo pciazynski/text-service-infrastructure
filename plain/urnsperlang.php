@@ -8,8 +8,7 @@ require('../config.php');
 if (isset($_GET["urn"]) and isset($_GET["lang"])){
 	global $dbtablename;
 	$lang = trim(htmlspecialchars($_GET["lang"]));
-	$urn = trim(htmlspecialchars($_GET["urn"]));
-	$urn = checkurn($urn,'');
+	$urn = checkurn($_GET['urn']),'');
 	$query = "SELECT urn,lang FROM ".$dbtablename." WHERE lang LIKE '%".$lang."%' AND urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
 	$res = "";
 	$nl = "\n";

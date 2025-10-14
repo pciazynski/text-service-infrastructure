@@ -4,8 +4,7 @@ require('../functions.php');
 require('../config.php');
 
 if (isset($_GET["urn"]) && isset($_GET["snippet"])){
-	$urn = trim(htmlspecialchars($_GET["urn"]));
-	$urn = checkurn($urn,'');
+	$urn = checkurn($_GET['urn']),'');
 	$snippet =  trim(htmlspecialchars($_GET['snippet']));
 	$query = "SELECT urn, text, text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' AND text IS NOT NULL ORDER BY urnid";
 	$res = "";

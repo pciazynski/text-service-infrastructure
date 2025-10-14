@@ -4,12 +4,11 @@ require('../functions.php');
 require('../config.php');
 require('../db_getPassage_restr.php');
 
-$urn = trim(htmlspecialchars($_GET["urn"]));
+$urn = checkurn($_GET['urn']),'');
+$urnarr = explode(":",$urn);
 $psg="";
 
 (isset($_GET['alignpart'])) ? $alignpart = min($_GET['alignpart'],3) : $alignpart = 3;
-$urn = checkurn($urn,'');
-$urnarr = explode(":",$urn);
 $urndocpartarr = explode(".",$urnarr[3]);
 $urndocpartarr[$alignpart] = '%';
 $urnwc = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urndocpartarr[0].'.'.$urndocpartarr[1].'.'.$urndocpartarr[2].'.'.$urndocpartarr[3].':';

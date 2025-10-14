@@ -56,8 +56,7 @@ function getDocStrct($urn){
 
 	return trim($res);
 }
-$urn = trim(htmlspecialchars($_GET["urn"]));
-$urn = checkurn($urn,'');
+$urn = checkurn($_GET['urn']),'');
 
 if($dbtablename == "urndata"){
 	echo getDocStrct($urn);

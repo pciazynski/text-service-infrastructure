@@ -24,7 +24,7 @@ function textsearch($urn, $snippet){
 }
 
 if (isset($_GET["snippet"])){
-	$urn = trim(htmlspecialchars($_GET["urn"]));
+	$urn = checkurn($_GET['urn']),'');
 	$snippet = trim(urldecode($_GET["snippet"]));
 	$urnarr = checkurn($urn);
 

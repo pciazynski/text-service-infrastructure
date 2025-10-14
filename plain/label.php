@@ -8,8 +8,7 @@ require('../db_getLabel.php');
 # Params: urn
 
 if(isset($_GET["urn"])){
-	$urn = trim(htmlspecialchars($_GET["urn"]));
-	$urn = checkurn($urn,'');
+	$urn = checkurn($_GET['urn']),'');
 	echo label($urn);
 }
 ?>

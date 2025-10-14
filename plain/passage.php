@@ -4,10 +4,9 @@ require('../functions.php');
 require('../config.php');
 require('../db_getPassage_restr.php');
 
-$urn = trim(htmlspecialchars($_GET["urn"]));
 $deletexml = isset($_GET["deletexml"]);
 $nl = isset($_GET["nl"]);
-$urn = checkurn($urn,'');
+$urn = checkurn($_GET['urn']),'');
 $urnarr = explode(":",$urn);
 if($dbtablename == "urndata"){
 	if (strpos ($urnarr[4],"-")){echo spanningPassage($urn,$deletexml,$nl);}

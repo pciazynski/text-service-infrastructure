@@ -20,8 +20,7 @@ function getDocStruct($urn,$isWorkurn){
 	}
 	return trim($res);
 }
-$urn = trim(htmlspecialchars($_GET["urn"]));
-$urn = checkurn($urn,'');
+$urn = checkurn($_GET['urn']),'');
 $urnarr = explode(":",$urn);
 
 if (strlen($urnarr[4]) == 0){echo getDocStruct($urn,true);}

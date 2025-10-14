@@ -23,19 +23,17 @@ function passage($urn){
 	return $res;
 }
 if(isset($_GET['urn'])){
-	$urnarr = checkurn($_GET['urn']);
-	
-	if ($urnarr !== false){
-		if($dbtablename == "urndata"){
+	$urn = checkurn($_GET['urn']),'');
+	$urnarr = explode(":",$urn);
+	if($dbtablename == "urndata"){
+		print(passage($_GET['urn']));
+	}
+	else{
+		if(restrictedAccess()){
 			print(passage($_GET['urn']));
 		}
 		else{
-			if(restrictedAccess()){
-				print(passage($_GET['urn']));
-			}
-			else{
-				require('../errormsg/access.php');
-			}
+			require('../errormsg/access.php');
 		}
 	}
 }
