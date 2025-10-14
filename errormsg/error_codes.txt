@@ -1,0 +1,7 @@
+1	Request missing one or more required parameters
+2	Invalid URN syntax
+3	Syntactically valid URN refers in invalid value
+4	Invalid value for level parameter in GetValidReff request
+5	Invalid value for context parameter in GetPassage or GetPassagePlus request
+6	Invalid request name:[request]
+7	Restricted Access

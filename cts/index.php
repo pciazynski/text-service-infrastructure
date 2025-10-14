@@ -132,10 +132,8 @@ function GetPrevNextUrn($urn){
 	global $sql;
 	require('../db_getPrevNextUrn.php');
 	$urnarr = explode(":",$urn);
-	if ($urnarr !== false){
-		if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",prevnexturn($urn,true));}
-		else {$sqlreply = explode("\n",prevnexturn($urn,false));};
-	}
+	if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",prevnexturn($urn,true));}
+	else {$sqlreply = explode("\n",prevnexturn($urn,false));};
 	if (count($sqlreply)>1){
 		$res = '<?xml version="1.0" encoding="UTF-8"?><GetPrevNextUrn xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPrevNextUrn</requestName><requestUrn>'.$urn.'</requestUrn></request><reply><prevnext>';
 		if($sqlreply[0] == "NULL"){$res .= "<prev><urn></urn></prev>";}
@@ -144,8 +142,6 @@ function GetPrevNextUrn($urn){
 		else{$res .= "<next><urn>".$sqlreply[1]."</urn></next>";}
 		$res .= "</prevnext></reply></GetPrevNextUrn>";
 		return $res;
-	}else{
-		require('../errormsg/invalidurn.php');
 	}
 }
 
@@ -153,17 +149,13 @@ function GetFirstUrn($urn){
 	global $sql;
 	require('../db_getFirstUrn.php');
 	$urnarr = explode(":",$urn);
-	if ($urnarr !== false){
-		if (strlen($urnarr[4]) == 0){$sqlreply = firsturn($urn,true);}
-		else {$sqlreply = firsturn($urn,false);};
-	}
+	if (strlen($urnarr[4]) == 0){$sqlreply = firsturn($urn,true);}
+	else {$sqlreply = firsturn($urn,false);};
 	if (strlen($sqlreply)>1){
 		$res = '<?xml version="1.0" encoding="UTF-8"?><GetFirstUrn xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetFirstUrn</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 		$res .= "<urn>".$sqlreply."</urn>";
 		$res .= "</reply></GetFirstUrn>";
 		return $res;
-	}else{
-		require('../errormsg/invalidurn.php');
 	}
 }
 
@@ -173,8 +165,8 @@ if (! isset($_GET["request"])){echo "";exit();}
 $request = htmlspecialchars($_GET["request"]);
 if ($request == "GetCapabilities" && isset($_GET["smallinventory"])){print(getShortCapabilities());exit();}
 if ($request == "GetCapabilities"){print(getCapabilities());exit();}
-if (! isset($_GET["urn"])){echo "";exit();}
-$urn = checkurn($_GET["urn"],'');
+if (! isset($_GET["urn"])){require('../errormsg/xmlmissingparameters.php');;exit();}
+$urn = checkurn($_GET["urn"],'xml');
 
 if ($request == "GetPassage"){print(GetPassage($urn));exit();}
 if ($request == "GetPassagePlus"){print(GetPassagePlus($urn));exit();}
@@ -184,6 +176,6 @@ if ($request == "GetFirstUrn"){print(GetFirstUrn($urn));exit();}
 $level = -1;
 if (isset($_GET["level"])){$level = $_GET["level"];}
 if ($request == "GetValidReff"){print(GetValidReff($urn, $level));exit();}
-require('../errormsg/xml_invalidrequest.php');
+require('../errormsg/xmlinvalidrequest.php');
 
 ?>

@@ -1,6 +1,6 @@
 <?php
-	header('Content-Type: text/plain');
-	echo "Error code 3: Invalid URN reference: ".$_GET['urn'];
-	exit();
+header('Content-Type: text/plain');
+echo('Error code 3: Syntactically valid URN refers in invalid value: '.$_GET['urn']);
+exit();
 ?>
 
