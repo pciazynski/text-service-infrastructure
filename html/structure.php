@@ -19,11 +19,10 @@ function getDocStrct($urn,$isWorkurn){
 }
 $urn = trim(htmlspecialchars($_GET["urn"]));
 
-$urnarr = checkurn($urn);
-if ($urnarr !== false){
-	if (strlen($urnarr[4]) == 0){echo getDocStrct($urn,true);}
-	elseif (strpos ($urnarr[4],"-")){echo "";}
-	else {echo getDocStrct($urn,false);};
-}
+$urn = checkurn($urn,'');
+$urnarr = explode(":",$urn);
+if (strlen($urnarr[4]) == 0){echo getDocStrct($urn,true);}
+elseif (strpos ($urnarr[4],"-")){echo "";}
+else {echo getDocStrct($urn,false);};
 
 ?>
