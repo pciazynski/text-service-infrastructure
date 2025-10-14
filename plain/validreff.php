@@ -6,7 +6,7 @@ require('../db_getValidReff.php');
 
 # Returns child URNs as specified by GetValidReff but without XML.
 # Params: urn, (level)
-$urn = checkurn($_GET['urn']),'');
+$urn = checkurn($_GET['urn'],'');
 $urnarr = explode(":",$urn);
 
 (isset($_GET["level"])) ? $level = trim(htmlspecialchars($_GET["level"])) : $level = -1;

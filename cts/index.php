@@ -114,18 +114,13 @@ function GetValidReff($urn,$level){
 	require('../db_getValidReff.php');
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetValidReff xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetValidReff</requestName><requestUrn>'.$urn.'</requestUrn></request><reply><reff>';
 	$urnarr = explode(":",$urn);
-	if ($urnarr !== false){
-		if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",validreff($urn,true,$level));}
-		else {$sqlreply = explode("\n",validreff($urn,false,$level));};
-		foreach ($sqlreply as $row) {
-			$res .= "<urn>".$row."</urn>";
-		}
-		$res = $res."</reff></reply></GetValidReff>";
-		return $res;
+	if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",validreff($urn,true,$level));}
+	else {$sqlreply = explode("\n",validreff($urn,false,$level));};
+	foreach ($sqlreply as $row) {
+		$res .= "<urn>".$row."</urn>";
 	}
-	else{
-		require('../errormsg/xml_invalidurn.php');
-	}
+	$res = $res."</reff></reply></GetValidReff>";
+	return $res;
 }
 
 function GetPrevNextUrn($urn){
@@ -161,21 +156,20 @@ function GetFirstUrn($urn){
 
 Header('Content-type: text/xml');
 
-if (! isset($_GET["request"])){echo "";exit();}
 $request = htmlspecialchars($_GET["request"]);
-if ($request == "GetCapabilities" && isset($_GET["smallinventory"])){print(getShortCapabilities());exit();}
-if ($request == "GetCapabilities"){print(getCapabilities());exit();}
-if (! isset($_GET["urn"])){require('../errormsg/xmlmissingparameters.php');;exit();}
-$urn = checkurn($_GET["urn"],'xml');
+switch($request){
+	case "GetCapabilities":
+	(isset($_GET["smallinventory"])) ? print(getShortCapabilities()): print(getCapabilities());break;
+	case "GetPassage" : $urn = checkurn($_GET["urn"],'xml');print(GetPassage($urn));break;
+	case "GetPassagePlus" : $urn = checkurn($_GET["urn"],'xml');print(GetPassagePlus($urn));break;
+	case "GetLabel" : $urn = checkurn($_GET["urn"],'xml');print(GetLabel($urn));break;
+	case "GetFirstUrn" : $urn = checkurn($_GET["urn"],'xml');print(GetFirstUrn($urn));break;
+	case "GetPrevNextUrn" : $urn = checkurn($_GET["urn"],'xml');print(GetPrevNextUrn($urn));break;
+	case "GetValidReff" : 
+	$urn = checkurn($_GET["urn"],'xml');
+	(isset($_GET["level"])) ? print(GetValidReff($urn, $_GET["level"])):print(GetValidReff($urn, -1));break;
+	default:require('../errormsg/xmlinvalidrequest.php');
+}
 
-if ($request == "GetPassage"){print(GetPassage($urn));exit();}
-if ($request == "GetPassagePlus"){print(GetPassagePlus($urn));exit();}
-if ($request == "GetLabel"){print(GetLabel($urn));exit();}
-if ($request == "GetPrevNextUrn"){print(GetPrevNextUrn($urn));exit();}
-if ($request == "GetFirstUrn"){print(GetFirstUrn($urn));exit();}
-$level = -1;
-if (isset($_GET["level"])){$level = $_GET["level"];}
-if ($request == "GetValidReff"){print(GetValidReff($urn, $level));exit();}
-require('../errormsg/xmlinvalidrequest.php');
 
 ?>

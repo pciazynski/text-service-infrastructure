@@ -23,7 +23,7 @@ function passage($urn){
 	return $res;
 }
 if(isset($_GET['urn'])){
-	$urn = checkurn($_GET['urn']),'');
+	$urn = checkurn($_GET['urn'],'');
 	$urnarr = explode(":",$urn);
 	if($dbtablename == "urndata"){
 		print(passage($_GET['urn']));
