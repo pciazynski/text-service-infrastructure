@@ -4,11 +4,9 @@ require('../functions.php');
 require('../config.php');
 require('../db_getPrevNextUrn.php');
 
-
-$urn = htmlspecialchars($_GET["urn"]);
-
-$urn = checkurn($urn,'');
+$urn = checkurn($_GET['urn']),'');
 $urnarr = explode(":",$urn);
+
 if (strlen($urnarr[4]) == 0){$arr = explode("\n",prevnexturn($urn,true));}
 else {$arr = explode("\n",prevnexturn($urn,false));};
 

@@ -32,7 +32,7 @@ function ebookeditions(){
 
 
 if (isset($_GET["urn"])){
-	$urn = trim(htmlspecialchars($_GET["urn"]));
+	$urn = checkurn($_GET['urn']),'');
 	$html = '<!DOCTYPE html><link rel="stylesheet" href="ebook.css">';
 	$html.=passage($urn);
 	
