@@ -23,7 +23,7 @@
 	}
 
 	rawFile = new XMLHttpRequest();
-	rawFile.open("GET", "../plain/editions.php", false);
+	rawFile.open("GET", "../plain/editionsslim.php", false);
 	rawFile.onreadystatechange = function (){
 		if(rawFile.readyState === 4){
 			if(rawFile.status === 200 || rawFile.status == 0)
@@ -39,11 +39,9 @@
 	date.push(ns)
 	parents.push("")
 	var included = []
-	sep = "\t"
 	
 	for (i = 0; i < data_arr.length; i++) {
-		var linearr = data_arr[i].split(sep)
-		var urnarr = linearr[0].split(":")
+		var urnarr = data_arr[i].split(":")
 		var docurnarr = urnarr[3].split(".")
 		var urnpart = ns
 		var oldurn = ns
