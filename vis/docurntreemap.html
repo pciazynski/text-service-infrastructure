@@ -38,6 +38,7 @@
 	var ns = "urn:cts:"+data_arr[0].split(":")[2]+":"
 	date.push(ns)
 	parents.push("")
+	parentskeys = []
 	var included = []
 	
 	for (i = 0; i < data_arr.length; i++) {
@@ -50,6 +51,7 @@
 			if (included[urnpart] == null){
 				date.push(urnpart)
 				parents.push(oldurn)
+				parentskeys[oldurn] = 1
 				included[urnpart]=1
 			}
 			oldurn += docurnarr[j]+".";
@@ -67,6 +69,23 @@
 	};
 
 	Plotly.newPlot('myDiv', data, layout);
+	var myPlot = document.getElementById('myDiv')
+	myPlot.on("plotly_click", function(data) {
+		var tmplabel = data.points[0].label
+		if (parentskeys[tmplabel] == undefined){
+			rawFile = new XMLHttpRequest();
+			rawFile.open("GET", "../plain/passage.php?urn="+tmplabel, false);
+			rawFile.onreadystatechange = function (){
+				if(rawFile.readyState === 4){
+					if(rawFile.status === 200 || rawFile.status == 0)
+					{textstr = rawFile.responseText;}
+				}}
+			rawFile.send(null);
+			
+			alert(textstr);
+		}
+	});	
+
 
 </script>
 </body>
