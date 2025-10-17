@@ -29,7 +29,11 @@ function snippet($urn, $length){
 
 	foreach ($sql->query($query) as $row) {
 		if(strlen($res.$row['text'])>$length){continue;}
-		(isset($_GET['deletexml'])) ? $res = trim($res.$sep.deletexml($row['text'])).$sep; : $res = trim($res.$sep.$row['text']).$sep;;
+		if(isset($_GET['deletexml'])){
+			$res = trim($res.$sep.deletexml($row['text'])).$sep;}
+		else{
+			$res = trim($res.$sep.$row['text']).$sep;;
+		}
 		
 	}
 	return $res;
