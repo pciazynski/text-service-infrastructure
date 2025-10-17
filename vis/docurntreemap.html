@@ -74,7 +74,7 @@
 		var tmplabel = data.points[0].label
 		if (parentskeys[tmplabel] == undefined){
 			rawFile = new XMLHttpRequest();
-			rawFile.open("GET", "../plain/passage.php?urn="+tmplabel, false);
+			rawFile.open("GET", "../plain/textsnippet.php?deletexml&urn="+tmplabel, false);
 			rawFile.onreadystatechange = function (){
 				if(rawFile.readyState === 4){
 					if(rawFile.status === 200 || rawFile.status == 0)

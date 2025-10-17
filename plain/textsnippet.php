@@ -31,7 +31,7 @@ function snippet($urn, $length){
 		if(strlen($res.$row['text'])>$length){continue;}
 		$res = trim($res.$sep.$row['text']).$sep;
 	}
-	($deleteXML) ? $res = deletexml($res) : NULL;
+	(isset($_GET['deletexml'])) ? $res = deletexml($res) : NULL;
 	return $res;
 }
 
