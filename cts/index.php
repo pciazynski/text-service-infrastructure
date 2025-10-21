@@ -144,7 +144,7 @@ function GetLabel($urn){
 
 function GetValidReff($urn,$level){
 	require('../db_getValidReff.php');
-	$res = '<?xml version="1.0" encoding="UTF-8"?><GetValidReff xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetValidReff</requestName><requestUrn>'.$urn.'</requestUrn></request><reply><reff>';
+	$res = '<?xml version="1.0" encoding="UTF-8"?><GetValidReff xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetValidReff</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	$urnarr = explode(':',$urn);
 	if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",validreff($urn,true,$level));}
 	else {$sqlreply = explode("\n",validreff($urn,false,$level));};
@@ -153,7 +153,7 @@ function GetValidReff($urn,$level){
 	foreach ($sqlreply as $row) {
 		$res .= $urnop.$row.$urncl;
 	}
-	return $res.'</reff></reply></GetValidReff>';
+	return $res.'</reply></GetValidReff>';
 }
 
 function GetPrevNextUrn($urn){
