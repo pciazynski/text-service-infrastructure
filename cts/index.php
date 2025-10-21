@@ -1,5 +1,5 @@
 <?php
-#header('Content-Type: text/plain');
+Header('Content-type: text/xml');
 require('../config.php');
 require('../functions.php');
 
@@ -15,10 +15,9 @@ function getShortCapabilities(){
 	$edop = '<urn>';
 	$edcl = '</urn>';
 	foreach ($sql->query($query) as $row) {
-		$res = $res.$edop.$row[$urnrow].$edcl;
+		$res .= $edop.$row[$urnrow].$edcl;
 	}
-	$res = $res.'</reply></GetCapabilities>';
-	return $res;
+	return $res.'</reply></GetCapabilities>';
 }
 
 
@@ -44,17 +43,16 @@ function getCapabilities(){
 			$res=$res.'<textgroup><groupname>'.explode(':',$textgroup)[3].'</groupname>';
 		}
 		
-		$res = $res.'<edition urn="'.$row['urn'].'">';
-		$res = $res.'<title>'.htmlspecialchars($row['title'], ENT_XML1, 'UTF-8').'</title>';
-		$res = $res.'<license>'.$row['license'].'</license>';
-		$res = $res.'<source>'.htmlspecialchars($row['source'], ENT_XML1, 'UTF-8').$serverurl.'</source>';
-		$res = $res.'<publicationDate>'.$row['year'].'</publicationDate>';
-		$res = $res.'</edition>';
+		$res .= '<edition urn="'.$row['urn'].'">';
+		$res .= '<title>'.htmlspecialchars($row['title'], ENT_XML1, 'UTF-8').'</title>';
+		$res .= '<license>'.$row['license'].'</license>';
+		$res .= '<source>'.htmlspecialchars($row['source'], ENT_XML1, 'UTF-8').$serverurl.'</source>';
+		$res .= '<publicationDate>'.$row['year'].'</publicationDate>';
+		$res .= '</edition>';
 		$oldgroup=$textgroup;
 	}
-	if (!$isEmpty){$res = $res.'</textgroup>';}
-	$res = $res.'</TextInventory></reply></GetCapabilities>';
-	return $res;
+	if (!$isEmpty){$res .= '</textgroup>';}
+	return $res.'</TextInventory></reply></GetCapabilities>';
 }
 
 function GetPassage($urn){
@@ -62,7 +60,7 @@ function GetPassage($urn){
 	global $dbtablename;
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPassage xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPassage</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	$urnarr = explode(':',$urn);
-	$res = $res.'<urn>'.$urn.'</urn><passage>';
+	$res .= '<urn>'.$urn.'</urn><passage>';
 	if($dbtablename == 'urndata'){
 		if (strpos ($urnarr[4],'-')){$psg =  spanningPassage($urn,isset($_GET['deletexml']),$nl);}
 		else {$psg =  passage($urn,isset($_GET['deletexml']),$nl);};
@@ -86,11 +84,7 @@ function GetPassage($urn){
 			$psg = str_replace($hl,'<cts_highlight>'.$hl.'</cts_highlight>',$psg);
 		}
 	}
-	$res = $res.$psg;
-	$res = $res.'</passage></reply></GetPassage>';
-
-
-	return $res;
+	return $res.$psg.'</passage></reply></GetPassage>';
 }
 
 function GetPassagePlus($urn){
@@ -139,18 +133,13 @@ function GetPassagePlus($urn){
 		$res .= '</GetPrevNextUrn>';
 	}
 	
-	$res .= '<GetPassage>'.$psg.'</GetPassage>';
-	$res .= '</reply></GetPassagePlus>';
-	
-	return $res;
+	return $res.'<GetPassage>'.$psg.'</GetPassage></reply></GetPassagePlus>';
 }
 
 function GetLabel($urn){
 	require('../db_getLabel.php');
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetLabel xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetLabel</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
-	$res .= label($urn);
-	$res = $res.'</reply></GetLabel>';
-	return $res;
+	return $res.label($urn).'</reply></GetLabel>';
 }
 
 function GetValidReff($urn,$level){
@@ -164,8 +153,7 @@ function GetValidReff($urn,$level){
 	foreach ($sqlreply as $row) {
 		$res .= $urnop.$row.$urncl;
 	}
-	$res = $res.'</reff></reply></GetValidReff>';
-	return $res;
+	return $res.'</reff></reply></GetValidReff>';
 }
 
 function GetPrevNextUrn($urn){
@@ -180,8 +168,8 @@ function GetPrevNextUrn($urn){
 		else{$res .= '<prev><urn>'.$sqlreply[0].'</urn></prev>';}
 		if($sqlreply[1] == 'NULL'){$res .= '<next><urn></urn></next>';}
 		else{$res .= '<next><urn>'.$sqlreply[1].'</urn></next>';}
-		$res .= '</prevnext></reply></GetPrevNextUrn>';
-		return $res;
+
+		return $res.'</prevnext></reply></GetPrevNextUrn>';
 	}
 }
 
@@ -193,13 +181,9 @@ function GetFirstUrn($urn){
 	else {$sqlreply = firsturn($urn,false);};
 	if (strlen($sqlreply)>1){
 		$res = '<?xml version="1.0" encoding="UTF-8"?><GetFirstUrn xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetFirstUrn</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
-		$res .= '<urn>'.$sqlreply.'</urn>';
-		$res .= '</reply></GetFirstUrn>';
-		return $res;
+		return $res.'<urn>'.$sqlreply.'</urn></reply></GetFirstUrn>';
 	}
 }
-
-Header('Content-type: text/xml');
 
 $request = htmlspecialchars($_GET['request']);
 switch($request){
