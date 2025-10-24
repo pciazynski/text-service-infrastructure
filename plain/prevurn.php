@@ -18,18 +18,13 @@ function prevurn($urn){
 	foreach ($sql->query($query) as $row) {
 		$res = $res.$row['urnid'];
 	}
-	if($res==""){
-		return false;
-	}
 	
-	if (strlen($urnarr[4]) == 0){$query = 'SELECT urn FROM '.$dbtablename.' WHERE urnid = '.($res+$range);}
-	else{$query = 'SELECT urn FROM '.$dbtablename.' WHERE urnid BETWEEN '.($res-$range).' AND '.($res-1);}
-	if($res==0 | $isWorkurn){$res="NULL\n";}
-	else{$res = '';}
+	$query = 'SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' "'.$workurn.'%" AND urnid BETWEEN '.($res-$range).' AND '.($res-1);
+	$res = '';
+	$nl = "\n";
+	$resrow = 'urn';
 	foreach ($sql->query($query) as $row) {
-		$resurn = $row['urn'];
-		if(!str_contains($resurn,$workurn)){$resurn='NULL';}
-		$res = $res.$resurn."\n";
+		$res = $res.$row[$resrow].$nl;
 	}
 	return trim($res);
 }
