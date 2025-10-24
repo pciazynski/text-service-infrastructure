@@ -16,12 +16,14 @@ $urnwc = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urndocpartarr[0].'.'.$urn
 $query = 'SELECT urn from workdata WHERE restricted = 0 AND URN LIKE "'.$urnwc.'"';
 $tab = "\t";
 $nl = "\n";
-$res = "";
+$res = '';
+$urnrow = 'urn';
+$mode = 0;
+if (strpos ($urnarr[4],"-")){$mode = 1;}
+
 foreach ($sql->query($query) as $row) {
-	$urn = $row['urn'].$urnarr[4];
-	if (strlen($urnarr[4]) == 0){$psg = passage($urn, $deleteXML=true);}
-	elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
-	else {$psg = passage($urn, $deleteXML=true);};
+	$urn = $row[$urnrow].$urnarr[4];
+	($mode == 0) ? $psg = passage($urn, $deleteXML=true) : $psg = spanningPassage($urn, $deleteXML=true);
 	$res.= $urn.$tab.$psg.$nl;
 }
 
