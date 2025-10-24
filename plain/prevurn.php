@@ -6,7 +6,7 @@ require('../config.php');
 # Returns the next URN in document order or NULL if the specified URN if there is none. 
 # Params: urn
 
-function nexturn($urn){
+function prevurn($urn){
 	global $sql;
 	global $dbtablename;
 	global $binary;
@@ -23,7 +23,7 @@ function nexturn($urn){
 	}
 	
 	if (strlen($urnarr[4]) == 0){$query = 'SELECT urn FROM '.$dbtablename.' WHERE urnid = '.($res+$range);}
-	else{$query = 'SELECT urn FROM '.$dbtablename.' WHERE urnid BETWEEN '.($res+1).' AND '.($res+$range);}
+	else{$query = 'SELECT urn FROM '.$dbtablename.' WHERE urnid BETWEEN '.($res-$range).' AND '.($res-1);}
 	if($res==0 | $isWorkurn){$res="NULL\n";}
 	else{$res = '';}
 	foreach ($sql->query($query) as $row) {
@@ -35,6 +35,6 @@ function nexturn($urn){
 }
 
 $urn = checkurn($_GET['urn'],'');
-echo(nexturn($urn));
+echo(prevurn($urn));
 
 ?>
