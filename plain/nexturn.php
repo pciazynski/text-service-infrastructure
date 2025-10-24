@@ -19,7 +19,7 @@ function nexturn($urn){
 		$res = $res.$row['urnid'];
 	}
 	
-	$query = 'SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' "'.$workurn.'%" AND urnid BETWEEN '.($res-1).' AND '.($res-$range);
+	$query = 'SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' "'.$workurn.'%" AND urnid BETWEEN '.($res+1).' AND '.($res+$range);
 	$res = '';
 	$nl = "\n";
 	$resrow = 'urn';
