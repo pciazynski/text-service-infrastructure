@@ -31,7 +31,7 @@ function getCapabilities(){
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetCapabilities</requestName></request><reply><TextInventory tiversion="5.0.rc.1">';
 	$oldgroup = '';
 	$isEmpty=true;
-	$serverurl = ' retrieved via Canonical Text Service '.(empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]';
+	$serverurl = ' retrieved via Canonical Text Service '.(empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	$serverurl = str_replace('?request=GetCapabilities','',$serverurl);
 	foreach ($sql->query($query) as $row) {
 		$isEmpty=false;
@@ -46,6 +46,7 @@ function getCapabilities(){
 		$res .= '<edition urn="'.$row['urn'].'">';
 		$res .= '<title>'.htmlspecialchars($row['title'], ENT_XML1, 'UTF-8').'</title>';
 		$res .= '<license>'.$row['license'].'</license>';
+		$res .= '<author>'.$row['author'].'</author>';
 		$res .= '<source>'.htmlspecialchars($row['source'], ENT_XML1, 'UTF-8').$serverurl.'</source>';
 		$res .= '<publicationDate>'.$row['year'].'</publicationDate>';
 		$res .= '</edition>';

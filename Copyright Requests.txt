@@ -17,7 +17,9 @@ Without Copyright-Token
 	plain/urnlanguages
 	plain/firsturn(Any URN)
 	plain/validreff(Any URN)
-	plain/prevnextutn(Any URN)
+	plain/prevnexturn(Any URN)
+	plain/prevurn(Any URN)
+	plain/nexturn(Any URN)
 	plain/urnbylanguage
 	tm/bagofwords (Any URN)
 	tm/entities (Any URN)
