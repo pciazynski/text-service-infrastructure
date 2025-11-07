@@ -8,7 +8,6 @@
 <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
 <script>
 
-
 	function getQueryVariable(variable) {
 		var query = window.location.search.substring(1);
 		var vars = query.split("&");
@@ -22,12 +21,11 @@
 	}
 	var snippet = getQueryVariable("snippet")
 	var character = getQueryVariable("character")
-	if(snippet.length>0){param ="&snippet="+snippet}else{param=""}
-	if(character.length>0){param ="&character="+character}else{param=""}
+	if(snippet.length>0){param ="&snippet="+snippet}
+	else if(character.length>0){param ="&character="+character}
+		else{param=""}
 	
 	if(param.length>0){
-
-		
 		var watermark = function(){
 			today = new Date();
 			today = String(today.getDate()).padStart(2, '0') + '.' + String(today.getMonth() + 1).padStart(2, '0') + '.' + today.getFullYear();
@@ -42,7 +40,6 @@
 				showarrow: false
 			}]
 		}
-
 		var urn = getQueryVariable("urn")
 		var lc = getQueryVariable("lowercase")
 		if(lc.length>0){lc ="&lowercase"}else{lc=""}
