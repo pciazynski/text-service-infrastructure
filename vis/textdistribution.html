@@ -91,7 +91,21 @@
 			},
 			annotations:watermark()
 		};
-		myPlot = Plotly.newPlot('myDiv', data, layout);
+		Plotly.newPlot('myDiv', data, layout);
+		myPlot = document.getElementById('myDiv')
+		myPlot.on('plotly_click', function(data) {
+			urn=data.points[0].x;
+			textstr=""
+			rawFile = new XMLHttpRequest();
+			rawFile.open("GET", "../plain/passage.php?urn="+urn,false);
+			rawFile.onreadystatechange = function (){
+				if(rawFile.readyState === 4){
+					if(rawFile.status === 200 || rawFile.status == 0)
+					{textstr = rawFile.responseText;}
+				}}
+			rawFile.send(null);
+			alert(textstr)
+		});
 	}
 </script>
 </body>
