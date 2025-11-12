@@ -42,11 +42,13 @@
 		}
 		var urn = getQueryVariable("urn")
 		var lc = getQueryVariable("lowercase")
+		var deletexml = getQueryVariable("deletexml")
 		if(lc.length>0){lc ="&lowercase"}else{lc=""}
+		if(deletexml.length>0){deletexml ="&deletexml"}else{deletexml=""}
 
 		textstr=""
 		rawFile = new XMLHttpRequest();
-		rawFile.open("GET", "../plain/textdistribution.php?urn="+urn+param+lc, false);
+		rawFile.open("GET", "../plain/textdistribution.php?urn="+urn+param+lc+deletexml, false);
 		rawFile.onreadystatechange = function (){
 			if(rawFile.readyState === 4){
 				if(rawFile.status === 200 || rawFile.status == 0)
