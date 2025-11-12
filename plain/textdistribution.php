@@ -3,6 +3,7 @@ header('Content-Type: text/plain');
 require('../functions.php');
 require('../config.php');
 
+$deletexml = isset($_GET["deletexml"]);
 if (isset($_GET["urn"]) && isset($_GET["character"])){
 	$urn = checkurn($_GET['urn'],'');
 	$snippet =  trim(htmlspecialchars($_GET['character']));
@@ -11,7 +12,7 @@ if (isset($_GET["urn"]) && isset($_GET["character"])){
 	$tab = "\t";
 	$nl = "\n";
 	foreach ($sql->query($query) as $row){
-		$psg = deletexml($row['text']);
+		($deletexml) ? $psg = deletexml($row['text']):$psg = $row['text'];
 		if(isset($_GET['lowercase'])){
 			$snippet = strtolower($snippet);
 			($multibyte) ? $psg = mb_strtolower($psg,'UTF-8') : $psg = strtolower($psg);
@@ -31,7 +32,8 @@ else if (isset($_GET["urn"]) && isset($_GET["snippet"])){
 	$nl = "\n";
 	$sp = " ";
 	foreach ($sql->query($query) as $row){
-		$psg = $sp.str_replace($replacearr, $sp,deletexml($row['text'])).$sp;
+		($deletexml) ? $psg = deletexml($row['text']):$psg = $row['text'];
+		$psg = $sp.str_replace($replacearr, $sp,$psg).$sp;
 		if(isset($_GET['lowercase'])){
 			$snippet = strtolower($snippet);
 			($multibyte) ? $psg = mb_strtolower($psg,'UTF-8') : $psg = strtolower($psg);
