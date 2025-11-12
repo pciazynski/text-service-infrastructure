@@ -198,7 +198,7 @@ switch($request){
 	case 'GetValidReff' : 
 	$urn = checkurn($_GET['urn'],'xml');
 	(isset($_GET['level'])) ? print(GetValidReff($urn, $_GET['level'])):print(GetValidReff($urn, -1));break;
-	default:require('../errormsg/xmlinvalidrequest.php');
+	default:require('../errormsg/xml_invalidrequest.php');
 }
 
 
