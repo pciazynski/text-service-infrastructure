@@ -15,6 +15,16 @@ if ( isset($_GET["snippet"])){
 		$res = $res.$row['text'].$nl;
 	}
 	
+	#Not enough tokenized found -> untokenized.
+	if($i<$limit){
+		$limit = $limit - $i;
+		$query = "SELECT text FROM urndata WHERE text LIKE '%".$_GET["snippet"]."%' LIMIT ".$limit;
+		foreach ($sql->query($query) as $row){
+			$i = $i + 1;
+			$res = $res.$row['text'].$nl;
+		}
+	}
+	
 	#Less than 5 found and copyrighted documents exist
 	if($limit>5){
 		if($restricteddocuments){
@@ -22,7 +32,7 @@ if ( isset($_GET["snippet"])){
 			if($i<$limit){
 				$limit = $limit - $i;
 				if($limit>0){
-					$query = "SELECT text FROM urndatarestr WHERE text LIKE '% ".$_GET["snippet"]." %' ORDER BY text LIMIT ".$limit;
+					$query = "SELECT text FROM urndatarestr WHERE text LIKE '%".$_GET["snippet"]."%' ORDER BY text LIMIT ".$limit;
 					foreach ($sql->query($query) as $row){
 						$res = $res.$row['text'].$nl;
 					}
