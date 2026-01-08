@@ -1,9 +1,5 @@
 # README #
 
-## License ##
-
-Creative Commons CC-BY-SA
-
 ## Citation ##
 
 Jochen Tiepmar. 2025. Canonical Text Service Infrastructure. https://urncts.eu
