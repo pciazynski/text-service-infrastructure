@@ -46,7 +46,6 @@ function subPassage($urn,$deleteXML = false){
 	if ($deleteXML){
 		$res = deletexml($res);
 	}
-	
 	if(substr_count($res, $subpass)>=$subpassc){$res = $subpass;}else{$res="";}
 	return $res;
 }
@@ -153,6 +152,7 @@ function spanningPassage($urn,$deleteXML = false,$newlines = false){
 }
 
 function passage($urn,$deleteXML = false,$newlines = false){
+	if (str_contains($urn,"@")){return subPassage($urn,$deleteXML,$newlines);}
 	global $sql;
 	global $binary;
 	global $dbtablename;

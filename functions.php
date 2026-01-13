@@ -55,10 +55,18 @@ function checkurn($urn,$format){
 	if(strpos ($urnarr[4],"-")){
 		$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
 		$psgarr = explode("-",$urnarr[4]);
+		if(strpos ($psgarr[0],"@")){
+			$psgarr[0] = explode("@",$psgarr[0])[0];
+		}
+		if(strpos ($psgarr[1],"@")){
+			$psgarr[1] = explode("@",$psgarr[1])[0];
+		}
+
 		if(urnexists($workurn.$psgarr[0])==0){require('../errormsg/'.$format.'invalidurn.php');}
 		if(urnexists($workurn.$psgarr[1])==0){require('../errormsg/'.$format.'invalidurn.php');}
 	}else{
-		if(urnexists($urn)==0){require('../errormsg/'.$format.'invalidurn.php');}
+		(strpos ($urnarr[4],"@")) ? $testurn = explode("@",$urn)[0] : $testurn=$urn;
+		if(urnexists($testurn)==0){require('../errormsg/'.$format.'invalidurn.php');}
 	}
 	return $urn;
 }
