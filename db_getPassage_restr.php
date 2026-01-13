@@ -61,6 +61,33 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	$urnleftarr = explode("@",$workurn.$passurnarr[0]);
 	$urnrightarr = explode("@",$workurn.$passurnarr[1]);
 	
+	if($urnleftarr[0] === $urnrightarr[0]){
+		$psg = passage($urnleftarr[0]);
+		$passarr = explode($urnleftarr[1],$psg);
+		$subpassl = $urnleftarr[1];
+		$subpassarr = explode("[",$subpassl);
+		$subpassl = $subpassarr[0];
+
+		(count($subpassarr)==2) ? $subpasscl = rtrim($subpassarr[1],"]") : $subpasscl = 1;
+		array_splice($passarr,0,$subpasscl);
+		$psg = $subpassl.join($subpassl,$passarr);
+
+		$subpassr = $urnrightarr[1];
+		$subpassarr = explode("[",$subpassr);
+		$subpassr = $subpassarr[0];
+		(count($subpassarr)==2) ? $subpasscr = rtrim($subpassarr[1],"]") : $subpasscr = 1;
+		$passarr = explode($subpassr,$psg);
+		if($subpasscr<count($passarr)){
+			$psg = "";
+			for($i=0;$i<=$subpasscr-1;$i++){
+				$psg.=$passarr[$i].$subpassr;
+			}
+		}else{
+			return "";
+		}
+		
+		return $psg;
+	}
 	$passleft = "";
 	$passmiddle = "";
 	$passright = "";
