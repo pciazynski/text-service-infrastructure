@@ -68,6 +68,7 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	$queryright = "SELECT text,urnid FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urnrightarr[0].".%' OR urn LIKE ".$binary." '".$urnrightarr[0]."' ORDER BY urnid";
 	$urnidleft = 0;
 	$urnidright = 0;
+	
 	$res = "";
 	($newlines) ? $sep = "\n" : $sep = " ";
 
@@ -81,7 +82,7 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 		$passright = $passright.$row['text'].$sep;
 		if($urnidright == 0){$urnidright = $row['urnid'];}
 	}
-	$querymiddle = "SELECT text FROM ".$dbtablename." WHERE urnid BETWEEN ". $urnidleft . " AND ".$urnidright." ORDER BY urnid";
+	$querymiddle = "SELECT text FROM ".$dbtablename." WHERE urnid BETWEEN ". $urnidleft . " AND ".($urnidright-1)." ORDER BY urnid";
 	foreach ($sql->query($querymiddle) as $row) {
 		$passmiddle = $passmiddle.$row['text'].$sep;
 	}
