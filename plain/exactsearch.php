@@ -3,6 +3,10 @@ header('Content-Type: text/plain');
 
 require('../config.php');
 require('../functions.php');
+/*
+Returns only URNs, not the text. Text is returned by textsearch.php but limited to copyright free documents.
+*/
+
 
 function textsearch($urn, $snippet){
 	global $sql;
@@ -25,20 +29,18 @@ function textsearch($urn, $snippet){
 
 if (isset($_GET["snippet"])){
 	$urn = checkurn($_GET['urn'],'');
+	$urnarr = explode(":",$urn);
 	$snippet = trim(urldecode($_GET["snippet"]));
-	$urnarr = checkurn($urn);
-
-	if ($urnarr !== false){
-		if($dbtablename == "urndata"){
+	
+	if($dbtablename == "urndata"){
+		echo textsearch($urn,$snippet);
+	}
+	else{
+		if(restrictedAccess()){
 			echo textsearch($urn,$snippet);
 		}
 		else{
-			if(restrictedAccess()){
-				echo textsearch($urn,$snippet);
-			}
-			else{
-				require('../errormsg/access.php');
-			}
+			require('../errormsg/access.php');
 		}
 	}
 }
