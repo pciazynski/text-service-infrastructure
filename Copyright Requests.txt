@@ -1,27 +1,28 @@
 With Copyright-Token
-	plain/exactsearch (Any URN)
-	plain/passage (Any URN)
-	plain/structuretext (Static URN)
+	plain/exactsearch.php (Any URN)
+	plain/passage.php (Any URN)
+	plain/structuretext.php (Static URN)
 
 Without Copyright-Token
-	plain/editions
-	plain/editionsslim
-	plain/authors
-	plain/dates
-	plain/daterange
-	plain/urncount
-	plain/doccount
-	plain/anyurn
-	plain/anydocurn
-	plain/doclanguages
-	plain/urnlanguages
-	plain/firsturn(Any URN)
-	plain/validreff(Any URN)
-	plain/prevnexturn(Any URN)
-	plain/prevurn(Any URN)
-	plain/nexturn(Any URN)
-	plain/urnbylanguage
-	tm/bagofwords (Any URN)
-	tm/entities (Any URN)
-	tm/ngrams (Document URN, Any n)
-	tm/structurebagofwords (Static URN)
+	plain/punctuation.php
+	plain/editions.php
+	plain/editionsslim.php
+	plain/authors.php
+	plain/dates.php
+	plain/daterange.php
+	plain/urncount.php
+	plain/doccount.php
+	plain/anyurn.php
+	plain/anydocurn.php
+	plain/doclanguages.php
+	plain/urnlanguages.php
+	plain/firsturn.php(Any URN)
+	plain/validreff.php(Any URN)
+	plain/prevnexturn.php(Any URN)
+	plain/prevurn.php(Any URN)
+	plain/nexturn.php(Any URN)
+	plain/urnbylanguage.php
+	tm/bagofwords.php (Any URN)
+	tm/entities.php (Any URN)
+	tm/ngrams.php (Document URN, Any n)
+	tm/structurebagofwords.php (Static URN)
