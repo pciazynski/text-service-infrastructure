@@ -10,6 +10,7 @@ function ebookeditions(){
 	(isset($_GET['offset'])) ? $offset = max(0,intval($_GET['offset'])) : $offset = 0;
 
 	$stmt = $sql->prepare('SELECT urn,title,year,author FROM workdata ORDER BY urn LIMIT 10000 OFFSET '.$offset);
+	$stmt -> execute();
 	$res = '<ul>';
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res .= '<li><a href="?urn='.$row['urn'].'">';
