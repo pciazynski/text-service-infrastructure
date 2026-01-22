@@ -4,17 +4,18 @@ function autocomplete($urn){
 	global $binary;
 	global $dbtablename;
 
-	$urnarr = explode(":",$urn);
+	$urnarr = explode(':',$urn);
 	$testurn = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urnarr[3];
-	$query = "SELECT urn, restricted FROM workdata WHERE urn LIKE ".$binary." '".$testurn."%' LIMIT 1";
-	$res = "";
-	foreach ($sql->query($query) as $row) {
+	$res = '';
+	$stmt = $sql->prepare('SELECT urn, restricted FROM workdata WHERE urn LIKE '.$binary.' ? LIMIT 1');
+	$stmt->execute([$testurn.'%']);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $res.$row['urn'];
 		if ($row['restricted'] == 1){
-			$dbtablename = "urndatarestr";
+			$dbtablename = 'urndatarestr';
 		}
 		else{
-			$dbtablename = "urndata";
+			$dbtablename = 'urndata';
 		}
 	}
 	if (strlen($res)>0){return trim($res.$urnarr[4]);}else{return "";}
@@ -38,9 +39,10 @@ function urnexists($urn){
 	global $sql;
 	global $binary;
 	global $dbtablename;
-	$query = 'SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' "'.$urn.'" LIMIT 1';
-	$res = "";
-	foreach ($sql->query($query) as $row) {
+	$res = '';
+	$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? LIMIT 1');
+	$stmt->execute([$urn]);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $row['urnid'];
 	}
 	return (strlen($res)>0);
