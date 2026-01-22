@@ -14,7 +14,7 @@ $urndocpartarr[$alignpart] = '%';
 $urnwc = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urndocpartarr[0].'.'.$urndocpartarr[1].'.'.$urndocpartarr[2].'.'.$urndocpartarr[3].':';
 
 $stmt = $sql->prepare('SELECT urn from workdata WHERE restricted = 0 AND URN LIKE ?');
-$stmt->execute([urnwc]);
+$stmt->execute([$urnwc]);
 
 $tab = "\t";
 $nl = "\n";
