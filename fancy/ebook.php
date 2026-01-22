@@ -7,31 +7,25 @@ require('db_getFancyPassage.php');
 function ebookeditions(){
 	global $sql;
 	
-	$offset = 0;
-	if (isset($_GET['offset'])){
-		$offset = $_GET['offset'];
-	}
-	$query = "SELECT urn,title,year,author FROM workdata ORDER BY urn LIMIT 10000 OFFSET ".$offset;
-	$res = "<ul>";
-	$tab = "\t";
-	$nl = "\n";
-	$space=" ";
-	foreach ($sql->query($query) as $row) {
+	(isset($_GET['offset'])) ? $offset = max(0,intval($_GET['offset'])) : $offset = 0;
+
+	$stmt = $sql->prepare('SELECT urn,title,year,author FROM workdata ORDER BY urn LIMIT 10000 OFFSET '.$offset);
+	$res = '<ul>';
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res .= '<li><a href="?urn='.$row['urn'].'">';
 		$title = $row['title'];
 		if(trim(strlen($title))==0){
-			$title = str_replace("_"," ",explode(":",$row['urn'])[3]);
+			$title = str_replace('_',' ',explode(':',$row['urn'])[3]);
 			$title = ucwords($title);
 		}
 		$res .= $title;
 		$res .= '</a></li>';
 	}
-	$res = $res."</ul>";
+	$res = $res.'</ul>';
 	return $res;
 }
 
-
-if (isset($_GET["urn"])){
+if (isset($_GET['urn'])){
 	$urn = checkurn($_GET['urn'],'');
 	$html = '<!DOCTYPE html><link rel="stylesheet" href="ebook.css">';
 	$html.=passage($urn);
