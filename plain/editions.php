@@ -20,7 +20,7 @@ function editions(){
 		}
 	}
 	else{
-		if(isset($_GET['year'])){
+		if(isset($_GET['year']) and strlen($_GET['year'])>1){
 			$yearmin = $_GET['year'];
 			$yearmax  = $_GET['year'];
 		}
