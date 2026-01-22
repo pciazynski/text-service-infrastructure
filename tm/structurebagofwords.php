@@ -24,7 +24,7 @@ function bagofwords($text){
 	foreach(array_keys($wordbag) as $key){
 		$res.=$key.$colon.$wordbag[$key].$comma;
 	}
-	return rtrim($res,",");
+	return rtrim($res,',');
 }
 
 function getDocStrct($urn){
@@ -33,13 +33,15 @@ function getDocStrct($urn){
 	global $dbtablename;
 	global $multibyte;
 	global $replacearr;
-	$query = "SELECT urn,type,text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
+	$stmt = $sql->prepare('SELECT urn,type,text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
+
 	$res = "";
 	$tab = "\t";
 	$nl = "\n";
 	
 	if (isset($_GET["lowercase"])){
-		foreach ($sql->query($query) as $row) {
+		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 			$text = preg_replace('/<[^>]+>/', "", $row['text']);
 			$text = str_replace($replacearr, " ", $text);
 			($multibyte) ? $text = mb_strtolower($text,'UTF-8') : $text = strtolower($text);
@@ -47,9 +49,9 @@ function getDocStrct($urn){
 		}
 	}
 	else{
-		foreach ($sql->query($query) as $row) {
-			$text = preg_replace('/<[^>]+>/', "", $row['text']);
-			$text = str_replace($replacearr, " ", $text);
+		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+			$text = preg_replace('/<[^>]+>/', '', $row['text']);
+			$text = str_replace($replacearr, ' ', $text);
 			$res = $res.$row['urn'].$tab.$row['type'].$tab.bagofwords($text).$nl;
 		}
 	}
@@ -58,7 +60,7 @@ function getDocStrct($urn){
 }
 $urn = checkurn($_GET['urn'],'');
 
-if($dbtablename == "urndata"){
+if($dbtablename == 'urndata'){
 	echo getDocStrct($urn);
 }
 else{
