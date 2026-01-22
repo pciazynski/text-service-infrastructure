@@ -1,15 +1,15 @@
 <?php
 
-function firsturn($urn,$isWorkurn){
+function firsturn($urn){
 	global $sql;
 	global $binary;
 	global $dbtablename;
 
-	if($isWorkurn){$query = "SELECT urn FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' AND text IS NOT NULL ORDER BY urnid  LIMIT 1";}
-	else {$query = "SELECT urn FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%'  AND text IS NOT NULL ORDER BY urnid LIMIT 1";}
-	$res = "";
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['urn'];
+	$res = '';
+	$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND text IS NOT NULL LIMIT 1');
+	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$res .= $row['urn'];
 	}
 	return trim($res);
 }

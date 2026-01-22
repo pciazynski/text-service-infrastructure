@@ -10,7 +10,6 @@ require('../db_getFirstUrn.php');
 $urn = checkurn($_GET['urn'],'');
 $urnarr = explode(":",$urn);
 
-if (strlen($urnarr[4]) == 0){echo firsturn($urn,true);}
-else {echo firsturn($urn,false);};
+echo firsturn($urn);
 
 ?>
