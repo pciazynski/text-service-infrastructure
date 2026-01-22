@@ -13,14 +13,16 @@ function textsearch($urn, $snippet){
 	global $dbtablename;
 	global $binary;
 
-	(isset($_GET["limit"])) ? $limit = $_GET["limit"] : $limit = "10000";
-	(str_ends_with($urn,":")) ? : $urn = $urn.".";
-
-	$query = "SELECT urn FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' AND text LIKE '%".$snippet."%' ORDER BY urnid LIMIT ".$limit;
 	$res = "";
 	$nl = "\n";
-	
-	foreach ($sql->query($query) as $row) {
+	(str_ends_with($urn,":")) ? : $urn = $urn.".";
+
+	(isset($_GET["limit"])) ? $limit = intval($_GET["limit"]) : $limit = 10000;
+
+	$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND text LIKE ? ORDER BY urnid LIMIT '.$limit);
+	$stmt->execute([$urn.'%','%'.$snippet.'%']);
+
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $res.$row['urn'].$nl;
 	}
 	

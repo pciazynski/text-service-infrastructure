@@ -3,14 +3,15 @@ header('Content-Type: text/plain');
 require('../functions.php');
 require('../config.php');
 
-if ( isset($_GET["snippet"])){
-	(isset($_GET["limit"])) ? $limit = $_GET["limit"] : $limit = "10";
+if ( isset($_GET['snippet'])){
+	(isset($_GET['limit'])) ? $limit = max(0,intval($_GET['limit'])) : $limit = 10;
 	$token = trim(htmlspecialchars($_GET['token']));
-	$res = "";
+	$res = '';
 	$nl = "\n";
 	$i = 0;
-	$query = "SELECT text FROM urndata WHERE text LIKE '% ".$_GET["snippet"]." %' LIMIT ".$limit;
-	foreach ($sql->query($query) as $row){
+	$stmt = $sql->prepare('SELECT text FROM urndata WHERE text LIKE ? LIMIT '.$limit);
+	$stmt->execute(['% '.$_GET['snippet'].' %']);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$i = $i + 1;
 		$res = $res.$row['text'].$nl;
 	}
@@ -18,8 +19,9 @@ if ( isset($_GET["snippet"])){
 	#Not enough tokenized found -> untokenized.
 	if($i<$limit){
 		$limit = $limit - $i;
-		$query = "SELECT text FROM urndata WHERE text LIKE '%".$_GET["snippet"]."%' LIMIT ".$limit;
-		foreach ($sql->query($query) as $row){
+	$stmt = $sql->prepare('SELECT text FROM urndata WHERE text LIKE ? LIMIT '.$limit);
+	$stmt->execute(['%'.$_GET['snippet'].'%']);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$i = $i + 1;
 			$res = $res.$row['text'].$nl;
 		}
@@ -32,15 +34,16 @@ if ( isset($_GET["snippet"])){
 			if($i<$limit){
 				$limit = $limit - $i;
 				if($limit>0){
-					$query = "SELECT text FROM urndatarestr WHERE text LIKE '%".$_GET["snippet"]."%' ORDER BY text LIMIT ".$limit;
-					foreach ($sql->query($query) as $row){
+				$stmt = $sql->prepare('SELECT text FROM urndatarestr WHERE text LIKE ? LIMIT '.$limit);
+				$stmt->execute(['% '.$_GET['snippet'].' %']);
+				foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 						$res = $res.$row['text'].$nl;
 					}
 				}
 			}
 		}
 	}
-	(isset($_GET["deletexml"])) ? $res = deletexml($res) : NULL;
+	(isset($_GET['deletexml'])) ? $res = deletexml($res) : NULL;
 	echo ($res);
 }
 ?>

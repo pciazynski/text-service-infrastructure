@@ -9,7 +9,7 @@ function urncount(){
 	$query = "SELECT MAX(maxi) as c FROM (SELECT MAX(urnid) AS maxi FROM urndata UNION SELECT MAX(urnid) AS maxi FROM urndatarestr) a";
 	$res = "";
 	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['c'];
+		$res .= $row['c'];
 	}
 	return $res;
 }

@@ -7,25 +7,29 @@ function passage($urn){
 	global $sql;
 	global $binary;
 	global $dbtablename;
-	
-		
-	#LIKE urn.% OR (exactly) LIKE urn
-	if(str_ends_with($urn,":")){
-		$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
-	}
-	else {$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";}
-	$res = "";
+
+	$res = '';
 	(isset($_GET['nl'])) ? $sep = "\n" : $sep = " ";
 
-	foreach ($sql->query($query) as $row) {
+	if(str_ends_with($urn,':')){
+		$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+		$stmt->execute([$urn.'%']);
+	}
+	else {
+		#LIKE urn.% OR (exactly) LIKE urn
+		$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? OR urn LIKE '.$binary.' ? ORDER BY urnid');
+		$stmt->execute([$urn.'.%',$urn]);
+	}
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = trim($res.$row['text']).$sep;
 	}
 	return $res;
 }
+
 if(isset($_GET['urn'])){
 	$urn = checkurn($_GET['urn'],'');
 	$urnarr = explode(":",$urn);
-	if($dbtablename == "urndata"){
+	if($dbtablename == 'urndata'){
 		print(passage($_GET['urn']));
 	}
 	else{

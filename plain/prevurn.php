@@ -10,21 +10,23 @@ function prevurn($urn){
 	global $sql;
 	global $dbtablename;
 	global $binary;
+	(isset($_GET['range'])) ? $range = max(intval($_GET['range']),0) : $range = 1;
+	$nl = "\n";
 	$urnarr=explode(':',$urn);
 	$workurn = 'urn:cts:'.$urnarr[2].':'.$urnarr[3].':';
-	$query = 'SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' "'.$urn.'"';
-	$res = "";
-	(isset($_GET['range'])) ? $range = $_GET['range'] : $range = 1;
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['urnid'];
+	$res = '';
+	$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn = '.$binary.' ? LIMIT 1');
+	$stmt->execute([$urn]);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$res = $row['urnid'];
 	}
 	
-	$query = 'SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' "'.$workurn.'%" AND urnid BETWEEN '.($res-$range).' AND '.($res-1);
+	$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND urnid BETWEEN ? AND ?');
+	$stmt->execute([$workurn.'%',$res-$range,$res-1]);
 	$res = '';
-	$nl = "\n";
 	$resrow = 'urn';
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row[$resrow].$nl;
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$res .= $row[$resrow].$nl;
 	}
 	return trim($res);
 }

@@ -8,16 +8,19 @@ Returns URNs and text. Limited to copyright-free documents. exactsearch.php retu
 */
 
 
-if (isset($_GET["urn"]) && isset($_GET["snippet"])){
+if (isset($_GET['urn']) && isset($_GET['snippet'])){
 	$urn = checkurn($_GET['urn'],'');
-	(isset($_GET["limit"])) ? $limit = $_GET["limit"] : $limit = "1000";
-	$token = trim(htmlspecialchars($_GET['token']));
-	$query = "SELECT urn, text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' and text LIKE '%".$_GET["snippet"]."%' LIMIT ".$limit;
-	$res = "";
+	(isset($_GET['limit'])) ? $limit = max(0,intval($_GET['limit'])) : $limit = 1000;
+	$res = '';
 	$tab = "\t";
 	$nl = "\n";
-	foreach ($sql->query($query) as $row){
-		$res = $res.$row['urn'].$tab.$row['text'].$nl;
+	$resrow1='urn';
+	$resrow2='text';
+	
+	$stmt = $sql->prepare('SELECT urn, text FROM urndata WHERE urn LIKE '.$binary.' ? and text LIKE ? LIMIT '.$limit);
+	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%','%'.$_GET['snippet'].'%']):$stmt->execute([$urn.'.%','%'.$_GET['snippet'].'%']);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$res .= $row[$resrow1].$tab.$row[$resrow2].$nl;
 	}
 
 	($deleteXML) ? $res = deletexml($res) : NULL;

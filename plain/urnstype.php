@@ -8,11 +8,12 @@ require('../config.php');
 
 if (isset($_GET['urn'])){
 	$urn = checkurn($_GET['urn'],'');
-	$query = "SELECT urn, type FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
 	$res = '';
 	$tab = "\t";
 	$nl = "\n";
-	foreach ($sql->query($query) as $row) {
+	$stmt = $sql->prepare('SELECT urn,type FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $res.$row['urn'].$tab.$row['type'].$nl;
 	}
 

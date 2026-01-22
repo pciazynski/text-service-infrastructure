@@ -10,30 +10,26 @@ function getDocStrct($urn){
 	global $sql;
 	global $binary;
 	global $dbtablename;
-	$query = "SELECT urn,type,text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
-	$res = "";
+	$res = '';
 	$tab = "\t";
 	$nl = "\n";
-
-	if (isset($_GET["lowercase"])){
-		$text=$row['text'];
-		($multibyte) ? $text = mb_strtolower($text,'UTF-8') : $text = strtolower($text);
-		$res = $res.$row['urn'].$tab.$row['type'].$text.$nl;
-	}
-	else{
-		foreach ($sql->query($query) as $row) {
-			$res = $res.$row['urn'].$tab.$row['type'].$tab.$row['text'].$nl;
-		}
+	$resrow1='urn';
+	$resrow2='type';
+	$resrow3='text';
+	
+	$stmt = $sql->prepare('SELECT urn,type,text FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$res = $res.$row[$resrow1].$tab.$row[$resrow2].$tab.$row[$resrow3].$nl;
 	}
 	
-	if(isset($_GET["deletexml"])){
-		$res = preg_replace('/<[^>]+>/', "", $res);
-	}
+	(isset($_GET['deletexml'])) ? $res = deletexml($res) : NULL;
+	
 	return trim($res,"\n");
 }
 $urn = checkurn($_GET['urn'],'');
 
-if($dbtablename == "urndata"){
+if($dbtablename == 'urndata'){
 	echo getDocStrct($urn);
 }
 else{

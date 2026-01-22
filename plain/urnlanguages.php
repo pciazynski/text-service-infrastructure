@@ -8,17 +8,17 @@ require('../config.php');
 function lang(){
 	global $sql;
 	global $dbtablename;
-	$res = "";
+	$res = '';
 	$tab = "\t";
 	$nl = "\n";
-	$query = "SELECT DISTINCT lang FROM urndata";
+	$query = 'SELECT DISTINCT lang FROM urndata';
 	foreach ($sql->query($query) as $row) {
 		$res = $res.$row['lang'].$nl;
 	}
-	$query = "SELECT DISTINCT lang FROM urndatarestr";
+	$query = 'SELECT DISTINCT lang FROM urndatarestr';
 	foreach ($sql->query($query) as $row) {
 		if(! str_contains($res,$row['lang'])){
-			$res = $res.$row['lang'].$nl;
+			$res .=$row['lang'].$nl;
 		}
 	}
 	return $res;

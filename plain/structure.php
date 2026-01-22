@@ -6,25 +6,28 @@ require('../config.php');
 # Returns every child URN with corresponding type and textlength. Dynamic URNs are not (yet) supported. 
 # Params: urn
 
-function getDocStruct($urn,$isWorkurn){
+function getDocStruct($urn){
 	global $sql;
 	global $binary;
 	
-	if($isWorkurn){$query = "SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";}
-	else {$query = "SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE ".$binary." '".$urn.".%' ORDER BY urnid";}
-	$res = "";
+	$res = '';
 	$tab = "\t";
 	$nl = "\n";
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['urn'].$tab.$row['type'].$tab.$row['len'].$nl;
+	$resrow1='urn';
+	$resrow2='type';
+	$resrow3='len';
+	
+	$stmt = $sql->prepare('SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$res = $res.$row[$resrow1].$tab.$row[$resrow2].$tab.$row[$resrow3].$nl;
 	}
 	return trim($res);
 }
 $urn = checkurn($_GET['urn'],'');
-$urnarr = explode(":",$urn);
+$urnarr = explode(':',$urn);
 
-if (strlen($urnarr[4]) == 0){echo getDocStruct($urn,true);}
-elseif (strpos ($urnarr[4],"-")){echo "";}
-else {echo getDocStruct($urn,false);};
+if (strpos ($urnarr[4],'-')){echo '';}
+else {echo getDocStruct($urn);};
 
 ?>

@@ -3,15 +3,16 @@ header('Content-Type: text/plain');
 require('../functions.php');
 require('../config.php');
 
-$deletexml = isset($_GET["deletexml"]);
-if (isset($_GET["urn"]) && isset($_GET["character"])){
+$deletexml = isset($_GET['deletexml']);
+if (isset($_GET['urn']) && isset($_GET['character'])){
 	$urn = checkurn($_GET['urn'],'');
 	$snippet =  trim(htmlspecialchars($_GET['character']));
-	$query = "SELECT urn, text, text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' AND text IS NOT NULL ORDER BY urnid";
-	$res = "";
+	$res = '';
 	$tab = "\t";
 	$nl = "\n";
-	foreach ($sql->query($query) as $row){
+	$stmt = $sql->prepare('SELECT urn, text FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		($deletexml) ? $psg = deletexml($row['text']):$psg = $row['text'];
 		if(isset($_GET['lowercase'])){
 			$snippet = strtolower($snippet);
@@ -23,15 +24,16 @@ if (isset($_GET["urn"]) && isset($_GET["character"])){
 	echo ($res);
 }
 
-else if (isset($_GET["urn"]) && isset($_GET["snippet"])){
+else if (isset($_GET['urn']) && isset($_GET['snippet'])){
 	$urn = checkurn($_GET['urn'],'');
 	$snippet =  trim(htmlspecialchars($_GET['snippet']));
-	$query = "SELECT urn, text, text FROM urndata WHERE urn LIKE ".$binary." '".$urn."%' AND text IS NOT NULL ORDER BY urnid";
-	$res = "";
+	$res = '';
 	$tab = "\t";
 	$nl = "\n";
-	$sp = " ";
-	foreach ($sql->query($query) as $row){
+	$sp = ' ';
+	$stmt = $sql->prepare('SELECT urn, text FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		($deletexml) ? $psg = deletexml($row['text']):$psg = $row['text'];
 		$psg = $sp.str_replace($replacearr, $sp,$psg).$sp;
 		if(isset($_GET['lowercase'])){
