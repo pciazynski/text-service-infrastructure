@@ -12,7 +12,7 @@ if (isset($_GET['urn'])){
 	$tab = "\t";
 	$nl = "\n";
 	$stmt = $sql->prepare('SELECT urn,type FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
-	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
+	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $res.$row['urn'].$tab.$row['type'].$nl;
 	}

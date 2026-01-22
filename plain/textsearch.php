@@ -18,7 +18,7 @@ if (isset($_GET['urn']) && isset($_GET['snippet'])){
 	$resrow2='text';
 	
 	$stmt = $sql->prepare('SELECT urn, text FROM urndata WHERE urn LIKE '.$binary.' ? and text LIKE ? LIMIT '.$limit);
-	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%','%'.$_GET['snippet'].'%']):$stmt->execute([$urn.'.%','%'.$_GET['snippet'].'%']);
+	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%','%'.$_GET['snippet'].'%']):$stmt->execute([$urn.'.%','%'.$_GET['snippet'].'%']);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res .= $row[$resrow1].$tab.$row[$resrow2].$nl;
 	}

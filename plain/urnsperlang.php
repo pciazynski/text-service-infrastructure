@@ -13,7 +13,7 @@ if (isset($_GET['urn']) and isset($_GET['lang'])){
 	$nl = "\n";
 	$tab = "\t";
 	$stmt = $sql->prepare('SELECT urn,lang FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND lang = ? ORDER BY urnid');
-	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%',$lang]):$stmt->execute([$urn.'.%',$lang]);
+	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%',$lang]):$stmt->execute([$urn.'.%',$lang]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res .= $row['urn'].$tab.$row['lang'].$nl;
 	}
