@@ -10,7 +10,6 @@ require('../db_getPrevNextUrn.php');
 $urn = checkurn($_GET['urn'],'');
 $urnarr = explode(":",$urn);
 
-if (strlen($urnarr[4]) == 0){echo(prevnexturn($urn,true));}
-else {echo(prevnexturn($urn,false));};
+echo(prevnexturn($urn));
 
 ?>

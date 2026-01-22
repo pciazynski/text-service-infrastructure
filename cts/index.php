@@ -117,8 +117,7 @@ function GetPassagePlus($urn){
 	$res .='</GetValidReff>';
 	$firsturn = $sqlreply[0];
 	$res .= '<GetFirstUrn><urn>'.$firsturn.'</urn></GetFirstUrn>';
-	if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",prevnexturn($urn,true));}
-	else {$sqlreply = explode("\n",prevnexturn($urn,false));};
+	$sqlreply = explode("\n",prevnexturn($urn));
 	if (count($sqlreply)>1){
 		$res .= '<GetPrevNextUrn>';
 		if($sqlreply[0] == 'NULL'){$res .= '<prev><urn></urn></prev>';}
@@ -154,8 +153,7 @@ function GetValidReff($urn,$level){
 function GetPrevNextUrn($urn){
 	require('../db_getPrevNextUrn.php');
 	$urnarr = explode(':',$urn);
-	if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",prevnexturn($urn,true));}
-	else {$sqlreply = explode("\n",prevnexturn($urn,false));};
+	$sqlreply = explode("\n",prevnexturn($urn));
 	if (count($sqlreply)>1){
 		$res = '<?xml version="1.0" encoding="UTF-8"?><GetPrevNextUrn xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPrevNextUrn</requestName><requestUrn>'.$urn.'</requestUrn></request><reply><prevnext>';
 		if($sqlreply[0] == 'NULL'){$res .= '<prev><urn></urn></prev';}
