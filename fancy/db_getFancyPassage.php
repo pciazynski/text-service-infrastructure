@@ -5,12 +5,12 @@ function passage($urn){
 	global $binary;
 	
 	if(str_ends_with($urn,':')){
-		$stmt = $sql->prepare('SELECT SELECT text,type,urn FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid LIMIT 1,18446744073709551615');
+		$stmt = $sql->prepare('SELECT text,type,urn FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid LIMIT 1,18446744073709551615');
 		$stmt->execute([$urn.'%']);
 	}
 	else {
 		#LIKE urn.% OR (exactly) LIKE urn
-		$stmt = $sql->prepare('SELECT text FROM text,type,urn WHERE urn LIKE '.$binary.' ? OR urn LIKE '.$binary.' ? ORDER BY urnid');
+		$stmt = $sql->prepare('SELECT text,type,urn FROM urndata WHERE urn LIKE '.$binary.' ? OR urn LIKE '.$binary.' ? ORDER BY urnid');
 		$stmt->execute([$urn.'.%',$urn]);
 	}
 	
