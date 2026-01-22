@@ -170,8 +170,7 @@ function GetPrevNextUrn($urn){
 function GetFirstUrn($urn){
 	require('../db_getFirstUrn.php');
 	$urnarr = explode(':',$urn);
-	if (strlen($urnarr[4]) == 0){$sqlreply = firsturn($urn,true);}
-	else {$sqlreply = firsturn($urn,false);};
+	$sqlreply = firsturn($urn);
 	if (strlen($sqlreply)>1){
 		$res = '<?xml version="1.0" encoding="UTF-8"?><GetFirstUrn xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetFirstUrn</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 		return $res.'<urn>'.$sqlreply.'</urn></reply></GetFirstUrn>';
