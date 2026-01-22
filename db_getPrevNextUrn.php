@@ -23,6 +23,7 @@ function prevnexturn($urn){
 		$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urnid = ? OR urnid = ?');
 		$stmt->execute([($res-1),($res+1)]);
 	}
+	$res='';
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$resurn = $row['urn'];
 		if(!str_contains($resurn,$workurn)){$resurn='NULL';}
