@@ -5,10 +5,7 @@ require('../functions.php');
 
 function getShortCapabilities(){
 	global $sql;
-	$offset = 0;
-		if (isset($_GET['offset'])){
-		$offset = $_GET['offset'];
-	}
+	(isset($_GET['offset'])) ? $offset = max(0,intval($_GET['offset'])) : $offset = 0;
 	$query = 'SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET '.$offset;
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetCapabilities</requestName><param>smallinventory</param></request><reply>';
 	$urnrow = 'urn';
@@ -23,10 +20,8 @@ function getShortCapabilities(){
 
 function getCapabilities(){
 	global $sql;
-	$offset = 0;
-		if (isset($_GET['offset'])){
-		$offset = $_GET['offset'];
-	}
+	(isset($_GET['offset'])) ? $offset = max(0,intval($_GET['offset'])) : $offset = 0;
+
 	$query = 'SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET '.$offset;
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetCapabilities</requestName></request><reply><TextInventory tiversion="5.0.rc.1">';
 	$oldgroup = '';
@@ -108,7 +103,6 @@ function GetPassagePlus($urn){
 	require('../db_getLabel.php');
 	require('../db_getValidReff.php');
 	require('../db_getPrevNextUrn.php');
-	global $sql;
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPassagePlus xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPassagePlus</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	$res .= '<GetLabel>'.label($urn).'</GetLabel>';
 	$res .= '<GetValidReff>';
@@ -158,7 +152,6 @@ function GetValidReff($urn,$level){
 }
 
 function GetPrevNextUrn($urn){
-	global $sql;
 	require('../db_getPrevNextUrn.php');
 	$urnarr = explode(':',$urn);
 	if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",prevnexturn($urn,true));}
@@ -175,7 +168,6 @@ function GetPrevNextUrn($urn){
 }
 
 function GetFirstUrn($urn){
-	global $sql;
 	require('../db_getFirstUrn.php');
 	$urnarr = explode(':',$urn);
 	if (strlen($urnarr[4]) == 0){$sqlreply = firsturn($urn,true);}
