@@ -4,30 +4,24 @@ function prevnexturn($urn){
 	global $sql;
 	global $dbtablename;
 	global $binary;
-	
-	$isWorkurn = str_ends_with($urn,':')
+	$isWorkurn = str_ends_with($urn,':');
 	$res = '';
-	$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ?';
+	$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ?');
 	$stmt->execute([$urn]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$res = $res.$row['urnid'];
+		$res = intval($row['urnid']);
 	}
-	if($res==''){
-		return false;
-	}
-	
-	if($res==0 | $isWorkurn){$res="NULL\n";}
-	else{$res = '';}
+
 	$urnarr=explode(':',$urn);
 	$workurn = 'urn:cts:'.$urnarr[2].':'.$urnarr[3].':';
 
 	if($isWorkurn){
-		$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urnid = ?';
-		$stmt->execute([$res+1]);
+		$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urnid = ?');
+		$stmt->execute([($res+1)]);
 	}
 	else{
-		$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urnid = ? OR urnid = ?';
-		$stmt->execute([$res-1,$res+1]);
+		$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urnid = ? OR urnid = ?');
+		$stmt->execute([($res-1),($res+1)]);
 	}
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$resurn = $row['urn'];
