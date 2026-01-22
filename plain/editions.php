@@ -7,56 +7,43 @@ require('../config.php');
 
 function editions(){
 	global $sql;
+	$res = "";
+	$tab = "\t";
+	$nl = "\n";
 	if(empty($_GET)){
 		if (file_exists("editions.cache")){
 			return file_get_contents("editions.cache");
 		}
 		else{
-			$query = "SELECT urn,title,year,author,restricted,lang FROM workdata ORDER BY author,title,urn";
-			$res = "";
-			$tab = "\t";
-			$nl = "\n";
-			foreach ($sql->query($query) as $row) {
-				$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$tab.$row['lang'].$nl;
-			}
-#			$cache = fopen("editions.cache", "w") or die("Unable to open file!");
-#			fwrite($cache, $res);
-#			fclose($cache);
-			return $res;
+			$stmt = $sql->prepare('SELECT urn,title,year,author,restricted,lang FROM workdata ORDER BY author,title,urn');
+			$stmt->execute();
 		}
 	}
 	else{
-		$offset = 0;
-		$sortBy = "urn";
-		if (isset($_GET['sortBy']) and strlen(trim($_GET['sortBy']))>0){
-			$sortBy = $_GET['sortBy'];
+		if(isset($_GET['year'])){
+			$yearmin = $_GET['year'];
+			$yearmax  = $_GET['year'];
 		}
-		if (isset($_GET['offset'])){
-			$offset = $_GET['offset'];
+		else{
+			$yearmin = 1;
+			$yearmax = 30000;
 		}
-		$condi = " WHERE TRUE";
-		if (isset($_GET['urnfilter']) and strlen(trim($_GET['urnfilter']))>0){
-			$condi .= ' AND urn LIKE "%'.$_GET['urnfilter'].'%"';
-		}
-		if (isset($_GET['author']) and strlen(trim($_GET['author']))>0){
-			$condi .= ' AND author LIKE "%'.$_GET['author'].'%"';
-		}
-		if (isset($_GET['title']) and strlen(trim($_GET['title']))>0){
-			$condi .= ' AND title LIKE "%'.$_GET['title'].'%"';
-		}
-		if (isset($_GET['year']) and strlen(trim($_GET['year']))>0){
-			$condi .= ' AND year '.$_GET['year'];
-		}
-
-		$query = "SELECT urn,title,year,author,restricted,lang FROM workdata".$condi." ORDER BY ".$sortBy;
-		$res = "";
-		$tab = "\t";
-		$nl = "\n";
-		foreach ($sql->query($query) as $row) {
-			$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$tab.$row['lang'].$nl;
-		}
-		return $res;
+		(isset($_GET['yearmin'])) ? $yearmin = $_GET['yearmin'] : NULL;
+		(isset($_GET['yearmax'])) ? $yearmax = $_GET['yearmax'] : NULL;
+		(isset($_GET['urnfilter'])) ? $urnfilter = $_GET['urnfilter'] : $urnfilter = '';
+		(isset($_GET['urnfilter'])) ? $urnfilter = $_GET['urnfilter'] : $urnfilter = '';
+		(isset($_GET['author'])) ? $author = $_GET['author'] : $author = '';
+		(isset($_GET['title'])) ? $title = $_GET['title'] : $title = '';
+		(isset($_GET['sortBy'])) ? $sortBy = $_GET['sortBy'] : $sortBy = 'urn';
+		
+		
+		$stmt = $sql->prepare('SELECT urn,title,year,author,restricted,lang FROM workdata WHERE urn LIKE ? AND author LIKE ? and title LIKE ? AND year BETWEEN ? AND ? ORDER BY ?');
+		$stmt->execute(["%".$urnfilter."%","%".$author."%","%".$title."%",$yearmin, $yearmax,$sortBy]);
 	}
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+		$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$tab.$row['lang'].$nl;
+	}
+	return $res;
 }
 echo trim(editions(),"\n");
 ?>

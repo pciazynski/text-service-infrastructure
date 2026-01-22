@@ -7,16 +7,20 @@ require('../config.php');
 
 function editions(){
 	global $sql;
-	$condi = '';
-	
-	(isset($_GET['urnfilter']) and strlen(trim($_GET['urnfilter']))>0) ? $condi .= ' AND urn LIKE "%'.$_GET['urnfilter'].'%"': NULL;
-	
-	$query = 'SELECT urn FROM workdata WHERE true '.$condi.' ORDER BY urn';
 	$res = '';
 	$nl = "\n";
 	$key = 'urn';
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row[$key].$nl;
+	if(isset($_GET['urnfilter']) and strlen(trim($_GET['urnfilter']))>0){
+		$stmt = $sql->prepare('SELECT urn FROM workdata WHERE urn LIKE ? ORDER BY urn');
+		$stmt->execute(["%".$_GET['urnfilter']."%"]);
+	}
+	else{
+		$stmt = $sql->prepare('SELECT urn FROM workdata ORDER BY urn');
+		$stmt->execute();
+	}
+	
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$res .= $row[$key].$nl;
 	}
 	return $res;
 }
