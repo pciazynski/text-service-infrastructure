@@ -52,7 +52,7 @@ function subPassage($urn,$deleteXML = false){
 	}
 	
 	($deleteXML) ? $res = deletexml($res) : NULL;
-	(substr_count($res, $subpass) >= $subpassc) ? return $subpass : return '';
+	if(substr_count($res, $subpass) >= $subpassc){return $subpass;}else{return '';}
 }
 
 function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
