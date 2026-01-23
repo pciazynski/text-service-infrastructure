@@ -60,62 +60,66 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	global $binary;
 	global $dbtablename;
 	
-	$urnarr = explode(":",$urn);
-	$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3].":";
-	$passurnarr = explode("-",$urnarr[4]);
-	$urnleftarr = explode("@",$workurn.$passurnarr[0]);
-	$urnrightarr = explode("@",$workurn.$passurnarr[1]);
+	$urnarr = explode(':',$urn);
+	$workurn = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urnarr[3].':';
+	$passurnarr = explode('-',$urnarr[4]);
+	$urnleftarr = explode('@',$workurn.$passurnarr[0]);
+	$urnrightarr = explode('@',$workurn.$passurnarr[1]);
 	
 	if($urnleftarr[0] === $urnrightarr[0]){
 		$psg = passage($urnleftarr[0]);
 		$passarr = explode($urnleftarr[1],$psg);
 		$subpassl = $urnleftarr[1];
-		$subpassarr = explode("[",$subpassl);
+		$subpassarr = explode('[',$subpassl);
 		$subpassl = $subpassarr[0];
 
-		(count($subpassarr)==2) ? $subpasscl = rtrim($subpassarr[1],"]") : $subpasscl = 1;
+		(count($subpassarr)==2) ? $subpasscl = rtrim($subpassarr[1],']') : $subpasscl = 1;
 		array_splice($passarr,0,$subpasscl);
 		$psg = $subpassl.join($subpassl,$passarr);
 
 		$subpassr = $urnrightarr[1];
-		$subpassarr = explode("[",$subpassr);
+		$subpassarr = explode('[',$subpassr);
 		$subpassr = $subpassarr[0];
-		(count($subpassarr)==2) ? $subpasscr = rtrim($subpassarr[1],"]") : $subpasscr = 1;
+		(count($subpassarr)==2) ? $subpasscr = rtrim($subpassarr[1],']') : $subpasscr = 1;
 		$passarr = explode($subpassr,$psg);
 		if($subpasscr<count($passarr)){
-			$psg = "";
+			$psg = '';
 			for($i=0;$i<=$subpasscr-1;$i++){
 				$psg.=$passarr[$i].$subpassr;
 			}
 		}else{
-			return "";
+			return '';
 		}
 		
 		return $psg;
 	}
-	$passleft = "";
-	$passmiddle = "";
-	$passright = "";
-	$queryleft = "SELECT text,urnid FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urnleftarr[0].".%' OR urn LIKE ".$binary." '".$urnleftarr[0]."' ORDER BY urnid";
-	$queryright = "SELECT text,urnid FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urnrightarr[0].".%' OR urn LIKE ".$binary." '".$urnrightarr[0]."' ORDER BY urnid";
+	$passleft = '';
+	$passmiddle = '';
+	$passright = '';
 	$urnidleft = 0;
 	$urnidright = 0;
 	
-	$res = "";
-	($newlines) ? $sep = "\n" : $sep = " ";
-
+	$res = '';
+	($newlines) ? $sep = "\n" : $sep = ' ';
 	
-	foreach ($sql->query($queryleft) as $row) {
+	$stmt = $sql->prepare('SELECT text,urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? OR urn LIKE '.$binary.' ? ORDER BY urnid');
+	$stmt->execute([$urnleftarr[0].'.%',$urnleftarr[0]]);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$passleft = $passleft.$row['text'].$sep;
 		$urnidleft = $row['urnid'];
 	}
 	$urnidleft++;
-	foreach ($sql->query($queryright) as $row) {
+
+	$stmt = $sql->prepare('SELECT text,urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? OR urn LIKE '.$binary.' ? ORDER BY urnid');
+	$stmt->execute([$urnrightarr[0].'.%',$urnrightarr[0]]);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$passright = $passright.$row['text'].$sep;
 		if($urnidright == 0){$urnidright = $row['urnid'];}
 	}
-	$querymiddle = "SELECT text FROM ".$dbtablename." WHERE urnid BETWEEN ". $urnidleft . " AND ".($urnidright-1)." ORDER BY urnid";
-	foreach ($sql->query($querymiddle) as $row) {
+
+	$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urnid BETWEEN ? AND ? ORDER BY urnid');
+	$stmt->execute([$urnidleft,$urnidright-1]);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$passmiddle = $passmiddle.$row['text'].$sep;
 	}
 	
@@ -151,9 +155,7 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	}
 
 	$res = $passleft.$passmiddle.$passright;
-	
 	($deleteXML) ? $res = deletexml($res) : NULL;
-
 	return $res;
 }
 
