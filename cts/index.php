@@ -6,12 +6,13 @@ require('../functions.php');
 function getShortCapabilities(){
 	global $sql;
 	(isset($_GET['offset'])) ? $offset = max(0,intval($_GET['offset'])) : $offset = 0;
-	$query = 'SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET '.$offset;
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetCapabilities</requestName><param>smallinventory</param></request><reply>';
 	$urnrow = 'urn';
 	$edop = '<urn>';
 	$edcl = '</urn>';
-	foreach ($sql->query($query) as $row) {
+	$stmt = $sql->prepare('SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET ?');
+	$stmt->execute([$offset]);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$res .= $edop.$row[$urnrow].$edcl;
 	}
 	return $res.'</reply></GetCapabilities>';
@@ -22,16 +23,17 @@ function getCapabilities(){
 	global $sql;
 	(isset($_GET['offset'])) ? $offset = max(0,intval($_GET['offset'])) : $offset = 0;
 
-	$query = 'SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET '.$offset;
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetCapabilities</requestName></request><reply><TextInventory tiversion="5.0.rc.1">';
 	$oldgroup = '';
 	$isEmpty=true;
 	$serverurl = ' retrieved via Canonical Text Service '.(empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	$serverurl = str_replace('?request=GetCapabilities','',$serverurl);
-	foreach ($sql->query($query) as $row) {
+	$stmt = $sql->prepare('SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET ?');
+	$stmt->execute([$offset]);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$isEmpty=false;
 		$urn = $row['urn'];
-		$textgroup = explode(".",$urn)[0];
+		$textgroup = explode('.',$urn)[0];
 			
 		if ($textgroup!==$oldgroup){
 			if(strlen($oldgroup)>0){$res=$res.'</textgroup>';}

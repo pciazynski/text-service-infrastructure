@@ -8,17 +8,17 @@ require('../db_getPassage_restr.php');
 $urn = checkurn($_GET['urn'],'');
 $wordbag = array();
 $entitybag = array();
-$psg="";
+$psg='';
 
 $urn = checkurn($urn,'');
-$urnarr = explode(":",$urn);
+$urnarr = explode(':',$urn);
 
 if (strlen($urnarr[4]) == 0){$psg = passage($urn, $deleteXML=true);}
-elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
+elseif (strpos ($urnarr[4],'-')){$psg =  spanningPassage($urn, $deleteXML=true);}
 else {$psg = passage($urn, $deleteXML=true);};
 
-$psg = str_replace($replacearr, " ", $psg);
-$psgarr = explode(" ",$psg);
+$psg = str_replace($replacearr, ' ', $psg);
+$psgarr = explode(' ',$psg);
 
 foreach ($psgarr as $token){
 	$token = trim($token);
@@ -37,9 +37,9 @@ foreach ($psgarr as $token){
 }
 $tab = "\t";
 $nl = "\n";
-$res = "";
+$res = '';
 
-(isset($_GET["sort"])) ? arsort($entitybag) : NULL;
+(isset($_GET['sort'])) ? arsort($entitybag) : NULL;
 
 foreach(array_keys($entitybag) as $key){
 	$res.= $key.$tab.$entitybag[$key].$nl;

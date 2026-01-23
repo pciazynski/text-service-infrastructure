@@ -8,7 +8,7 @@ require('../db_getFirstUrn.php');
 # Params: urn
 
 $urn = checkurn($_GET['urn'],'');
-$urnarr = explode(":",$urn);
+$urnarr = explode(':',$urn);
 
 echo firsturn($urn);
 

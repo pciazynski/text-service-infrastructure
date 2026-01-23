@@ -7,9 +7,10 @@ require('../config.php');
 
 function doccount(){
 	global $sql;
-	$query = "SELECT count(urn) as c FROM workdata";
-	$res = "";
-	foreach ($sql->query($query) as $row) {
+	$res = '';
+	$stmt = $sql->prepare('SELECT count(urn) as c FROM workdata');
+	$stmt->execute();
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $res.$row['c'];
 	}
 	return $res;

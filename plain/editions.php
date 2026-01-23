@@ -7,12 +7,12 @@ require('../config.php');
 
 function editions(){
 	global $sql;
-	$res = "";
+	$res = '';
 	$tab = "\t";
 	$nl = "\n";
 	if(empty($_GET)){
-		if (file_exists("editions.cache")){
-			return file_get_contents("editions.cache");
+		if (file_exists('editions.cache')){
+			return file_get_contents('editions.cache');
 		}
 		else{
 			$stmt = $sql->prepare('SELECT urn,title,year,author,restricted,lang FROM workdata ORDER BY author,title,urn');
@@ -38,7 +38,7 @@ function editions(){
 		
 		
 		$stmt = $sql->prepare('SELECT urn,title,year,author,restricted,lang FROM workdata WHERE urn LIKE ? AND author LIKE ? and title LIKE ? AND year BETWEEN ? AND ? ORDER BY ?');
-		$stmt->execute(["%".$urnfilter."%","%".$author."%","%".$title."%",$yearmin, $yearmax,$sortBy]);
+		$stmt->execute(['%'.$urnfilter.'%','%'.$author.'%','%'.$title.'%',$yearmin, $yearmax,$sortBy]);
 	}
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$tab.$row['lang'].$nl;

@@ -9,7 +9,7 @@ function passage($urn){
 	global $dbtablename;
 
 	$res = '';
-	(isset($_GET['nl'])) ? $sep = "\n" : $sep = " ";
+	(isset($_GET['nl'])) ? $sep = "\n" : $sep = ' ';
 
 	if(str_ends_with($urn,':')){
 		$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
@@ -28,7 +28,7 @@ function passage($urn){
 
 if(isset($_GET['urn'])){
 	$urn = checkurn($_GET['urn'],'');
-	$urnarr = explode(":",$urn);
+	$urnarr = explode(':',$urn);
 	if($dbtablename == 'urndata'){
 		print(passage($_GET['urn']));
 	}

@@ -11,14 +11,16 @@ function lang(){
 	$res = '';
 	$tab = "\t";
 	$nl = "\n";
-	$query = 'SELECT DISTINCT lang FROM urndata';
-	foreach ($sql->query($query) as $row) {
+	$stmt = $sql->prepare('SELECT DISTINCT lang FROM urndata');
+	$stmt->execute();
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $res.$row['lang'].$nl;
 	}
-	$query = 'SELECT DISTINCT lang FROM urndatarestr';
-	foreach ($sql->query($query) as $row) {
+	$stmt = $sql->prepare('SELECT DISTINCT lang FROM urndatarestr');
+	$stmt->execute();
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		if(! str_contains($res,$row['lang'])){
-			$res .=$row['lang'].$nl;
+			$res .= $row['lang'].$nl;
 		}
 	}
 	return $res;

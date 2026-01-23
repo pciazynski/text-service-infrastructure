@@ -6,11 +6,12 @@ require('../config.php');
 # Params: none
 function dates(){
 	global $sql;
-	$query = "SELECT year, count(year) as cd FROM workdata WHERE year IS NOT NULL GROUP BY year ORDER BY year";
-	$res = "";
+	$res = '';
 	$tab = "\t";
 	$nl = "\n";
-	foreach ($sql->query($query) as $row) {
+	$stmt = $sql->prepare('SELECT year, count(year) as cd FROM workdata WHERE year IS NOT NULL GROUP BY year ORDER BY year');
+	$stmt->execute();
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $res.$row['year'].$tab.$row['cd'].$nl;
 	}
 	return $res;

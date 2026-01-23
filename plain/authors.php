@@ -7,14 +7,15 @@ require('../config.php');
 
 function authors(){
 	global $sql;
-	$query = "SELECT author, count(author) as cd FROM workdata WHERE author IS NOT NULL GROUP BY author";
-
+	$query = 'SELECT author, count(author) as cd FROM workdata WHERE author IS NOT NULL GROUP BY author';
 	(isset($_GET['sort'])) ? $query .= ' ORDER BY cd DESC,author' : NULL;
 
-	$res = "";
+	$res = '';
 	$nl = "\n";
 	$tab = "\t";
-	foreach ($sql->query($query) as $row) {
+	$stmt = $sql->prepare($query);
+	$stmt->execute();
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $res.$row['author'].$tab.$row['cd'].$nl;
 	}
 	return $res;

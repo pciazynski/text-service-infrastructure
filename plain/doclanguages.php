@@ -6,12 +6,13 @@ require('../config.php');
 # Params: none
 function lang(){
 	global $sql;
-	$query = "SELECT lang, count(lang) as cd FROM workdata WHERE lang IS NOT NULL GROUP BY lang ORDER BY lang";
-	$res = "";
+	$res = '';
 	$tab = "\t";
 	$nl = "\n";
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['lang'].$tab.$row['cd'].$nl;
+	$stmt = $sql->prepare('SELECT lang, count(lang) as cd FROM workdata WHERE lang IS NOT NULL GROUP BY lang ORDER BY lang');
+	$stmt->execute();
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$res .= $row['lang'].$tab.$row['cd'].$nl;
 	}
 	return $res;
 }

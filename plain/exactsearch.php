@@ -13,11 +13,11 @@ function textsearch($urn, $snippet){
 	global $dbtablename;
 	global $binary;
 
-	$res = "";
+	$res = '';
 	$nl = "\n";
-	(str_ends_with($urn,":")) ? : $urn = $urn.".";
+	(str_ends_with($urn,':')) ? : $urn = $urn.'.';
 
-	(isset($_GET["limit"])) ? $limit = intval($_GET["limit"]) : $limit = 10000;
+	(isset($_GET['limit'])) ? $limit = intval($_GET['limit']) : $limit = 10000;
 
 	$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND text LIKE ? ORDER BY urnid LIMIT '.$limit);
 	$stmt->execute([$urn.'%','%'.$snippet.'%']);
@@ -29,12 +29,12 @@ function textsearch($urn, $snippet){
 	return trim($res);
 }
 
-if (isset($_GET["snippet"])){
+if (isset($_GET['snippet'])){
 	$urn = checkurn($_GET['urn'],'');
-	$urnarr = explode(":",$urn);
-	$snippet = trim(urldecode($_GET["snippet"]));
+	$urnarr = explode(':',$urn);
+	$snippet = trim(urldecode($_GET['snippet']));
 	
-	if($dbtablename == "urndata"){
+	if($dbtablename == 'urndata'){
 		echo textsearch($urn,$snippet);
 	}
 	else{

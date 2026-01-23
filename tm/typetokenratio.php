@@ -7,22 +7,22 @@ require('../db_getPassage_restr.php');
 
 $urn = checkurn($_GET['urn'],'');
 $wordbag = array();
-$psg = "";
+$psg = '';
 
-$urnarr = explode(":",$urn);
+$urnarr = explode(':',$urn);
 
 if (strlen($urnarr[4]) == 0){
 	$psg = passage($urn,$deleteXML = true, $newlines=false);
 }
-elseif (strpos ($urnarr[4],"-")){$psg =  spanningPassage($urn, $deleteXML=true);}
+elseif (strpos ($urnarr[4],'-')){$psg =  spanningPassage($urn, $deleteXML=true);}
 else {$psg = passage($urn, $deleteXML = true, $newlines=false);};
 
 
 ($multibyte) ? $psg = mb_strtolower($psg,'UTF-8') : $psg = strtolower($psg);
 
-$psg = str_replace($replacearr, " ", $psg);
+$psg = str_replace($replacearr, ' ', $psg);
 
-$psgarr = explode(" ",$psg);
+$psgarr = explode(' ',$psg);
 $toksum = 0;
 $typesum = 0;
 foreach ($psgarr as $token){
@@ -36,7 +36,7 @@ foreach ($psgarr as $token){
 	}
 }
 
-echo($typesum."/".$toksum."\t".$typesum/$toksum);
+echo($typesum.'/'.$toksum."\t".$typesum/$toksum);
 
 
 ?>

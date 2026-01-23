@@ -6,10 +6,12 @@ require('../config.php');
 
 function urncount(){
 	global $sql;
-	$query = "SELECT MAX(maxi) as c FROM (SELECT MAX(urnid) AS maxi FROM urndata UNION SELECT MAX(urnid) AS maxi FROM urndatarestr) a";
-	$res = "";
-	foreach ($sql->query($query) as $row) {
-		$res .= $row['c'];
+	$query = '';
+	$res = '';
+	$stmt = $sql->prepare('SELECT MAX(maxi) as c FROM (SELECT MAX(urnid) AS maxi FROM urndata UNION SELECT MAX(urnid) AS maxi FROM urndatarestr) a');
+	$stmt->execute();
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$res = $row['c'];
 	}
 	return $res;
 }

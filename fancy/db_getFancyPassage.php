@@ -32,7 +32,7 @@ function passage($urn){
 		array_push($stack,$type);
 		$psgpart = $row['text'];
 		$psgpart = preg_replace('/<lb[^>]+>/', $nl, $psgpart);
-		$res = $res.preg_replace('/<[^>]+>/', "", $psgpart).$nl;
+		$res = $res.preg_replace('/<[^>]+>/', '', $psgpart).$nl;
 	}
 	$res = str_replace($nl,'<br>',$res);
 	return $res;
