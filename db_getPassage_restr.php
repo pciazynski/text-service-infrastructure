@@ -37,7 +37,7 @@ function subPassage($urn,$deleteXML = false){
 	$subpass = $subpassarr[1];
 	$subpassarr = explode('[',$subpass);
 	$subpass = $subpassarr[0];
-	(count($subpassarr)==2) ? $subpassc = rtrim($subpassarr[1],']') : else{$subpassc = 1;
+	(count($subpassarr)==2) ? $subpassc = rtrim($subpassarr[1],']') : $subpassc = 1;
 	if(str_ends_with($urn,':')){
 		$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
 		$stmt->execute([$urn.'%']);
