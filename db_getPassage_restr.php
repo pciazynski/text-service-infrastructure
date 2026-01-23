@@ -5,16 +5,22 @@ function getLeftOrRightUrnID($urn,$left=true){
 	global $binary;
 	global $dbtablename;
 
-	if($left){$ordering = "ASC";}else{$ordering = "DESC";}
-	$query = "SELECT urnid FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."' AND text IS NOT NULL";
-	$res = "";
-	foreach ($sql->query($query) as $row) {
-		$res = $res.$row['urnid'];
+	$res = '';
+
+	#exact match
+	$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND text IS NOT NULL');
+	$stmt->execute([$urn]);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$res = $row['urnid'];
 	}
+	
+	#no exact match -> search leftest or rightest child node
 	if (strlen($res)==0){
-		$query = "SELECT urnid FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%'  AND text IS NOT NULL ORDER BY urnid ".$ordering." LIMIT 1";
-		$res = "";
-		foreach ($sql->query($query) as $row) {
+		$res = '';
+		($left) ? $ordering = 'ASC' : $ordering = 'DESC';
+		$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND text IS NOT NULL ORDER BY urnid '.$ordering.' LIMIT 1');
+		$stmt->execute([$urn.'.%']);
+		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$res = $res.$row['urnid'];
 		}
 	}
