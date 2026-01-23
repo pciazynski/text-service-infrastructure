@@ -174,7 +174,7 @@ function spanningPassage($urn,$deleteXML = false,$newlines = false){
 		$sep = "\n";
 	}
 	$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urnid BETWEEN ? AND ? ORDER BY urnid');
-	$stmt->execute([$fromurnid,tournid]);
+	$stmt->execute([$fromurnid,$tournid]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = trim($res.$row['text']).$sep;
 	}
