@@ -11,7 +11,7 @@ if (isset($_GET['urn']) && isset($_GET['character'])){
 	$tab = "\t";
 	$nl = "\n";
 	$stmt = $sql->prepare('SELECT urn, text FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
-	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
+	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		($deletexml) ? $psg = deletexml($row['text']):$psg = $row['text'];
 		if(isset($_GET['lowercase'])){
