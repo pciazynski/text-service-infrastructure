@@ -10,8 +10,8 @@ function getShortCapabilities(){
 	$urnrow = 'urn';
 	$edop = '<urn>';
 	$edcl = '</urn>';
-	$stmt = $sql->prepare('SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET ?');
-	$stmt->execute([$offset]);
+	$stmt = $sql->prepare('SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET '.$offset);
+	$stmt->execute();
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$res .= $edop.$row[$urnrow].$edcl;
 	}
@@ -28,8 +28,8 @@ function getCapabilities(){
 	$isEmpty=true;
 	$serverurl = ' retrieved via Canonical Text Service '.(empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	$serverurl = str_replace('?request=GetCapabilities','',$serverurl);
-	$stmt = $sql->prepare('SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET ?');
-	$stmt->execute([$offset]);
+	$stmt = $sql->prepare('SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET '.$offset);
+	$stmt->execute();
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$isEmpty=false;
 		$urn = $row['urn'];
