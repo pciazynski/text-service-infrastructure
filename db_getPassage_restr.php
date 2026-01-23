@@ -160,40 +160,39 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 
 
 function spanningPassage($urn,$deleteXML = false,$newlines = false){
-	if (str_contains($urn,"@")){return spanningSubPassage($urn,$deleteXML,$newlines);}
+	if (str_contains($urn,'@')){return spanningSubPassage($urn,$deleteXML,$newlines);}
 	global $sql;
 	global $dbtablename;
-	$urnarr = explode(":",$urn);
-	$workurn = $urnarr[0].":".$urnarr[1].":".$urnarr[2].":".$urnarr[3];
+	$urnarr = explode(':',$urn);
+	$workurn = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urnarr[3];
 	$psgurn = explode("-",$urnarr[4]);
 	$fromurnid = getLeftOrRightUrnID($workurn.":".$psgurn[0], true);
 	$tournid = getLeftOrRightUrnID($workurn.":".$psgurn[1],false);
-	$query = "SELECT text FROM ".$dbtablename." WHERE urnid BETWEEN ".$fromurnid." AND ".$tournid." ORDER BY urnid";
-	$res = "";
-	$sep = " ";
+	$res = '';
+	$sep = ' ';
 	if($newlines){
 		$sep = "\n";
 	}
-	foreach ($sql->query($query) as $row) {
+	$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urnid BETWEEN ? AND ? ORDER BY urnid');
+	$stmt->execute([$fromurnid,tournid]);
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = trim($res.$row['text']).$sep;
 	}
 	
-	if ($deleteXML){
-		$res = deletexml($res);
-	}
+	($deleteXML) ? $res = deletexml($res) : NULL;
 
 	return $res;
 }
 
 function passage($urn,$deleteXML = false,$newlines = false){
-	if (str_contains($urn,"@")){return subPassage($urn,$deleteXML,$newlines);}
+	if (str_contains($urn,'@')){return subPassage($urn,$deleteXML,$newlines);}
 	global $sql;
 	global $binary;
 	global $dbtablename;
 	
 	#LIKE urn.% OR (exactly) LIKE urn
-	if(str_ends_with($urn,":") AND $newlines==0){
-		if($dbtablename == "urndatarestr") {
+	if(str_ends_with($urn,':') AND $newlines==0){
+		if($dbtablename == 'urndatarestr') {
 			$stmt = $sql->prepare('SELECT text FROM workurntextrestr WHERE urn = ?');
 		}
 		else{
@@ -202,7 +201,7 @@ function passage($urn,$deleteXML = false,$newlines = false){
 		$stmt->execute([$urn]);
 	}
 	else {
-		if(str_ends_with($urn,":")){
+		if(str_ends_with($urn,':')){
 			$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
 			$stmt->execute([$urn.'%']);
 		}else{
@@ -211,8 +210,8 @@ function passage($urn,$deleteXML = false,$newlines = false){
 		}
 	}
 	
-	$res = "";
-	$sep = " ";
+	$res = '';
+	$sep = ' ';
 	if($newlines){
 		$sep = "\n";
 	}
@@ -220,9 +219,8 @@ function passage($urn,$deleteXML = false,$newlines = false){
 		$res = trim($res.$row['text']).$sep;
 	}
 	
-	if ($deleteXML){
-		$res = deletexml($res);
-	}
+	($deleteXML) ? $res = deletexml($res) : NULL;
+
 	return $res;
 }
 
