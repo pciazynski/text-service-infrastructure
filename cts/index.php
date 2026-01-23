@@ -109,8 +109,7 @@ function GetPassagePlus($urn){
 	$urnarr = explode(':',$urn);
 	$urnop = '<urn>';
 	$urncl = '</urn>';
-	if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",validreff($urn,true,1000));}
-	else {$sqlreply = explode("\n",validreff($urn,false,1000));};
+	$sqlreply = explode("\n",validreff($urn,1000));
 	foreach ($sqlreply as $row) {
 		$res .= $urnop.$row.$urncl;
 	}
@@ -140,8 +139,7 @@ function GetValidReff($urn,$level){
 	require('../db_getValidReff.php');
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetValidReff xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetValidReff</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	$urnarr = explode(':',$urn);
-	if (strlen($urnarr[4]) == 0){$sqlreply = explode("\n",validreff($urn,true,$level));}
-	else {$sqlreply = explode("\n",validreff($urn,false,$level));};
+	$sqlreply = explode("\n",validreff($urn,$level));
 	$urnop = '<urn>';
 	$urncl = '</urn>';
 	foreach ($sqlreply as $row) {

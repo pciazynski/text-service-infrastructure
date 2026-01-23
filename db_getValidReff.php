@@ -1,17 +1,21 @@
 <?php
-function validreff($urn,$isWorkurn,$level,$validreffcount=0){
+function validreff($urn,$level,$validreffcount=0){
 	global $sql;
 	global $binary;
 	global $dbtablename;
 	
-	if($isWorkurn){$query = "SELECT urn FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' AND NOT urn = '".$urn."' ORDER BY urnid";}
-	else {$query = "SELECT urn FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' ORDER BY urnid";}
-	if ($validreffcount>0){$query = $query." LIMIT ".$validreffcount;}
-	$res = "";
+	$res = '';
 	if ($level >- 1){
-		foreach ($sql->query($query) as $row) {
+		if ($validreffcount>0){
+			$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND NOT urn = ? LIMIT ?');
+			(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%',$urn.'%',intval($validreffcount)]):$stmt->execute([$urn.'.%',$urn.'.%',intval($validreffcount)]);
+		}else{
+			$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND NOT urn = ?');
+			(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%',$urn.'%']):$stmt->execute([$urn.'.%',$urn.'.%']);
+		}
+		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$candiurn = $row['urn'];
-			$candilvl = count(explode(".",explode ( ":", $candiurn)[4]));
+			$candilvl = count(explode('.',explode ( ':', $candiurn)[4]));
 			if($candilvl <= $level){
 				$res = $res.$candiurn."\n";
 			}
