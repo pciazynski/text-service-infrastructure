@@ -43,7 +43,7 @@ function subPassage($urn,$deleteXML = false){
 	if(str_ends_with($urn,':')){
 		$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
 		$stmt->execute([$urn.'%']);
-	else {
+	}else {
 		$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? OR urn LIKE '.$binary.' ? ORDER BY urnid');
 		$stmt->execute([$urn.'.%',$urn]);
 	}
@@ -54,7 +54,8 @@ function subPassage($urn,$deleteXML = false){
 	}
 	
 	($deleteXML) ? $res = deletexml($res) : NULL;
-	if(substr_count($res, $subpass)>=$subpassc){return $subpass;}else{return '';}
+	if(substr_count($res, $subpass)>=$subpassc){$res = $subpass;}else{$res = '';}
+	return $res;
 }
 
 function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
