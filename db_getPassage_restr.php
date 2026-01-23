@@ -14,14 +14,14 @@ function getLeftOrRightUrnID($urn,$left=true){
 		$res = $row['urnid'];
 	}
 	
-	#no exact match -> search leftest or rightest child node
+	#no exact match with text content -> search leftest or rightest child node
 	if (strlen($res)==0){
 		$res = '';
 		($left) ? $ordering = 'ASC' : $ordering = 'DESC';
 		$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND text IS NOT NULL ORDER BY urnid '.$ordering.' LIMIT 1');
 		$stmt->execute([$urn.'.%']);
 		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-			$res = $res.$row['urnid'];
+			$res = $row['urnid'];
 		}
 	}
 	return trim($res);
@@ -194,17 +194,20 @@ function passage($urn,$deleteXML = false,$newlines = false){
 	#LIKE urn.% OR (exactly) LIKE urn
 	if(str_ends_with($urn,":") AND $newlines==0){
 		if($dbtablename == "urndatarestr") {
-			$query = "SELECT text FROM workurntextrestr WHERE urn = '".$urn."'";
+			$stmt = $sql->prepare('SELECT text FROM workurntextrestr WHERE urn = ?');
 		}
 		else{
-			$query = "SELECT text FROM workurntext WHERE urn = '".$urn."'";
+			$stmt = $sql->prepare('SELECT text FROM workurntext WHERE urn = ?');
 		}
+		$stmt->execute([$urn]);
 	}
 	else {
 		if(str_ends_with($urn,":")){
-			$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn."%' ORDER BY urnid";
+			$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+			$stmt->execute([$urn.'%']);
 		}else{
-			$query = "SELECT text FROM ".$dbtablename." WHERE urn LIKE ".$binary." '".$urn.".%' OR urn LIKE ".$binary." '".$urn."' ORDER BY urnid";
+			$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? OR urn LIKE '.$binary.' ? ORDER BY urnid');
+			$stmt->execute([$urn.'%',$urn]);
 		}
 	}
 	
@@ -213,7 +216,7 @@ function passage($urn,$deleteXML = false,$newlines = false){
 	if($newlines){
 		$sep = "\n";
 	}
-	foreach ($sql->query($query) as $row) {
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = trim($res.$row['text']).$sep;
 	}
 	
