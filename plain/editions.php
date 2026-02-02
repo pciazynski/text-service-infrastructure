@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: text/plain');
 require('../config.php');
+$_GET = array_filter($_GET);
 
 # Returns edition level URN list.
 # Params: offset, urnfilter, author, title, year
