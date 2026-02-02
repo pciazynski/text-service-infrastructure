@@ -28,12 +28,18 @@ function editions(){
 			$yearmin = 1;
 			$yearmax = 30000;
 		}
-		(isset($_GET['yearmin'])) ? $yearmin = $_GET['yearmin'] : NULL;
-		(isset($_GET['yearmax'])) ? $yearmax = $_GET['yearmax'] : NULL;
-		(isset($_GET['urnfilter'])) ? $urnfilter = $_GET['urnfilter'] : $urnfilter = '';
-		(isset($_GET['urnfilter'])) ? $urnfilter = $_GET['urnfilter'] : $urnfilter = '';
-		(isset($_GET['author'])) ? $author = $_GET['author'] : $author = '';
-		(isset($_GET['title'])) ? $title = $_GET['title'] : $title = '';
+		if (isset($_GET['restricted'])){
+			intval($_GET['restricted']) == 1 ? $restricted = ' AND restricted = 1' : $restricted = ' AND restricted = 0';
+		}
+		else{
+			$restricted = '';
+		}
+		(isset($_GET['yearmin'])) ? $yearmin = $_GET['yearmin'] : $yearmin = 1;;
+		(isset($_GET['yearmax'])) ? $yearmax = $_GET['yearmax'] : $yearmax = 30000;;
+		(isset($_GET['urnfilter'])) ? $urnfilter = '%'.$_GET['urnfilter'].'%' : $urnfilter = '%';
+		(isset($_GET['author'])) ? $author = '%'.$_GET['author'].'%' : $author = '%';
+		(isset($_GET['title'])) ? $title = '%'.$_GET['title'].'%' : $title = '%';
+
 		$sortBy = 'urn';
 		if(isset($_GET['sortBy'])){
 			$tmp = $_GET['sortBy'];
@@ -50,8 +56,9 @@ function editions(){
 			}
 		}
 		
-		$stmt = $sql->prepare('SELECT urn,title,year,author,restricted,lang FROM workdata WHERE urn LIKE ? AND author LIKE ? and title LIKE ? AND year BETWEEN ? AND ? ORDER BY '.$sortBy);
-		$stmt->execute(['%'.$urnfilter.'%','%'.$author.'%','%'.$title.'%',$yearmin, $yearmax]);
+		
+		$stmt = $sql->prepare('SELECT urn,title,year,author,restricted,lang FROM workdata WHERE urn LIKE ? '.$restricted.' AND author LIKE ? and title LIKE ?  ORDER BY '.$sortBy);
+		$stmt->execute([$urnfilter, $author, $title]);
 	}
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$res = $res.$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$tab.$row['lang'].$nl;
