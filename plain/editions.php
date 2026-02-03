@@ -11,6 +11,7 @@ function editions(){
 	$res = '';
 	$tab = "\t";
 	$nl = "\n";
+	
 	if(empty($_GET)){
 		if (file_exists('editions.cache')){
 			return file_get_contents('editions.cache');
@@ -50,20 +51,28 @@ function editions(){
 			$query.= ' AND title LIKE ?';
 			array_push($params,'%'.$_GET['title'].'%');
 		}
-
+		
 		if(isset($_GET['sortBy'])){
 			$tmp = $_GET['sortBy'];
 			switch($tmp){
 				case 'author':
+					if(count($_GET) == 1 and file_exists('editions_author.cache'))
+					return file_get_contents('editions_author.cache');
 					$query .= ' ORDER BY author';
 					break;
 				case 'year':
+					if(count($_GET) == 1 and file_exists('editions_year.cache'))
+					return file_get_contents('editions_year.cache');
 					$query .= ' ORDER BY year';
 					break;
 				case 'author,year':
+					if(count($_GET) == 1 and file_exists('editions_author,year.cache'))
+					return file_get_contents('editions_author,year.cache');
 					$query .= ' ORDER BY author,year';
 					break;
 				case 'author,title':
+					if(count($_GET) == 1 and file_exists('editions_author,title.cache'))
+					return file_get_contents('editions_author,title.cache');
 					$query .= ' ORDER BY author,title';
 					break;
 			}
