@@ -34,7 +34,7 @@ function editions(){
 	
 		(isset($_GET['yearmin'])) ? $yearmin = $_GET['yearmin'] : $yearmin = 1;;
 		(isset($_GET['yearmax'])) ? $yearmax = $_GET['yearmax'] : $yearmax = 30000;;
-		(isset($_GET['urnfilter'])) ? $params=array($_GET['urnfilter']): $params=array('%');
+		(isset($_GET['urnfilter'])) ? $params=array('%'.$_GET['urnfilter'].'%'): $params=array('%');
 
 		if (isset($_GET['restricted'])){
 			intval($_GET['restricted']) == 1 ? $query .= ' AND restricted = 1' : $query = ' AND restricted = 0';
@@ -43,10 +43,7 @@ function editions(){
 			$query.= ' AND lang LIKE ?';
 			array_push($params,$_GET['lang']);
 		}
-		if(isset($_GET['urnfilter'])){
-			$query.= ' AND urn LIKE ?';
-			array_push($params,'%'.$_GET['urnfilter'].'%');
-		}
+
 		if(isset($_GET['author'])){
 			$query.= ' AND author LIKE ?';
 			array_push($params,'%'.$_GET['author'].'%');
