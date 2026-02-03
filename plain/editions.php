@@ -63,6 +63,9 @@ function editions(){
 				case 'author,year':
 					$query .= ' ORDER BY author,year';
 					break;
+				case 'author,title':
+					$query .= ' ORDER BY author,title';
+					break;
 			}
 		}
 		
