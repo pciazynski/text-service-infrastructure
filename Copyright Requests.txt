@@ -21,6 +21,8 @@ Without Copyright-Token
 	plain/prevnexturn.php(Any URN)
 	plain/prevurn.php(Any URN)
 	plain/nexturn.php(Any URN)
+	plain/searchauthors.php
+	plain/searchtitles.php
 	plain/urnbylanguage.php
 	tm/bagofwords.php (Any URN)
 	tm/entities.php (Any URN)

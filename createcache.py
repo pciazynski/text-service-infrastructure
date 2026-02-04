@@ -23,56 +23,52 @@ for x in cs:
     for item in x:
         if item == None:
             item = ""
-        line += "\t"+str(item)
+    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])
     resstr += line.strip("\t")+"\n"
 
 with open("plain/editions.cache", "w", encoding="utf8") as outf:
-    outf.write(resstr.strip())
+    outf.write(resstr.strip().replace("\tNone\t","\t\t"))
 
 cs.execute("SELECT urn,title,year,author,cast(restricted as CHAR(1)),lang FROM "+thisdb+".workdata ORDER BY author")
 resstr=""
 for x in cs:
-    line = ""
     for item in x:
         if item == None:
             item = ""
-        line += "\t"+str(item)
+    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])
     resstr += line.strip("\t")+"\n"
 with open("plain/editions_author.cache", "w", encoding="utf8") as outf:
-    outf.write(resstr.strip())
+    outf.write(resstr.strip().replace("\tNone\t","\t\t"))
     
 cs.execute("SELECT urn,title,year,author,cast(restricted as CHAR(1)),lang FROM "+thisdb+".workdata ORDER BY year")
 resstr=""
 for x in cs:
-    line = ""
     for item in x:
         if item == None:
             item = ""
-        line += "\t"+str(item)
+    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])
     resstr += line.strip("\t")+"\n"
 with open("plain/editions_year.cache", "w", encoding="utf8") as outf:
-    outf.write(resstr.strip())
+    outf.write(resstr.strip().replace("\tNone\t","\t\t"))
 
 cs.execute("SELECT urn,title,year,author,cast(restricted as CHAR(1)),lang FROM "+thisdb+".workdata ORDER BY author,year")
 resstr=""
 for x in cs:
-    line = ""
     for item in x:
         if item == None:
             item = ""
-        line += "\t"+str(item)
+    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])
     resstr += line.strip("\t")+"\n"
 with open("plain/editions_author,year.cache", "w", encoding="utf8") as outf:
-    outf.write(resstr.strip())
+    outf.write(resstr.strip().replace("\tNone\t","\t\t"))
 
 cs.execute("SELECT urn,title,year,author,cast(restricted as CHAR(1)),lang FROM "+thisdb+".workdata ORDER BY author,title")
 resstr=""
 for x in cs:
-    line = ""
     for item in x:
         if item == None:
             item = ""
-        line += "\t"+str(item)
+    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])
     resstr += line.strip("\t")+"\n"
 with open("plain/editions_author,title.cache", "w", encoding="utf8") as outf:
-    outf.write(resstr.strip())
+    outf.write(resstr.strip().replace("\tNone\t","\t\t"))
