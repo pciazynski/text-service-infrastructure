@@ -28,7 +28,7 @@ function titles($snippet){
 	return $res;
 }
 
-if (isset($_GET['snippet'])){
+if (isset($_GET['snippet']) and strlen($_GET['snippet'])>3){
 	echo trim(titles($_GET['snippet']),"\n");
 }
 ?>
