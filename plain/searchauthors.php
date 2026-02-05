@@ -7,9 +7,13 @@ require('../config.php');
 
 function authors($snippet){
 	global $sql;
-	$query = 'SELECT author, count(author) as cd FROM workdata WHERE author IS NOT NULL and author LIKE ? GROUP BY author';
-	(isset($_GET['sort'])) ? $query .= ' ORDER BY cd DESC,author' : NULL;
-
+	if (isset($_GET['sort'])){
+		$query = 'SELECT DISTINCT author FROM workdata WHERE author IS NOT NULL and author LIKE ? ORDER BY author';
+	}
+	else{
+		$query = 'SELECT author, count(author) as cd FROM workdata WHERE author IS NOT NULL and author LIKE ? GROUP BY author ORDER BY cd';
+	}
+	
 	$res = '';
 	$nl = "\n";
 	$stmt = $sql->prepare($query);

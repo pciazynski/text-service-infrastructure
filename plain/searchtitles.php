@@ -7,8 +7,12 @@ require('../config.php');
 
 function titles($snippet){
 	global $sql;
-	$query = 'SELECT title, count(title) as cd FROM workdata WHERE title IS NOT NULL and title LIKE ? GROUP BY title';
-	(isset($_GET['sort'])) ? $query .= ' ORDER BY cd DESC,title' : NULL;
+	if (isset($_GET['sort'])){
+		$query = 'SELECT DISTINCT title FROM workdata WHERE title IS NOT NULL and title LIKE ? ORDER BY title';
+	}
+	else{
+		$query = 'SELECT title, count(title) as cd FROM workdata WHERE title IS NOT NULL and title LIKE ? GROUP BY title ORDER BY cd';
+	}
 
 	$res = '';
 	$nl = "\n";
