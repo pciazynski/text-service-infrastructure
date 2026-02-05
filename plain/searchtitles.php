@@ -12,7 +12,6 @@ function titles($snippet){
 
 	$res = '';
 	$nl = "\n";
-	$tab = "\t";
 	$stmt = $sql->prepare($query);
 	if (isset($_GET['prefixsearch'])){
 		$stmt->execute([$snippet.'%']);
@@ -20,7 +19,7 @@ function titles($snippet){
 		if (isset($_GET['suffixsearch'])){
 			$stmt->execute(['%'.$snippet]);
 	}else{$stmt->execute(['%'.$snippet.'%']);}}	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$res = $res.$row['title'].$tab.$row['cd'].$nl;
+		$res = $res.$row['title'].$nl;
 	}
 	return $res;
 }

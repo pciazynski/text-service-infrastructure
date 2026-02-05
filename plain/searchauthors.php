@@ -12,7 +12,6 @@ function authors($snippet){
 
 	$res = '';
 	$nl = "\n";
-	$tab = "\t";
 	$stmt = $sql->prepare($query);
 	if (isset($_GET['prefixsearch'])){
 		$stmt->execute([$snippet.'%']);
@@ -22,7 +21,7 @@ function authors($snippet){
 	}else{$stmt->execute(['%'.$snippet.'%']);}}
 		
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$res = $res.$row['author'].$tab.$row['cd'].$nl;
+		$res = $res.$row['author'].$nl;
 	}
 	return $res;
 }
