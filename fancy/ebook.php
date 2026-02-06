@@ -32,7 +32,6 @@ if (isset($_GET['urn'])){
 	$html = '<!DOCTYPE html><link rel="stylesheet" href="ebook.css">';
 	if (strpos ($urnarr[4],'-')){$html.=spanningPassage($urn);}
 	else {$html.=passage($urn);};
-	
 	echo $html;
 }else{
 	echo ebookeditions();
