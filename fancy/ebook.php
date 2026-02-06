@@ -28,8 +28,10 @@ function ebookeditions(){
 
 if (isset($_GET['urn'])){
 	$urn = checkurn($_GET['urn'],'');
+	$urnarr = explode(':',$urn);
 	$html = '<!DOCTYPE html><link rel="stylesheet" href="ebook.css">';
-	$html.=passage($urn);
+	if (strpos ($urnarr[4],'-')){$html.=spanningPassage($urn);}
+	else {$html.=passage($urn);};
 	
 	echo $html;
 }else{
