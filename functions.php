@@ -30,8 +30,10 @@ function restrictedAccess(){
 }
 
 function deletexml($res){
-	$res = preg_replace('/<lb[^>]+>/', " \n", $res);
-	$res = preg_replace('/<[^>]+>/', '', $res);
+	$res = preg_replace('/<[^>]+>/', ' ', $res);
+	while(str_contains($res,'  ')){
+		$res = str_replace('  ',' ',$res);
+	}
 	return $res;
 }
 

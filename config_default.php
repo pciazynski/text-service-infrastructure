@@ -4,8 +4,10 @@
 $sql = new PDO('mysql:host=localhost;dbname=cts', 'ctsapi', 'pw');
 $multibyte = false;
 
-#normalization for tm. not relevant standard usage.
+#normalization for tm.
+#tokenization
 $replacearr = array(".",",","!","?",'"');
+#sentence segmentation
 $punctarr = array(",",".","!","?","―");
 
 #change this to "BINARY" if you want case sensitive URNs at the cost of performance
