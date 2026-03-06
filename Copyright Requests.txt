@@ -4,6 +4,8 @@ With Copyright-Token
 	plain/structuretext.php (Static URN)
 
 Without Copyright-Token
+	plain/cloneeditions.php
+	plain/clonemetadata.php
 	plain/punctuation.php
 	plain/editions.php
 	plain/editionsslim.php
