@@ -11,7 +11,7 @@ $urnarr = explode(':',$urn);
 
 (isset($_GET['level'])) ? $level = trim(htmlspecialchars($_GET['level'])) : $level = -1;
 
-if (strlen($urnarr[4]) == 0){echo validreff($urn,true,$level);}
-else {echo validreff($urn,false,$level);};
+if (strlen($urnarr[4]) == 0){echo validreff($urn,$level);}
+else {echo validreff($urn,$level);};
 
 ?>
