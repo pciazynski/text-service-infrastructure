@@ -1,6 +1,4 @@
 <?php
-require('../functions.php');
-require('../config.php');
 
 function getLeftOrRightUrnID($urn,$left=true){
 	global $sql;
