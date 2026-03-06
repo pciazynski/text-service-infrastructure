@@ -34,7 +34,6 @@ function spanningPassage($urn){
 	$fromurnid = getLeftOrRightUrnID($workurn.':'.$psgurn[0], true);
 	$tournid = getLeftOrRightUrnID($workurn.':'.$psgurn[1],false);
 	$res = '';
-	$stack = [];
 	$nl = "\n";
 	$stmt = $sql->prepare('SELECT text,type,urn FROM urndata WHERE urnid BETWEEN ? AND ? ORDER BY urnid');
 	$stmt->execute([$fromurnid,$tournid]);
@@ -44,15 +43,12 @@ function spanningPassage($urn){
 			$res = $res.'<hr>';
 		}
 		
-		while ($newurnpartcount<=count($stack)){
-			$res = $res.'</'.array_pop($stack).'>';
-		}
 		$type = str_replace(['head','list','item','lg','l'],['h'.$newurnpartcount,'ul','li','ul','li'],$row['type']);
 		$res = $res.'<'.$type.'>';
-		array_push($stack,$type);
 		$psgpart = $row['text'];
 		$psgpart = preg_replace('/<lb[^>]+>/', $nl, $psgpart);
 		$res = $res.preg_replace('/<[^>]+>/', '', $psgpart).$nl;
+		$res = $res.'</'.$type.'>';
 	}
 
 
