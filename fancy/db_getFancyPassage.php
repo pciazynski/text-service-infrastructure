@@ -50,7 +50,7 @@ function spanningPassage($urn){
 		$res = $res.preg_replace('/<[^>]+>/', '', $psgpart).$nl;
 		$res = $res.'</'.$type.'>';
 	}
-
+	$res = str_replace($nl,'<br/>',$res);
 
 	return $res;
 }
@@ -85,7 +85,7 @@ function passage($urn){
 		$res = $res.preg_replace('/<[^>]+>/', '', $psgpart).$nl;
 		$res = $res.'</'.$type.'>';
 	}
-	$res = str_replace($nl,'<br>',$res);
+	$res = str_replace($nl,'<br/>',$res);
 	return $res;
 }
 
