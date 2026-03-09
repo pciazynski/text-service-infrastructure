@@ -17,12 +17,18 @@ function getDocStrct($urn){
 	$resrow2='type';
 	$resrow3='text';
 	
-	(isset($_GET['lowercase'])) ? $text = "LOWER(text)" : $text = "text" ;
+	(isset($_GET['lowercase'])) ? $lower = true : $text = "text" ;
 
-	$stmt = $sql->prepare('SELECT urn,type,'.$text.' FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	$stmt = $sql->prepare('SELECT urn,type,text FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
 	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
-	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$res = $res.$row[$resrow1].$tab.$row[$resrow2].$tab.$row[$resrow3].$nl;
+	if (isset($_GET['lowercase'])){
+		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$res = $res.$row[$resrow1].$tab.$row[$resrow2].$tab.strtolower($row[$resrow3]).$nl;
+		}
+	}else{
+		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$res = $res.$row[$resrow1].$tab.$row[$resrow2].$tab.$row[$resrow3].$nl;
+		}
 	}
 	
 	(isset($_GET['deletexml'])) ? $res = deletexml($res) : NULL;
