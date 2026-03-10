@@ -7,7 +7,7 @@ function firsturn($urn){
 
 	$res = '';
 	$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND text IS NOT NULL LIMIT 1');
-	(str_ends_with('urn',':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
+	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res .= $row['urn'];
 	}
