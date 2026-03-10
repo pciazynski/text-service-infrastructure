@@ -22,7 +22,11 @@ if (isset($_GET['urn']) and $ngramgoalsize>=2 and (!$restricteddocuments or $ngr
 			else {$psg = passage($urn, $deleteXML=true);};
 		}
 		else{
-			if (strlen($urnarr[4]) == 0){$psg = passage($urn, $deleteXML=true);}
+			if (strlen($urnarr[4]) == 0){
+				$psg = passage($urn, $deleteXML=true);
+			}else{
+				require('../errormsg/access.php');
+			}
 		}
 	}
 	
