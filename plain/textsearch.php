@@ -10,6 +10,10 @@ Returns URNs and text. Limited to copyright-free documents. exactsearch.php retu
 
 if (isset($_GET['urn']) && isset($_GET['snippet'])){
 	$urn = checkurn($_GET['urn'],'');
+	if($dbtablename == 'urndatarestr'){
+		require('../errormsg/access.php');
+	}
+	
 	(isset($_GET['limit'])) ? $limit = max(0,intval($_GET['limit'])) : $limit = 1000;
 	$res = '';
 	$tab = "\t";
