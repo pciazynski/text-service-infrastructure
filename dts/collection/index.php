@@ -34,7 +34,7 @@ function editions(){
 		$count+=1;
 	}
 	$lang = substr($lang,0,-1);
-	$host= 'Canonical Text Service: '.$_SERVER['HTTP_HOST'];
+	$host= 'Distributed Text Service: '.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	$res = '{
     "@context": "https://dtsapi.org/context/v1.0.json",
     "@id": "general",
