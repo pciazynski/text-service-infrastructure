@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: text/plain');
+header('Content-Type: text/text');
 require('../../config.php');
 $_GET = array_filter($_GET);
 
@@ -14,10 +14,14 @@ function editions(){
 	$tab = "\t";
 	$nl = "\n";
 	$count = 0;
-	$stmt = $sql->prepare('SELECT urn,title,year,author,restricted,lang FROM workdata ORDER BY author,title,urn');
+	$stmt = $sql->prepare('SELECT DISTINCT lang FROM workdata');
 	$stmt->execute();
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$lang .= $row['lang'].',';
+	}
+	$stmt = $sql->prepare('SELECT urn,title,year,author,restricted,lang FROM workdata ORDER BY author,title,urn');
+	$stmt->execute();
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$member .= '{
              "@id" : "'.$row['urn'].'",
              "title" : "'.$row['title'].'",
@@ -27,9 +31,9 @@ function editions(){
              "totalParents": 1,
              "totalChildren": WIP
         },';
-		$row['urn'].$tab.$row['title'].$tab.$row['year'].$tab.$row['author'].$tab.$row['restricted'].$tab.$row['lang'].$nl;
 		$count+=1;
 	}
+	$lang = substr($lang,0,-1);
 	$host= 'Canonical Text Service: '.$_SERVER['HTTP_HOST'];
 	$res = '{
     "@context": "https://dtsapi.org/context/v1.0.json",
