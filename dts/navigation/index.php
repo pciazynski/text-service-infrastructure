@@ -45,6 +45,7 @@ function navigation($urn){
 		$psgpart = explode(":",$row[$resrow1])[4];
 		$psgpartarr = explode(".",$psgpart);
 		$psgpartcount = count($psgpartarr);
+		$urn = $row[$resrow1];
 		if($psgpartcount==1){$psgTrees[$psgpart] = $row[$resrow2];}
 		else{
 			$parenttype = "";
@@ -55,9 +56,21 @@ function navigation($urn){
 			$parenttype .= $psgTrees[rtrim($parentpsg,".")];
 			$psgTrees[$psgpart] = $parenttype.'.'.$row[$resrow2];
 		}
-		$member = $member.$row[$resrow1].$tab.$row[$resrow2].$nl;
+		if($psgpartcount == 1){
+			$parent = 'null';
+		}else{
+			$parent = substr($urn, 0, strrpos( $urn, '.') );
+		}
+		$member .= '
+{
+"identifier":"'.$urn.'"
+"@type": "CitableUnit",
+ "level": '.$psgpartcount.',
+"parent": '.$parent.',
+"citeType": "'.$row[$resrow2].'
+},';
 	}
-	
+	$member = rtrim($member,",");
 	$oldcount = -1;
 	$citeTrees = [];
 	
