@@ -7,6 +7,24 @@ $_GET = array_filter($_GET);
 # Returns Collection Endpoint.
 # Params: 
 
+function buildcitationTree($citarch){
+	$cittree = '';
+	$tmparr = explode(".",$citarch);
+	$closingbrackets = "}]";
+	for($j=0;$j<count($tmparr);$j++){
+		$cittree .= '
+"@type": "CiteStructure",
+"citeType": "'.$tmparr[$j].'"';
+		if($j<count($tmparr)-1){
+			$cittree .= ',
+"citeStructure": [{';
+			$closingbrackets.='}]';
+		}
+	}
+	return $cittree.$closingbrackets;
+}
+
+
 function navigation($urn){
 	global $sql;
 	global $binary;
@@ -16,14 +34,49 @@ function navigation($urn){
 	$nl = "\n";
 	$resrow1='urn';
 	$resrow2='type';
-	$resrow3='len';
 	$member = '"member": [
 	';
 	$stmt = $sql->prepare('SELECT urn,type FROM urndata WHERE urn LIKE '.$binary.' ? AND NOT urn = ? ORDER BY urnid');
 	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%',$urn]):$stmt->execute([$urn.'.%',$urn]);
+	$psgTrees = [];
+	
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$member = $member.$row[$resrow1].$tab.$row[$resrow2].$tab.$row[$resrow3].$nl;
+		#print(explode(":",$row[$resrow1])[4]);
+		$psgpart = explode(":",$row[$resrow1])[4];
+		$psgpartarr = explode(".",$psgpart);
+		$psgpartcount = count($psgpartarr);
+		if($psgpartcount==1){$psgTrees[$psgpart] = $row[$resrow2];}
+		else{
+			$parenttype = "";
+			$parentpsg = "";
+			for($i = 0; $i<count($psgpartarr)-1;$i++){
+				$parentpsg = $psgpartarr[$i].'.';
+			}
+			$parenttype .= $psgTrees[rtrim($parentpsg,".")];
+			$psgTrees[$psgpart] = $parenttype.'.'.$row[$resrow2];
+		}
+		$member = $member.$row[$resrow1].$tab.$row[$resrow2].$nl;
 	}
+	
+	$oldcount = -1;
+	$citeTrees = [];
+	
+	foreach (array_reverse($psgTrees) as $ct => $y) {
+		$psgpartarr = explode(".",$ct);
+		$psgpartcount = count($psgpartarr);
+		if($psgpartcount>=$oldcount){$citeTrees[$y] = 1;}
+		$oldcount = $psgpartcount;
+	}
+	
+	$citationTrees = '"citationTrees": [{
+"@type": "CitationTree",
+"citeStructure": [{';
+
+	foreach ($citeTrees as $ct => $y) {
+		$citationTrees .= buildcitationTree($ct);
+	}
+	$citationTrees.='
+}]';
 	$member.=']
 	';
 
@@ -38,29 +91,7 @@ function navigation($urn){
     "document": "'.$_SERVER['HTTP_HOST'].str_replace('/navigation/','/document/',$_SERVER['REQUEST_URI']).'",
     "collection": "'.$_SERVER['HTTP_HOST'].str_replace('/navigation/','/collection/',$_SERVER['REQUEST_URI']).'",
     "navigation": "'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'",
-    "WIPcitationTrees": [
-      {
-        "@type": "CitationTree",
-        "citeStructure": [
-          {
-            "@type": "CiteStructure",
-            "citeType": "Chapter",
-            "citeStructure": [
-              {
-                "@type": "CiteStructure",
-                "citeType": "Journal Entry",
-                "citeStructure": [
-                  {
-                    "@type": "CiteStructure",
-                    "citeType": "Paragraph"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    '.$citationTrees.'
   },
 '.$member.'
 }';
