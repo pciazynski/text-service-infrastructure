@@ -2,7 +2,7 @@
 
 ## Citation ##
 
-Jochen Tiepmar. 2025. Canonical Text Service Infrastructure. https://urncts.eu
+Jochen Tiepmar. 2025. Text Service Infrastructure. https://urncts.eu
 
 # References
 
