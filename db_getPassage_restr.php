@@ -195,7 +195,6 @@ function passage($urn,$deleteXML = false,$newlines = false){
 	global $binary;
 	global $dbtablename;
 	
-	$urn = str_replace("_","\_",$urn);
 	#LIKE urn.% OR (exactly) LIKE urn
 	if(str_ends_with($urn,':') AND $newlines==0){
 		if($dbtablename == 'urndatarestr') {
@@ -207,6 +206,7 @@ function passage($urn,$deleteXML = false,$newlines = false){
 		$stmt->execute([$urn]);
 	}
 	else {
+		$urn = str_replace("_","\_",$urn);
 		if(str_ends_with($urn,':')){
 			$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
 			$stmt->execute([$urn.'%']);
