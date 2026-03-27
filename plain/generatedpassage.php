@@ -7,6 +7,7 @@ function passage($urn){
 	global $sql;
 	global $binary;
 	global $dbtablename;
+
 	$urn = str_replace("_","\_",$urn);
 
 	$res = '';
