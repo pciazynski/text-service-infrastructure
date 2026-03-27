@@ -22,7 +22,7 @@ if (isset($_GET['urn']) && isset($_GET['snippet'])){
 	$resrow2='text';
 	
 	$stmt = $sql->prepare('SELECT urn, text FROM urndata WHERE urn LIKE '.$binary.' ? and text LIKE ? LIMIT '.$limit);
-	$urn = str_replace("_","\_",urn);
+	$urn = str_replace("_","\_",$urn);
 	$snippet = str_replace(array("_","%"),array("\_","\%"),$_GET['snippet']);
 	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%','%'.$snippet.'%']):$stmt->execute([$urn.'.%','%'.$snippet.'%']);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
