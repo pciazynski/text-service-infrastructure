@@ -4,6 +4,7 @@ function worklabel($urn){
 	global $sql;
 	global $binary;
 	$stmt = $sql->prepare('SELECT urn, title, year, lang FROM workdata WHERE urn LIKE '.$binary.' ?');
+	$urn = str_replace("_","\_",$urn);
 	$stmt->execute([$urn]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $row['title'].' ('.$row['year'].', '.$row['lang'].')';
@@ -16,6 +17,7 @@ function passagelabel($urn){
 	global $binary;
 	$urnarr = explode(':',$urn);
 	$workurn = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urnarr[3].':';
+	$workurn = str_replace("_","\_",$workurn);
 	$psgurn = $urnarr[4];
 	$psgurnarr = explode('.',$psgurn);
 	$requesturns = 'urn LIKE '.$binary.' ?';

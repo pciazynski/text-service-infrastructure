@@ -7,6 +7,7 @@ function prevnexturn($urn){
 	$isWorkurn = str_ends_with($urn,':');
 	$res = '';
 	$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ?');
+	$urn = str_replace("_","\_",$urn);
 	$stmt->execute([$urn]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = intval($row['urnid']);

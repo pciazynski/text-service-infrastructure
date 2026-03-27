@@ -5,6 +5,7 @@ function validreff($urn,$level,$validreffcount=0){
 	global $dbtablename;
 	
 	$res = '';
+	$urn = str_replace("_","\_",$urn);
 	if ($validreffcount>0){
 		$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND NOT urn = ? ORDER BY urnid LIMIT ?');
 		(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%',$urn,intval($validreffcount)]):$stmt->execute([$urn.'.%',$urn,intval($validreffcount)]);

@@ -9,6 +9,7 @@ function getLeftOrRightUrnID($urn,$left=true){
 
 	#exact match
 	$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND text IS NOT NULL');
+	$urn = str_replace("_","\_",$urn);
 	$stmt->execute([$urn]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $row['urnid'];
@@ -38,6 +39,7 @@ function subPassage($urn,$deleteXML = false){
 	$subpassarr = explode('[',$subpass);
 	$subpass = $subpassarr[0];
 	(count($subpassarr)==2) ? $subpassc = rtrim($subpassarr[1],']') : $subpassc = 1;
+	$urn = str_replace("_","\_",$urn);
 	if(str_ends_with($urn,':')){
 		$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
 		$stmt->execute([$urn.'%']);
@@ -103,6 +105,7 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	($newlines) ? $sep = "\n" : $sep = ' ';
 	
 	$stmt = $sql->prepare('SELECT text,urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? OR urn LIKE '.$binary.' ? ORDER BY urnid');
+	$urnleftarr[0] = str_replace("_","\_",$urnleftarr[0]);
 	$stmt->execute([$urnleftarr[0].'.%',$urnleftarr[0]]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$passleft = $passleft.$row['text'].$sep;
@@ -111,6 +114,7 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	$urnidleft++;
 
 	$stmt = $sql->prepare('SELECT text,urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? OR urn LIKE '.$binary.' ? ORDER BY urnid');
+	$urnrightarr[0] = str_replace("_","\_",$urnrightarr[0]);
 	$stmt->execute([$urnrightarr[0].'.%',$urnrightarr[0]]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$passright = $passright.$row['text'].$sep;
@@ -191,6 +195,7 @@ function passage($urn,$deleteXML = false,$newlines = false){
 	global $binary;
 	global $dbtablename;
 	
+	$urn = str_replace("_","\_",$urn);
 	#LIKE urn.% OR (exactly) LIKE urn
 	if(str_ends_with($urn,':') AND $newlines==0){
 		if($dbtablename == 'urndatarestr') {

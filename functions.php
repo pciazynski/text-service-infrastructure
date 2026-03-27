@@ -8,6 +8,7 @@ function autocomplete($urn){
 	$testurn = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urnarr[3];
 	$res = '';
 	$stmt = $sql->prepare('SELECT urn, restricted FROM workdata WHERE urn LIKE '.$binary.' ? LIMIT 1');
+	$testurn = str_replace("_","\_",$testurn);
 	$stmt->execute([$testurn.'%']);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $res.$row['urn'];
@@ -43,6 +44,7 @@ function urnexists($urn){
 	global $dbtablename;
 	$res = '';
 	$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? LIMIT 1');
+	$urn = str_replace("_","\_",$urn);
 	$stmt->execute([$urn]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $row['urnid'];
