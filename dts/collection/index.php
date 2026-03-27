@@ -73,6 +73,7 @@ function childcollection($urn){
 		$lang .= $row['lang'].',';
 	}
 	$stmt = $sql->prepare('SELECT urn,title,year,author,restricted,lang FROM workdata WHERE urn LIKE ?');
+	$urn = str_replace("_","\_",$urn);
 	$stmt->execute([$urn.".%"]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$member .= '{

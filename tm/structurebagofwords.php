@@ -34,6 +34,7 @@ function getDocStrct($urn){
 	global $multibyte;
 	global $replacearr;
 	$stmt = $sql->prepare('SELECT urn,type,text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	$urn = str_replace("_","\_",$urn);
 	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
 
 	$res = '';

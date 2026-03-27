@@ -8,6 +8,7 @@ function getLeftOrRightUrnID($urn,$left=true){
 
 	#exact match
 	$stmt = $sql->prepare('SELECT urnid FROM urndata WHERE urn LIKE '.$binary.' ? AND text IS NOT NULL');
+	$urn = str_replace("_","\_",$urn);
 	$stmt->execute([$urn]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $row['urnid'];
@@ -59,6 +60,7 @@ function passage($urn){
 	global $sql;
 	global $binary;
 	
+	$urn = str_replace("_","\_",$urn);
 	if(str_ends_with($urn,':')){
 		$stmt = $sql->prepare('SELECT text,type,urn FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid LIMIT 1,18446744073709551615');
 		$stmt->execute([$urn.'%']);

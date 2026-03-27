@@ -37,6 +37,7 @@ function navigation($urn){
 	$member = '"member": [
 	';
 	$stmt = $sql->prepare('SELECT urn,type FROM urndata WHERE urn LIKE '.$binary.' ? AND NOT urn = ? ORDER BY urnid');
+	$urn = str_replace("_","\_",$urn);
 	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%',$urn]):$stmt->execute([$urn.'.%',$urn]);
 	$psgTrees = [];
 	
