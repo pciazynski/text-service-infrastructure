@@ -16,12 +16,14 @@ function prevurn($urn){
 	$workurn = 'urn:cts:'.$urnarr[2].':'.$urnarr[3].':';
 	$res = '';
 	$stmt = $sql->prepare('SELECT urnid FROM '.$dbtablename.' WHERE urn = '.$binary.' ? LIMIT 1');
+	$urn = str_replace("_","\_",$urn);
 	$stmt->execute([$urn]);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $row['urnid'];
 	}
 	
 	$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND urnid BETWEEN ? AND ?');
+	$workurn = str_replace("_","\_",$workurn);
 	$stmt->execute([$workurn.'%',$res-$range,$res-1]);
 	$res = '';
 	$resrow = 'urn';

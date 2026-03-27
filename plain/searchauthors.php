@@ -17,6 +17,7 @@ function authors($snippet){
 	$res = '';
 	$nl = "\n";
 	$stmt = $sql->prepare($query);
+	$snippet = str_replace(array("_","%"),array("\_","\%"),$_GET['snippet']);
 	if (isset($_GET['prefixsearch'])){
 		$stmt->execute([$snippet.'%']);
 	}else{

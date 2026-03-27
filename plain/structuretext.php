@@ -10,7 +10,6 @@ function getDocStrct($urn){
 	global $sql;
 	global $binary;
 	global $dbtablename;
-	$urn = str_replace("_","\_",$urn);
 	$res = '';
 	$tab = "\t";
 	$nl = "\n";
@@ -18,9 +17,8 @@ function getDocStrct($urn){
 	$resrow2='type';
 	$resrow3='text';
 	
-	(isset($_GET['lowercase'])) ? $lower = true : $text = "text" ;
-
 	$stmt = $sql->prepare('SELECT urn,type,text FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	$urn = str_replace("_","\_",$urn);
 	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
 	if (isset($_GET['lowercase'])){
 		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){

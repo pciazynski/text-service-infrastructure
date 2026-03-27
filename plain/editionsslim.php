@@ -10,9 +10,10 @@ function editions(){
 	$res = '';
 	$nl = "\n";
 	$key = 'urn';
+
 	if(isset($_GET['urnfilter']) and strlen(trim($_GET['urnfilter']))>0){
 		$stmt = $sql->prepare('SELECT urn FROM workdata WHERE urn LIKE ? ORDER BY urn');
-		$stmt->execute(['%'.$_GET['urnfilter'].'%']);
+		$stmt->execute(['%'.str_replace("_","\_",$_GET['urnfilter']).'%']);
 	}
 	else{
 		$stmt = $sql->prepare('SELECT urn FROM workdata ORDER BY urn');

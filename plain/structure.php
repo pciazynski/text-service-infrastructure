@@ -18,6 +18,7 @@ function getDocStruct($urn){
 	$resrow3='len';
 	
 	$stmt = $sql->prepare('SELECT urn,type,CHAR_LENGTH(text) AS len FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	$urn = str_replace("_","\_",$urn);
 	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$res = $res.$row[$resrow1].$tab.$row[$resrow2].$tab.$row[$resrow3].$nl;

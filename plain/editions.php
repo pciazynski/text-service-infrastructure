@@ -34,23 +34,22 @@ function editions(){
 	
 		(isset($_GET['yearmin'])) ? $yearmin = $_GET['yearmin'] : $yearmin = 1;;
 		(isset($_GET['yearmax'])) ? $yearmax = $_GET['yearmax'] : $yearmax = 30000;;
-		(isset($_GET['urnfilter'])) ? $params=array('%'.$_GET['urnfilter'].'%'): $params=array('%');
+		(isset($_GET['urnfilter'])) ? $params=array('%'.str_replace("_","\_",$_GET['urnfilter']).'%'): $params=array('%');
 
 		if (isset($_GET['restricted'])){
 			intval($_GET['restricted']) == 1 ? $query .= ' AND restricted = 1' : $query = ' AND restricted = 0';
 		}
 		if(isset($_GET['lang'])){
-			$query.= ' AND lang LIKE ?';
+			$query.= ' AND lang = ?';
 			array_push($params,$_GET['lang']);
 		}
-
 		if(isset($_GET['author'])){
 			$query.= ' AND author LIKE ?';
-			array_push($params,'%'.$_GET['author'].'%');
+			array_push($params,'%'.str_replace("_","\_",$_GET['author']).'%');
 		}
 		if(isset($_GET['title'])){
 			$query.= ' AND title LIKE ?';
-			array_push($params,'%'.$_GET['title'].'%');
+			array_push($params,'%'.str_replace("_","\_",$_GET['title']).'%');
 		}
 		
 		if(isset($_GET['sortBy'])){

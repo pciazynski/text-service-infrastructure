@@ -20,6 +20,8 @@ function textsearch($urn, $snippet){
 	(isset($_GET['limit'])) ? $limit = intval($_GET['limit']) : $limit = 10000;
 
 	$stmt = $sql->prepare('SELECT urn FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? AND text LIKE ? ORDER BY urnid LIMIT '.$limit);
+	$urn = str_replace("_","\_",$urn);
+	$snippet = str_replace("_","\_",$snippet);
 	$stmt->execute([$urn.'%','%'.$snippet.'%']);
 
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){

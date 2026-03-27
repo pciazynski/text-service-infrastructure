@@ -8,11 +8,11 @@ function passage($urn){
 	global $binary;
 	global $dbtablename;
 
-	$urn = str_replace("_","\_",$urn);
 
 	$res = '';
 	(isset($_GET['nl'])) ? $sep = "\n" : $sep = ' ';
 
+	$urn = str_replace("_","\_",$urn);
 	if(str_ends_with($urn,':')){
 		$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
 		$stmt->execute([$urn.'%']);

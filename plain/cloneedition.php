@@ -9,6 +9,7 @@ if(isset($_GET['urn']) and str_ends_with($_GET['urn'],":")){
 	$tab = "\t";
 	$nl = "\n";
 	$stmt = $sql->prepare('SELECT urn, text, lang, type FROM urndata WHERE urn LIKE ?');
+	$docurn = str_replace("_","\_",$docurn);
 	$stmt->execute([$docurn."%"]);
 	$res = '';
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){

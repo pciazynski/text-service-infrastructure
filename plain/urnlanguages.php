@@ -14,7 +14,7 @@ function lang(){
 	$stmt = $sql->prepare('SELECT DISTINCT lang FROM urndata');
 	$stmt->execute();
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$res = $res.$row['lang'].$nl;
+		$res .= $row['lang'].$nl;
 	}
 	$stmt = $sql->prepare('SELECT DISTINCT lang FROM urndatarestr');
 	$stmt->execute();

@@ -10,7 +10,8 @@ if ( isset($_GET['snippet'])){
 	$nl = "\n";
 	$i = 0;
 	$stmt = $sql->prepare('SELECT text FROM urndata WHERE text LIKE ? LIMIT '.$limit);
-	$stmt->execute(['% '.$_GET['snippet'].' %']);
+	$snippet = str_replace(array("_","%"),array("\_","\%"),$_GET['snippet']);
+	$stmt->execute(['% '.$snippet.' %']);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$i = $i + 1;
 		$res = $res.$row['text'].$nl;
@@ -20,7 +21,7 @@ if ( isset($_GET['snippet'])){
 	if($i<$limit){
 		$limit = $limit - $i;
 	$stmt = $sql->prepare('SELECT text FROM urndata WHERE text LIKE ? LIMIT '.$limit);
-	$stmt->execute(['%'.$_GET['snippet'].'%']);
+	$stmt->execute(['%'.$snippet.'%']);
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$i = $i + 1;
 			$res = $res.$row['text'].$nl;
@@ -35,7 +36,7 @@ if ( isset($_GET['snippet'])){
 				$limit = $limit - $i;
 				if($limit>0){
 				$stmt = $sql->prepare('SELECT text FROM urndatarestr WHERE text LIKE ? LIMIT '.$limit);
-				$stmt->execute(['% '.$_GET['snippet'].' %']);
+				$stmt->execute(['% '.$snippet.' %']);
 				foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 						$res = $res.$row['text'].$nl;
 					}
