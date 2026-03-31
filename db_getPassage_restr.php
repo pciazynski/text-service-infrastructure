@@ -195,6 +195,11 @@ function passage($urn,$deleteXML = false,$newlines = false){
 	global $binary;
 	global $dbtablename;
 	
+	$res = '';
+	$sep = ' ';
+	if($newlines){
+		$sep = "\n";
+	}
 	#LIKE urn.% OR (exactly) LIKE urn
 	if(str_ends_with($urn,':') AND $newlines==0){
 		if($dbtablename == 'urndatarestr') {
@@ -204,6 +209,19 @@ function passage($urn,$deleteXML = false,$newlines = false){
 			$stmt = $sql->prepare('SELECT text FROM workurntext WHERE urn = ?');
 		}
 		$stmt->execute([$urn]);
+		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$res = trim($res.$row['text']).$sep;
+		}
+		
+		# Kein Cache vorhanden.
+		
+		if (strlen(trim($res)) == 0){
+			$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+			$stmt->execute([$urn.'%']);
+			foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+				$res = trim($res.$row['text']).$sep;
+			}
+		}
 	}
 	else {
 		$urn = str_replace("_","\_",$urn);
@@ -212,18 +230,16 @@ function passage($urn,$deleteXML = false,$newlines = false){
 			$stmt->execute([$urn.'%']);
 		}else{
 			$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? OR urn LIKE '.$binary.' ? ORDER BY urnid');
-			$stmt->execute([$urn.'%',$urn]);
+			$stmt->execute([$urn.'.%',$urn]);
+		}
+		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$res = trim($res.$row['text']).$sep;
 		}
 	}
 	
-	$res = '';
-	$sep = ' ';
-	if($newlines){
-		$sep = "\n";
-	}
-	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$res = trim($res.$row['text']).$sep;
-	}
+
+	
+
 	
 	($deleteXML) ? $res = deletexml($res) : NULL;
 
