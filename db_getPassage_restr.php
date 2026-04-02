@@ -217,6 +217,7 @@ function passage($urn,$deleteXML = false,$newlines = false){
 		# Kein Cache vorhanden.
 		} catch (Exception $e) {
 			$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+			$urn = str_replace("_","\_",$urn);
 			$stmt->execute([$urn.'%']);
 			foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 				$res = trim($res.$row['text']).$sep;
@@ -226,6 +227,7 @@ function passage($urn,$deleteXML = false,$newlines = false){
 
 		if (strlen(trim($res)) == 0){
 			$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+			$urn = str_replace("_","\_",$urn);
 			$stmt->execute([$urn.'%']);
 			foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
 				$res = trim($res.$row['text']).$sep;
