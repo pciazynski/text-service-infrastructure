@@ -8,7 +8,7 @@ $multibyte = false;
 #tokenization
 $replacearr = array(".",",","!","?",'"');
 #sentence segmentation
-$punctarr = array(",",".","!","?","―");
+$punctarr = array(".",",","!","?",'"');
 
 #change this to "BINARY" if you want case sensitive URNs at the cost of performance
 $binary = "";

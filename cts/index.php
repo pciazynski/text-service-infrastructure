@@ -26,8 +26,8 @@ function getCapabilities(){
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetCapabilities xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetCapabilities</requestName></request><reply><TextInventory tiversion="5.0.rc.1">';
 	$oldgroup = '';
 	$isEmpty=true;
-	$serverurl = ' retrieved via Canonical Text Service '.(empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-	$serverurl = str_replace('?request=GetCapabilities','',$serverurl);
+	$serverurl = ' retrieved via Text Service '.(empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+	$serverurl = str_replace('/cts/?request=GetCapabilities','',$serverurl);
 	$stmt = $sql->prepare('SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET '.$offset);
 	$stmt->execute();
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
