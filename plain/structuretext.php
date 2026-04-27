@@ -17,7 +17,7 @@ function getDocStrct($urn){
 	$resrow2='type';
 	$resrow3='text';
 	
-	$stmt = $sql->prepare('SELECT urn,type,text FROM urndata WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
+	$stmt = $sql->prepare('SELECT urn,type,text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
 	$urn = str_replace("_","\_",$urn);
 	(str_ends_with($urn,':')) ? $stmt->execute([$urn.'%']):$stmt->execute([$urn.'.%']);
 	if (isset($_GET['lowercase'])){
