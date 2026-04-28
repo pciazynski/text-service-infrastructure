@@ -179,13 +179,13 @@ $request = htmlspecialchars($_GET['request']);
 switch($request){
 	case 'GetCapabilities':
 	(isset($_GET['smallinventory'])) ? print(getShortCapabilities()): print(getCapabilities());break;
-	case 'GetPassage' : $urn = checkurn($_GET['urn'],'xml');print(GetPassage($urn));break;
-	case 'GetPassagePlus' : $urn = checkurn($_GET['urn'],'xml');print(GetPassagePlus($urn));break;
-	case 'GetLabel' : $urn = checkurn($_GET['urn'],'xml');print(GetLabel($urn));break;
-	case 'GetFirstUrn' : $urn = checkurn($_GET['urn'],'xml');print(GetFirstUrn($urn));break;
-	case 'GetPrevNextUrn' : $urn = checkurn($_GET['urn'],'xml');print(GetPrevNextUrn($urn));break;
+	case 'GetPassage' : $urn = checkurn($_GET['urn'],'xml_');print(GetPassage($urn));break;
+	case 'GetPassagePlus' : $urn = checkurn($_GET['urn'],'xml_');print(GetPassagePlus($urn));break;
+	case 'GetLabel' : $urn = checkurn($_GET['urn'],'xml_');print(GetLabel($urn));break;
+	case 'GetFirstUrn' : $urn = checkurn($_GET['urn'],'xml_');print(GetFirstUrn($urn));break;
+	case 'GetPrevNextUrn' : $urn = checkurn($_GET['urn'],'xml_');print(GetPrevNextUrn($urn));break;
 	case 'GetValidReff' : 
-	$urn = checkurn($_GET['urn'],'xml');
+	$urn = checkurn($_GET['urn'],'xml_');
 	(isset($_GET['level'])) ? print(GetValidReff($urn, $_GET['level'])):print(GetValidReff($urn, -1));break;
 	default:require('../errormsg/xml_invalidrequest.php');
 }
