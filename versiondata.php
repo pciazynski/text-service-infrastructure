@@ -12,12 +12,13 @@ $dbname = trim($dbname,' "\'');
 
 $res = '';
 $sp = " ";
-$stmt = $sql->prepare('SELECT UPDATE_TIME FROM information_schema.tables WHERE  table_schema = "'.$dbname.'";');
+$stmt = $sql->prepare('SELECT IFNULL(UPDATE_TIME,CREATE_TIME) as t FROM information_schema.tables WHERE  table_schema = "'.$dbname.'";');
 $stmt->execute();
 foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-	$res .= $row['UPDATE_TIME'].$sp;
+	$res .= $row['t'].$sp;
 }
 
 echo $res;
 
 ?>
+
