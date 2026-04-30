@@ -22,6 +22,24 @@ function autocomplete($urn){
 	if (strlen($res)>0){return trim($res.$urnarr[4]);}else{return '';}
 }
 
+function getLicenseInfo($urn){
+	global $sql;
+	global $binary;
+	$urnarr = explode(':',$urn);
+	$docurn = $urnarr[0].':'.$urnarr[1].':'.$urnarr[2].':'.$urnarr[3];
+	$stmt = $sql->prepare('SELECT source, license FROM workdata WHERE urn LIKE '.$binary.' ? LIMIT 1');
+	$docurn = str_replace("_","\_",$docurn);
+	$stmt->execute([$docurn.'%']);
+	$source = '';
+	$license = '';
+	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$source = $row['source'];
+		$license = $row['license'];
+	}
+	return [$license,$source];
+}
+
+
 function restrictedAccess(){
 	global $copyrighttoken;
 	if(isset($_GET['copyrighttoken']) and strlen($copyrighttoken)>0 and $_GET['copyrighttoken'] == $copyrighttoken){

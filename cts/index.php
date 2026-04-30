@@ -27,7 +27,7 @@ function getCapabilities(){
 	$oldgroup = '';
 	$isEmpty=true;
 	$serverurl = ' retrieved via Text Service '.(empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-	$serverurl = str_replace('/cts/?request=GetCapabilities','',$serverurl);
+	$serverurl = explode('/cts/?',$serverurl)[0];
 	$stmt = $sql->prepare('SELECT * FROM workdata ORDER BY urn LIMIT 10000 OFFSET '.$offset);
 	$stmt->execute();
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
@@ -59,13 +59,14 @@ function GetPassage($urn){
 	$res = '<?xml version="1.0" encoding="UTF-8"?><GetPassage xmlns="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:ti="http://chs.harvard.edu/xmlns/cts"><request><requestName>GetPassage</requestName><requestUrn>'.$urn.'</requestUrn></request><reply>';
 	$urnarr = explode(':',$urn);
 	$res .= '<urn>'.$urn.'</urn><passage>';
+	$nl = False;
 	if($dbtablename == 'urndata'){
 		if (strpos ($urnarr[4],'-')){$psg =  spanningPassage($urn,isset($_GET['deletexml']),$nl);}
-		else {$psg =  passage($urn,isset($_GET['deletexml']),$nl);};
+		else {$psg =  passage($urn,isset($_GET['deletexml']),isset($_GET['newlines']));};
 	}
 	else{
 		if(restrictedAccess()){
-			if (strpos ($urnarr[4],'-')){$psg =  spanningPassage($urn,isset($_GET['deletexml']),$nl);}
+			if (strpos ($urnarr[4],'-')){$psg =  spanningPassage($urn,$nl,$nl);}
 			else {$psg =  passage($urn,isset($_GET['deletexml']),$nl);};
 		}
 		else{
@@ -82,12 +83,23 @@ function GetPassage($urn){
 			$psg = str_replace($hl,'<cts_highlight>'.$hl.'</cts_highlight>',$psg);
 		}
 	}
-	return $res.$psg.'</passage></reply></GetPassage>';
+	
+	$res.=$psg.'</passage>';
+	if(isset($_GET['addlicense'])){
+		$src_license=getLicenseInfo($urn);
+		$serverurl = ' retrieved via Text Service '.(empty($_SERVER['HTTPS']) ? 'http' : 'https') . '://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		$serverurl = explode('/cts/?',$serverurl)[0];
+		$res .= '<license>'.$src_license[0].'</license>';
+		$res .= '<source>'.htmlspecialchars($src_license[1], ENT_XML1, 'UTF-8').$serverurl.'</source>';
+	}
+
+	return $res.'</reply></GetPassage>';
 }
 
 function GetPassagePlus($urn){
 	require('../db_getPassage_restr.php');
 	global $dbtablename;
+	$nl = False;
 	if($dbtablename == 'urndata'){
 		if (strpos ($urnarr[4],'-')){$psg =  spanningPassage($urn,isset($_GET['deletexml']),$nl);}
 		else {$psg =  passage($urn,isset($_GET['deletexml']),$nl);};
