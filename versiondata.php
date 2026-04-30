@@ -11,11 +11,11 @@ $dbname = explode("=",explode(",", explode(";",$dbname)[1])[0])[1];
 $dbname = trim($dbname,' "\'');
 
 $res = '';
-$tab = "\t";
+$sp = " ";
 $stmt = $sql->prepare('SELECT UPDATE_TIME FROM information_schema.tables WHERE  table_schema = "'.$dbname.'";');
 $stmt->execute();
 foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-	$res .= $row['UPDATE_TIME'];
+	$res .= $row['UPDATE_TIME'].$sp;
 }
 
 echo $res;
