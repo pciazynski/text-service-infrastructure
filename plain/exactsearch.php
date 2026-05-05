@@ -34,7 +34,7 @@ function textsearch($urn, $snippet){
 if (isset($_GET['snippet'])){
 	$urn = checkurn($_GET['urn'],'');
 	$urnarr = explode(':',$urn);
-	$snippet = trim(urldecode($_GET['snippet']));
+	$snippet = urldecode($_GET['snippet']);
 	
 	if($dbtablename == 'urndata'){
 		echo textsearch($urn,$snippet);
