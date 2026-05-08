@@ -15,7 +15,7 @@ $sp = " ";
 $stmt = $sql->prepare('SELECT IFNULL(UPDATE_TIME,CREATE_TIME) as t FROM information_schema.tables WHERE  table_schema = "'.$dbname.'";');
 $stmt->execute();
 foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-	$res .= $row['t'].$sp;
+	$res .= explode(' ',$row['t'])[0].$sp;
 }
 
 echo $res;
