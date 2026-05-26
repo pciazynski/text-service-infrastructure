@@ -74,6 +74,7 @@ function checkurn($urn,$format){
 	$urn = trim(htmlspecialchars($urn));
 	if(strpos($urn,'urn:cts') !== 0){require('../errormsg/'.$format.'invalidurnsyntax.php');}
 	$urn = autocomplete($urn);
+	$urn = str_replace(array("[","]"),array("(",")"),$urn);
 	if(strlen($urn) == 0){require('../errormsg/'.$format.'invalidurn.php');}
 	$urnarr = explode(':',$urn);
 	if(strpos ($urnarr[4],'-')){

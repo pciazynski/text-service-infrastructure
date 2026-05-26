@@ -36,9 +36,9 @@ function subPassage($urn,$deleteXML = false){
 	$subpassarr = explode('@',$urn);
 	$urn = $subpassarr[0];
 	$subpass = $subpassarr[1];
-	$subpassarr = explode('[',$subpass);
+	$subpassarr = explode('(',$subpass);
 	$subpass = $subpassarr[0];
-	(count($subpassarr)==2) ? $subpassc = rtrim($subpassarr[1],']') : $subpassc = 1;
+	(count($subpassarr)==2) ? $subpassc = rtrim($subpassarr[1],')') : $subpassc = 1;
 	$urn = str_replace("_","\_",$urn);
 	if(str_ends_with($urn,':')){
 		$stmt = $sql->prepare('SELECT text FROM '.$dbtablename.' WHERE urn LIKE '.$binary.' ? ORDER BY urnid');
@@ -70,19 +70,22 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	
 	if($urnleftarr[0] === $urnrightarr[0]){
 		$psg = passage($urnleftarr[0]);
-		$passarr = explode($urnleftarr[1],$psg);
-		$subpassl = $urnleftarr[1];
-		$subpassarr = explode('[',$subpassl);
-		$subpassl = $subpassarr[0];
-
-		(count($subpassarr)==2) ? $subpasscl = rtrim($subpassarr[1],']') : $subpasscl = 1;
-		array_splice($passarr,0,$subpasscl);
-		$psg = $subpassl.join($subpassl,$passarr);
-
+		if(count($urnleftarr)==2){
+			$subpassl = $urnleftarr[1];
+			$subpassarr = explode('(',$subpassl);
+			$subpassl = $subpassarr[0];
+			(count($subpassarr)==2) ? $subpasscl = intval(rtrim($subpassarr[1],')')) : $subpasscl = 1;
+			
+			$passarr = explode($subpassarr[0],$psg);
+			for($i=0;$i<$subpasscl;$i++){
+				array_shift($passarr);
+			}
+			$psg = $subpassarr[0].implode($subpassarr[0],$passarr);
+		}
 		$subpassr = $urnrightarr[1];
-		$subpassarr = explode('[',$subpassr);
+		$subpassarr = explode('(',$subpassr);
 		$subpassr = $subpassarr[0];
-		(count($subpassarr)==2) ? $subpasscr = rtrim($subpassarr[1],']') : $subpasscr = 1;
+		(count($subpassarr)==2) ? $subpasscr = rtrim($subpassarr[1],')') : $subpasscr = 1;
 		$passarr = explode($subpassr,$psg);
 		if($subpasscr<count($passarr)){
 			$psg = '';
@@ -129,9 +132,9 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 	
 	if(count($urnleftarr)==2){
 		$subpassl = $urnleftarr[1];
-		$subpassarr = explode('[',$subpassl);
+		$subpassarr = explode('(',$subpassl);
 		$subpassl = $subpassarr[0];
-		(count($subpassarr)==2) ? $subpasscl = rtrim($subpassarr[1],']') : $subpasscl = 1;
+		(count($subpassarr)==2) ? $subpasscl = rtrim($subpassarr[1],')') : $subpasscl = 1;
 
 		$passarr = explode($subpassl,$passleft);
 		if($subpasscl<count($passarr)){
@@ -144,9 +147,9 @@ function spanningSubPassage($urn, $deleteXML = false,$newlines = false){
 
 	if(count($urnrightarr)==2){
 		$subpassr = $urnrightarr[1];
-		$subpassarr = explode('[',$subpassr);
+		$subpassarr = explode('(',$subpassr);
 		$subpassr = $subpassarr[0];
-		(count($subpassarr)==2) ? $subpasscr = rtrim($subpassarr[1],']') : $subpasscr = 1;
+		(count($subpassarr)==2) ? $subpasscr = rtrim($subpassarr[1],')') : $subpasscr = 1;
 		$passarr = explode($subpassr,$passright);
 		if($subpasscr<count($passarr)){
 			$passright = '';
