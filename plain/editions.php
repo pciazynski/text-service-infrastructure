@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: text/plain');
 require('../config.php');
-#$_GET = array_filter($_GET);
+$_GET = array_filter($_GET);
 
 # Returns edition level URN list.
 # Params: offset, urnfilter, author, title, year
@@ -37,8 +37,12 @@ function editions(){
 		(isset($_GET['urnfilter'])) ? $params=array('%'.str_replace("_","\_",$_GET['urnfilter']).'%'): $params=array('%');
 
 		if (isset($_GET['restricted'])){
-			intval($_GET['restricted']) == 1 ? $query .= ' AND restricted = 1' : $query = ' AND restricted = 0';
+			intval($_GET['restricted']) == 1 ? $query .= ' AND restricted = 1' : $query .= '';
 		}
+		if (isset($_GET['unrestricted'])){
+			intval($_GET['unrestricted']) == 1 ? $query .= ' AND restricted = 0' : $query .= '';
+		}
+
 		if(isset($_GET['lang'])){
 			$query.= ' AND lang = ?';
 			array_push($params,$_GET['lang']);
