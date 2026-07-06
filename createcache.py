@@ -28,7 +28,7 @@ for x in cs:
 
     
 with open("plain/editions.cache", "w", encoding="utf8") as outf:
-    outf.write(resstr.strip().replace("\tNone\t","\t\t"))
+    outf.write(resstr.strip("\n"))
 
 cs.execute("SELECT urn,title,year,author,cast(restricted as CHAR(1)),lang FROM "+thisdb+".workdata ORDER BY author")
 resstr=""
@@ -40,7 +40,7 @@ for x in cs:
         line = line.replace("\tNone\n","\t\n")        
     resstr += line
 with open("plain/editions_author.cache", "w", encoding="utf8") as outf:
-    outf.write(resstr.strip().replace("\tNone\t","\t\t"))
+    outf.write(resstr.strip("\n"))
     
 cs.execute("SELECT urn,title,year,author,cast(restricted as CHAR(1)),lang FROM "+thisdb+".workdata ORDER BY year")
 resstr=""
@@ -52,7 +52,7 @@ for x in cs:
         line = line.replace("\tNone\n","\t\n")        
     resstr += line
 with open("plain/editions_year.cache", "w", encoding="utf8") as outf:
-    outf.write(resstr.strip().replace("\tNone\t","\t\t"))
+    outf.write(resstr.strip("\n"))
 
 cs.execute("SELECT urn,title,year,author,cast(restricted as CHAR(1)),lang FROM "+thisdb+".workdata ORDER BY author,year")
 resstr=""
@@ -64,7 +64,7 @@ for x in cs:
         line = line.replace("\tNone\n","\t\n")        
     resstr += line
 with open("plain/editions_author,year.cache", "w", encoding="utf8") as outf:
-    outf.write(resstr.strip().replace("\tNone\t","\t\t"))
+    outf.write(resstr.strip("\n"))
 
 cs.execute("SELECT urn,title,year,author,cast(restricted as CHAR(1)),lang FROM "+thisdb+".workdata ORDER BY author,title")
 resstr=""
@@ -76,4 +76,4 @@ for x in cs:
         line = line.replace("\tNone\n","\t\n")        
     resstr += line
 with open("plain/editions_author,title.cache", "w", encoding="utf8") as outf:
-    outf.write(resstr.strip().replace("\tNone\t","\t\t"))
+    outf.write(resstr.strip("\n"))
