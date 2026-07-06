@@ -23,8 +23,8 @@ for x in cs:
     for item in x:
         if item == None:
             item = ""
-    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])
-    resstr += line.strip("\t")+"\n"
+    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])+"\t"+str(x[5])
+    resstr += line+"\n"
 
 with open("plain/editions.cache", "w", encoding="utf8") as outf:
     outf.write(resstr.strip().replace("\tNone\t","\t\t"))
@@ -35,8 +35,8 @@ for x in cs:
     for item in x:
         if item == None:
             item = ""
-    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])
-    resstr += line.strip("\t")+"\n"
+    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])+"\t"+str(x[5])
+    resstr += line+"\n"
 with open("plain/editions_author.cache", "w", encoding="utf8") as outf:
     outf.write(resstr.strip().replace("\tNone\t","\t\t"))
     
@@ -46,8 +46,8 @@ for x in cs:
     for item in x:
         if item == None:
             item = ""
-    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])
-    resstr += line.strip("\t")+"\n"
+    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])+"\t"+str(x[5])
+    resstr += line+"\n"
 with open("plain/editions_year.cache", "w", encoding="utf8") as outf:
     outf.write(resstr.strip().replace("\tNone\t","\t\t"))
 
@@ -57,8 +57,8 @@ for x in cs:
     for item in x:
         if item == None:
             item = ""
-    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])
-    resstr += line.strip("\t")+"\n"
+    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])+"\t"+str(x[5])
+    resstr += line+"\n"
 with open("plain/editions_author,year.cache", "w", encoding="utf8") as outf:
     outf.write(resstr.strip().replace("\tNone\t","\t\t"))
 
@@ -68,7 +68,7 @@ for x in cs:
     for item in x:
         if item == None:
             item = ""
-    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])
-    resstr += line.strip("\t")+"\n"
+    line = str(x[0])+"\t"+str(x[1])+"\t"+str(x[2])+"\t"+str(x[3])+"\t"+str(x[4])+"\t"+str(x[5])
+    resstr += line+"\n"
 with open("plain/editions_author,title.cache", "w", encoding="utf8") as outf:
     outf.write(resstr.strip().replace("\tNone\t","\t\t"))
