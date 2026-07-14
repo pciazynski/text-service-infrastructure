@@ -2,7 +2,7 @@
 
 #SQL information
 $sql = new PDO('mysql:host=localhost;dbname=cts', 'ctsapi', 'pw');
-$multibyte = false;
+$multibyte = false;  # njedejało to byś true?
 
 #normalization for tm.
 #tokenization

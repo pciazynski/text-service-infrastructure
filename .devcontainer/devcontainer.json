@@ -1,0 +1,40 @@
+{
+  "name": "text-service-infrastructure",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "source=${localWorkspaceFolder}/.devcontainer,target=/workspace/.devcontainer,type=bind,readonly",
+    "source=text-service-infrastructure-history,target=/commandhistory,type=volume"
+  ],
+  "remoteEnv": {
+    "HISTFILE": "/commandhistory/.bash_history"
+  },
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "containerUser": "vscode",
+  "postCreateCommand": "git config --global safe.directory /workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "esbenp.prettier-vscode",
+        "editorconfig.editorconfig"
+      ],
+      "settings": {
+        "php.validate.executablePath": "/usr/bin/php",
+        "editor.formatOnSave": false,
+        "[php]": {
+          "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+        },
+        "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[html]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        }
+      }
+    }
+  }
+}
