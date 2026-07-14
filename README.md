@@ -1,5 +1,8 @@
 # README #
 
+## Fork
+This a fork maintained by Piotr Ciążyński of the following work: https://bitbucket.org/jtiepmar/canonical-text-service/src/master/ originally written by Jochen Tiepmar.
+
 ## Citation ##
 
 Jochen Tiepmar. 2025. Text Service Infrastructure. https://urncts.eu
